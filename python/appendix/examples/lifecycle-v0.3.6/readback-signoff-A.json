@@ -1,0 +1,21 @@
+{
+  "record_type": "ReadbackSignoff",
+  "schema_version": "0.3.6",
+  "signoff_id": "5f6f5c1f-9396-47e5-a1e7-2e4f84c028cc",
+  "profile_id": "aap:acme:invoice-triage",
+  "profile_version": "1.4.0",
+  "profile_digest": "sha256:ca79e7d75384874b3e2bb3f58c5f0868f74c0cd88159ea404db916572ec9c69d",
+  "part": "A",
+  "review_digest": "sha256:ca5a243a97a6361b684522eba1e0319ee4589d747d02202d85340e726136baed",
+  "readback_digest": "sha256:5ff733f5b72e334b63a9ab4b1a8c030d405c054e21cc9614fe8521398142b445",
+  "readback_version": "aam-readback/0.3.6",
+  "principal": "user:demo-product_owner",
+  "role": "product_owner",
+  "signed_at": "2026-09-05T14:13:00Z",
+  "binding": "identity_bound",
+  "key_id": "demo-review-A",
+  "signature": {
+    "method": "ed25519",
+    "value": "77b72610c5a9ff410f76977002b105f88c6d54d775ff87cfef5fef7e0a6fd0b9d4906185b2992835ea80912cad0164513400e176da82cddd9604100f271b780c"
+  }
+}

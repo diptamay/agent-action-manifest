@@ -1,0 +1,229 @@
+{
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "record_type": {
+      "const": "AuditEvent"
+    },
+    "schema_version": {"enum": ["0.3.7", "0.4.0"]},
+    "event_id": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 256
+    },
+    "event_type": {
+      "enum": [
+        "MANIFEST_BUILT",
+        "GATE_DECISION",
+        "APPROVAL_RECORDED",
+        "APPROVAL_CONSUMED",
+        "OUTCOME_VERIFIED",
+        "RECONCILIATION_RECORDED",
+        "READBACK_SIGNOFFS_RECORDED",
+        "EXECUTION_TRANSITION",
+        "PROFILE_PUBLISHED",
+        "PROFILE_REVOKED",
+        "ADAPTER_REGISTERED",
+        "VERIFIER_REGISTERED",
+        "CONTROL_SIGNAL",
+        "RESTRICTION_ACTIVATED",
+        "RESTRICTION_RESTORED",
+        "AGGREGATE_BUDGET_RESERVED",
+        "CAMPAIGN_OBSERVATION",
+        "CAMPAIGN_RESTRICTION_ACTIVATED",
+        "CAMPAIGN_RESTRICTION_RESTORED"
+      ]
+    },
+    "record_ref": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 256
+    },
+    "record_digest": {
+      "type": "string",
+      "pattern": "^sha256:[0-9a-f]{64}$"
+    },
+    "recorded_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "occurred_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "gate_id": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 256
+    },
+    "scope": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "tenant": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 256
+        },
+        "environment": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 256
+        },
+        "profile_id": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "tool": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "operation": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "program_id": {"type": ["string", "null"]},
+        "actor_group_id": {"type": ["string", "null"]}
+      },
+      "required": [
+        "tenant",
+        "environment",
+        "profile_id",
+        "tool",
+        "operation"
+      ]
+    },
+    "result": {
+      "enum": [
+        "NONE",
+        "ALLOW",
+        "DENY",
+        "INDETERMINATE",
+        "APPROVED",
+        "REJECTED",
+        "MORE_EVIDENCE",
+        "CONSUMED",
+        "VERIFIED",
+        "UNRESOLVED",
+        "APPLIED",
+        "NOT_DISPATCHED",
+        "DISPATCHED",
+        "EXECUTION_UNKNOWN",
+        "ACKNOWLEDGED",
+        "NOT_ATTEMPTED",
+        "COMMITTED",
+        "NOT_COMMITTED",
+        "NORMAL",
+        "REQUIRE_APPROVAL",
+        "SUSPENDED",
+        "RESERVED",
+        "OBSERVED"
+      ]
+    },
+    "manifest_id": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "execution_id": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "action_id": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "signal_code": {
+      "enum": [
+        "EXECUTION_UNKNOWN",
+        "EVIDENCE_CONFLICT",
+        "VERIFICATION_FAILED",
+        "EVALUATION_REGRESSION",
+        "ADAPTER_MISMATCH",
+        "OVERDUE_EXECUTION",
+        "OVERDUE_VERIFICATION",
+        null
+      ]
+    },
+    "campaign_indicator": {"type": ["string", "null"]},
+    "actor_ref_digest": {
+      "type": "string",
+      "pattern": "^sha256:[0-9a-f]{64}$"
+    },
+    "sequence": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "previous_hash": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "event_hash": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "transaction_revision": {
+      "type": "integer",
+      "minimum": 1
+    }
+  },
+  "required": [
+    "record_type",
+    "schema_version",
+    "event_id",
+    "event_type",
+    "record_ref",
+    "record_digest",
+    "recorded_at",
+    "occurred_at",
+    "gate_id",
+    "scope",
+    "result",
+    "manifest_id",
+    "execution_id",
+    "action_id",
+    "signal_code",
+    "actor_ref_digest",
+    "sequence",
+    "previous_hash",
+    "event_hash",
+    "transaction_revision"
+  ],
+  "allOf": [
+    {
+      "if": {
+        "properties": {"schema_version": {"const": "0.4.0"}},
+        "required": ["schema_version"]
+      },
+      "then": {
+        "required": ["campaign_indicator"],
+        "properties": {
+          "scope": {"required": ["program_id", "actor_group_id"]}
+        }
+      },
+      "else": {
+        "not": {"required": ["campaign_indicator"]},
+        "properties": {
+          "scope": {
+            "not": {"anyOf": [{"required": ["program_id"]}, {"required": ["actor_group_id"]}]}
+          }
+        }
+      }
+    }
+  ],
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "AAM allowlisted exported audit event"
+}

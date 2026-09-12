@@ -1,0 +1,634 @@
+{
+  "schema_version": "0.3.6",
+  "profile_id": "aap:plant-a:change-response",
+  "profile_version": "0.9.0",
+  "issued_at": "2026-09-01T00:00:00Z",
+  "identity": {
+    "agent_name": "change-response",
+    "agent_version": "0.9",
+    "model": {
+      "provider": "<provider>",
+      "identifier": "<model@2026-06>"
+    },
+    "prompt": {
+      "version": "6",
+      "hash": "sha256:0b7a...44"
+    },
+    "policy": {
+      "version": "2",
+      "hash": "sha256:77d2...0e"
+    },
+    "owner": "Plant Operations Technology Lead"
+  },
+  "authority_scope": {
+    "tenant": "Plant-A",
+    "environment": "prod",
+    "systems": [
+      "evidence",
+      "ticketing",
+      "maintenance",
+      "access_management",
+      "notify"
+    ],
+    "assets": [
+      "Asset-12",
+      "Asset-14",
+      "Gateway-3",
+      "Controller-3A",
+      "HMI-3"
+    ],
+    "operating_window": "approved maintenance/response window only",
+    "notes": "Business systems only. No network path to controllers, HMIs, or safety systems.",
+    "targets": [
+      {
+        "type": "industrial_asset",
+        "identifiers": [
+          "Asset-12",
+          "Asset-14",
+          "Gateway-3",
+          "Controller-3A",
+          "HMI-3"
+        ]
+      },
+      {
+        "type": "work_order",
+        "selector": "maintenance queue for Line 3",
+        "enforcement": "typed",
+        "selector_id": "line3_maintenance_queue"
+      },
+      {
+        "type": "vendor_session",
+        "selector": "sessions on Line 3 assets",
+        "enforcement": "typed",
+        "selector_id": "line3_vendor_sessions"
+      },
+      {
+        "type": "ticket",
+        "selector": "OT queue",
+        "enforcement": "typed",
+        "selector_id": "ot_ticket_queue"
+      },
+      {
+        "type": "oncall_role",
+        "identifiers": [
+          "plant_owner",
+          "controls_owner",
+          "ot_security"
+        ]
+      }
+    ],
+    "max_review_window_minutes": 15,
+    "max_execution_authority_seconds": 180
+  },
+  "permissions": {
+    "default_deny": true,
+    "allowed": [
+      {
+        "tool": "evidence",
+        "operation": "read_evidence",
+        "effect_target": {
+          "type": "industrial_asset"
+        },
+        "impact": {
+          "domains": [
+            "operational"
+          ],
+          "severity": "low",
+          "blast_radius": "Read-only; changes nothing.",
+          "reversible": true,
+          "max_affected_objects": 0
+        },
+        "default_mode": "execute_allowlisted",
+        "max_mode": "execute_allowlisted",
+        "verification": {
+          "expected_postconditions": [
+            "Read completed without any write"
+          ],
+          "tests": [
+            {
+              "method": "read_system_of_record",
+              "source": "audit_store",
+              "assertion": "no write recorded for this manifest",
+              "test_id": "postcondition-1",
+              "postcondition_index": 0
+            }
+          ],
+          "on_failure": "escalate",
+          "completion_rule": "all_postconditions_verified",
+          "max_observation_age_seconds": 300
+        },
+        "summary_template": "Read {effect_target}. No changes.",
+        "privileges_required": [
+          "evidence:read"
+        ]
+      },
+      {
+        "tool": "ticketing",
+        "operation": "create_ticket",
+        "max_mode": "execute_allowlisted",
+        "reversible": true,
+        "allowed_parameters": [
+          "asset",
+          "summary"
+        ],
+        "material_parameters": [
+          "asset"
+        ],
+        "effect_target": {
+          "type": "ticket"
+        },
+        "impact": {
+          "domains": [
+            "operational"
+          ],
+          "severity": "low",
+          "blast_radius": "One ticket in the OT queue.",
+          "reversible": true,
+          "max_affected_objects": 1
+        },
+        "default_mode": "execute_allowlisted",
+        "privileges_required": [
+          "ticketing:write"
+        ],
+        "verification": {
+          "expected_postconditions": [
+            "Ticket exists for {asset}"
+          ],
+          "tests": [
+            {
+              "method": "read_system_of_record",
+              "source": "ticketing",
+              "assertion": "ticket exists for asset {asset}",
+              "test_id": "postcondition-1",
+              "postcondition_index": 0
+            }
+          ],
+          "on_failure": "reopen",
+          "completion_rule": "all_postconditions_verified",
+          "max_observation_age_seconds": 300
+        },
+        "summary_template": "Open an OT ticket for {asset}: {summary}."
+      },
+      {
+        "tool": "notify",
+        "operation": "notify_oncall",
+        "constraints": {
+          "roles": [
+            "plant_owner",
+            "controls_owner",
+            "ot_security"
+          ]
+        },
+        "max_mode": "execute_allowlisted",
+        "reversible": true,
+        "allowed_parameters": [
+          "message"
+        ],
+        "material_parameters": [
+          "roles"
+        ],
+        "effect_target": {
+          "type": "oncall_role"
+        },
+        "impact": {
+          "domains": [
+            "operational"
+          ],
+          "severity": "low",
+          "blast_radius": "One notification to on-call roles.",
+          "reversible": true,
+          "max_affected_objects": 1
+        },
+        "default_mode": "execute_allowlisted",
+        "privileges_required": [
+          "notify:send"
+        ],
+        "verification": {
+          "expected_postconditions": [
+            "Notification delivered"
+          ],
+          "tests": [
+            {
+              "method": "read_system_of_record",
+              "source": "notify",
+              "assertion": "notification delivered to {effect_target_id}",
+              "test_id": "postcondition-1",
+              "postcondition_index": 0
+            }
+          ],
+          "on_failure": "reopen",
+          "completion_rule": "all_postconditions_verified",
+          "max_observation_age_seconds": 300
+        },
+        "summary_template": "Notify {effect_target}: {message}."
+      },
+      {
+        "tool": "maintenance",
+        "operation": "draft_work_order",
+        "constraints": {
+          "work_order_type": [
+            "inspection",
+            "verification"
+          ]
+        },
+        "max_mode": "request_approval",
+        "reversible": true,
+        "allowed_parameters": [
+          "asset",
+          "related_session",
+          "related_work_order",
+          "priority"
+        ],
+        "material_parameters": [
+          "work_order_type",
+          "asset",
+          "related_session"
+        ],
+        "effect_target": {
+          "type": "work_order"
+        },
+        "impact": {
+          "domains": [
+            "operational",
+            "physical",
+            "safety"
+          ],
+          "severity": "high",
+          "blast_radius": "Potential production and safety consequence if the recommendation is wrong; execution is bounded to one maintenance work order for {asset}. No direct control path.",
+          "bounded_by": [
+            "asset={asset}",
+            "business_systems_only"
+          ],
+          "reversible": true,
+          "max_affected_objects": 1
+        },
+        "default_mode": "request_approval",
+        "privileges_required": [
+          "evidence:read",
+          "maintenance:draft"
+        ],
+        "egress_fields": [
+          "event_type",
+          "asset_id",
+          "timestamps",
+          "change_summary"
+        ],
+        "systems": [
+          "evidence",
+          "maintenance"
+        ],
+        "verification": {
+          "expected_postconditions": [
+            "Inspection work order exists for {asset} with evidence links and approver ids",
+            "No control-system command was issued",
+            "Post-action evidence collection is scheduled"
+          ],
+          "tests": [
+            {
+              "method": "read_system_of_record",
+              "source": "maintenance",
+              "assertion": "work order exists for {asset}, type {work_order_type}, with evidence links and approver ids",
+              "timeout_minutes": 5,
+              "test_id": "postcondition-1",
+              "postcondition_index": 0
+            },
+            {
+              "method": "read_system_of_record",
+              "source": "audit_store",
+              "assertion": "no control_system tool invocation recorded for this manifest",
+              "timeout_minutes": 5,
+              "test_id": "postcondition-2",
+              "postcondition_index": 1
+            },
+            {
+              "test_id": "postcondition-3",
+              "postcondition_index": 2,
+              "method": "read_system_of_record",
+              "source": "maintenance",
+              "assertion": "post-action evidence collection is scheduled for {asset} and linked to the work order",
+              "timeout_minutes": 5
+            }
+          ],
+          "on_failure": "escalate",
+          "completion_rule": "all_postconditions_verified",
+          "max_observation_age_seconds": 300
+        },
+        "summary_template": "Draft an {work_order_type} work order for {asset} following an approved configuration change with anomalous post-change vibration. No equipment command will be issued."
+      },
+      {
+        "tool": "access_management",
+        "operation": "request_access_revocation",
+        "max_mode": "request_approval",
+        "reversible": true,
+        "allowed_parameters": [
+          "session",
+          "reason"
+        ],
+        "material_parameters": [
+          "session",
+          "reason"
+        ],
+        "effect_target": {
+          "type": "vendor_session"
+        },
+        "impact": {
+          "domains": [
+            "operational",
+            "security"
+          ],
+          "severity": "high",
+          "blast_radius": "Vendor session {session} loses access; work in progress may be interrupted. No equipment command.",
+          "reversible": true,
+          "max_affected_objects": 1
+        },
+        "default_mode": "request_approval",
+        "privileges_required": [
+          "access_management:request"
+        ],
+        "verification": {
+          "expected_postconditions": [
+            "Session {session} state matches the approved decision"
+          ],
+          "tests": [
+            {
+              "method": "read_system_of_record",
+              "source": "access_management",
+              "assertion": "session {session} state and approval ids recorded",
+              "timeout_minutes": 5,
+              "test_id": "postcondition-1",
+              "postcondition_index": 0
+            }
+          ],
+          "on_failure": "escalate",
+          "completion_rule": "all_postconditions_verified",
+          "max_observation_age_seconds": 300
+        },
+        "summary_template": "Request revocation of vendor session {session}: {reason}. No equipment command will be issued."
+      }
+    ],
+    "prohibited": [
+      {
+        "description": "Any command to a controller, HMI, or production equipment",
+        "tool": "control_system",
+        "operation": "*"
+      },
+      {
+        "description": "Network isolation or segmentation change",
+        "tool": "network",
+        "operation": "*"
+      },
+      {
+        "description": "Firmware or software deployment",
+        "tool": "deployment",
+        "operation": "*"
+      },
+      {
+        "description": "Machine stop, start, or mode change",
+        "tool": "control_system",
+        "operation": "set_mode"
+      },
+      {
+        "description": "Any change to safety instrumented systems",
+        "tool": "safety_system",
+        "operation": "*"
+      },
+      {
+        "description": "Any action outside the approved operating window",
+        "rule": "now in maintenance_window(asset)",
+        "enforcement": "typed",
+        "rule_id": "inside_maintenance_window"
+      }
+    ]
+  },
+  "impact_envelope": {
+    "allowed_domains": [
+      "operational",
+      "physical",
+      "safety",
+      "security"
+    ],
+    "max_severity": "high",
+    "max_affected_objects": 2,
+    "irreversible_allowed": false,
+    "notes": "Severity may be high because the recommendation concerns production equipment; execution is bounded to business-system workflows."
+  },
+  "autonomy_policy": {
+    "default_mode": "recommend",
+    "max_mode": "request_approval",
+    "thresholds": [
+      {
+        "description": "ticket and notification only, never equipment",
+        "enforcement": "typed",
+        "threshold_id": "ticket_notify_only",
+        "mode": "execute_allowlisted",
+        "operations": [
+          "ticketing.create_ticket",
+          "notify.notify_oncall"
+        ]
+      }
+    ],
+    "downgrade_on": [
+      "evaluation_regression",
+      "anomaly_alert",
+      "kill_switch_test_failure"
+    ]
+  },
+  "approval_policy": {
+    "approver_roles": [
+      "plant_owner",
+      "controls_owner"
+    ],
+    "required_evidence": [
+      "approved_work_order",
+      "pam_session_record",
+      "trusted_configuration_baseline",
+      "condition_trend",
+      "production_consequence",
+      "recovery_plan"
+    ],
+    "one_approval_one_action": true,
+    "dual_approval_for": [
+      "access_management.request_access_revocation"
+    ],
+    "approval_timeout_minutes": 15,
+    "distinct_principals_required": true,
+    "principal_authentication_required": true
+  },
+  "input_trust": {
+    "untrusted_sources": [
+      "operator_notes",
+      "ticket_text",
+      "vendor_advisories",
+      "session_metadata_free_text"
+    ],
+    "content_is_data_not_instructions": true,
+    "mitigations": [
+      "authorization determined from work-order and access-management records, never from free text",
+      "no control-system tool class exists in the execution identity"
+    ],
+    "injection_test_set": {
+      "identifier": "inj-plant-v2",
+      "last_passed_versions": "model@2026-06/prompt6/policy2",
+      "last_run": "2026-09-04T00:00:00Z"
+    }
+  },
+  "credentials_policy": {
+    "identity": "svc:change-response@plant-a",
+    "privileges": [
+      "evidence:read",
+      "ticketing:write",
+      "maintenance:draft",
+      "access_management:request",
+      "notify:send"
+    ],
+    "max_ttl_minutes": 120,
+    "fail_closed_on_expiry": true,
+    "rotation": "per-shift"
+  },
+  "data_boundary": {
+    "model_hosting": "customer_boundary",
+    "egress_policy": "allowlisted_fields",
+    "egress_allowlist": [
+      "event_type",
+      "asset_id",
+      "timestamps",
+      "change_summary",
+      "evidence_refs"
+    ],
+    "never_egress": [
+      "raw_packet_capture",
+      "raw_process_values",
+      "credentials"
+    ],
+    "log_retention_days": 365,
+    "log_location": "site audit store",
+    "tenant_isolation_tested": true
+  },
+  "audit_policy": {
+    "records": [
+      "evidence_refs",
+      "manifest_versions",
+      "gate_decision",
+      "approvers",
+      "tool_arguments",
+      "connector_receipts",
+      "outcome",
+      "denials"
+    ],
+    "append_only": true,
+    "log_store": "site audit store",
+    "readers": [
+      "plant_manager",
+      "controls_lead",
+      "ot_security"
+    ],
+    "alert_on": [
+      "prohibited_tool_class_attempt",
+      "out_of_window_action",
+      "credential_expiry"
+    ]
+  },
+  "recovery_policy": {
+    "owner": "controls_lead",
+    "requires_tested_recovery_for_execution": true,
+    "templates": [
+      {
+        "tool": "access_management",
+        "operation": "request_access_revocation",
+        "method": "re-approve access via access-management workflow",
+        "tested": true,
+        "last_tested": "2026-09-01",
+        "time_to_recover_minutes": 10,
+        "tested_evidence_ref": "testrun:recovery:change-response:2026-09-01#4",
+        "owner": "controls_lead",
+        "irreversible": false
+      },
+      {
+        "tool": "maintenance",
+        "operation": "draft_work_order",
+        "method": "cancel work order; reopen investigation case",
+        "tested": true,
+        "last_tested": "2026-09-01",
+        "time_to_recover_minutes": 2,
+        "tested_evidence_ref": "testrun:recovery:change-response:2026-09-01#3",
+        "owner": "controls_lead",
+        "irreversible": false
+      },
+      {
+        "tool": "ticketing",
+        "operation": "create_ticket",
+        "method": "close ticket",
+        "tested": true,
+        "last_tested": "2026-09-01",
+        "time_to_recover_minutes": 1,
+        "tested_evidence_ref": "testrun:recovery:change-response:2026-09-01#5",
+        "owner": "controls_lead",
+        "irreversible": false
+      },
+      {
+        "tool": "notify",
+        "operation": "notify_oncall",
+        "method": "send retraction",
+        "tested": true,
+        "last_tested": "2026-09-01",
+        "time_to_recover_minutes": 1,
+        "tested_evidence_ref": "testrun:recovery:change-response:2026-09-01#6",
+        "owner": "controls_lead",
+        "irreversible": false
+      },
+      {
+        "tool": "evidence",
+        "operation": "read_evidence",
+        "method": "none needed (read-only)",
+        "tested": true,
+        "last_tested": "2026-09-01",
+        "time_to_recover_minutes": 0,
+        "tested_evidence_ref": "testrun:recovery:change-response:2026-09-01#7",
+        "owner": "controls_lead",
+        "irreversible": false
+      }
+    ],
+    "test_evidence_required": true,
+    "test_max_age_days": 90
+  },
+  "emergency_disable": {
+    "mechanism": "site-level agent execution switch",
+    "execution_state": "allowed",
+    "state_source": "site-config://plant-a/agents/change-response/execution",
+    "operators": [
+      "plant_manager",
+      "controls_lead"
+    ],
+    "checked_at_gate": true,
+    "halts_pending": true,
+    "halts_in_flight_where_possible": true
+  },
+  "conformance": {
+    "level": "L3",
+    "assessed_at": "2026-09-05",
+    "assessor": "Plant Operations Technology Lead",
+    "enforcement": {
+      "gate_id": "policy-gate:plant-actions-v2",
+      "outside_model": true,
+      "checks_action_target": true,
+      "checks_manifest_within_profile": true,
+      "checks_scope_permissions_credentials_stop": true,
+      "containment_check_implementation": "aam-check-containment/0.3.0"
+    },
+    "evaluation": {
+      "golden_set": "golden-plant-v2",
+      "includes_abstention_cases": true,
+      "injection_set": "inj-plant-v2",
+      "prohibited_action_set": "deny-plant-v2",
+      "blast_radius_set": "boundary-plant-v1",
+      "containment_regression_set": "containment-plant-v1",
+      "ci_or_release_gated": true,
+      "last_passed_versions": "model@2026-06/prompt6/policy2"
+    }
+  },
+  "integrity": {
+    "method": "ed25519",
+    "key_id": "demo-profile-signing-2026",
+    "value": "3e77336e5f5c502221ba28ad8efc8476913d4eb8b176516cde3433513eb2a71cab1ba757477a4321364b9fe77fb0576d5ff7094c59b495e6914728d25b501b0c"
+  }
+}

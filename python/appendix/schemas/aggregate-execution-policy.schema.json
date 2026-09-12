@@ -1,0 +1,76 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.org/schemas/agent-action-manifest/0.4.0/aggregate-execution-policy.schema.json",
+  "title": "Aggregate Execution Policy",
+  "description": "Domain-neutral cumulative admission limits and restrictive campaign-response rules. This policy never grants authority.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "policy_id", "policy_version", "budgets", "campaign_rules"],
+  "properties": {
+    "schema_version": {"const": "0.4.0"},
+    "policy_id": {"type": "string", "minLength": 1},
+    "policy_version": {"type": "string", "minLength": 1},
+    "budgets": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["budget_id", "selector", "measure", "window", "limit", "group_by", "on_exhaustion"],
+        "properties": {
+          "budget_id": {"type": "string", "minLength": 1},
+          "selector": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "tool": {"type": "string", "minLength": 1},
+              "operation": {"type": "string", "minLength": 1},
+              "target_class": {"type": "string", "minLength": 1}
+            }
+          },
+          "measure": {"enum": ["admissions", "in_flight", "objects", "distinct_targets", "egress_bytes"]},
+          "window": {
+            "oneOf": [
+              {"type": "object", "additionalProperties": false, "required": ["kind"], "properties": {"kind": {"const": "lifetime"}}},
+              {"type": "object", "additionalProperties": false, "required": ["kind", "seconds"], "properties": {"kind": {"enum": ["rolling", "fixed"]}, "seconds": {"type": "integer", "minimum": 1}}}
+            ]
+          },
+          "limit": {"type": "integer", "minimum": 1},
+          "group_by": {
+            "type": "array",
+            "minItems": 1,
+            "uniqueItems": true,
+            "items": {"enum": ["tenant", "environment", "accountable_actor", "profile", "program", "operation", "target_class", "delegation_root"]},
+            "contains": {"enum": ["accountable_actor", "program", "delegation_root"]}
+          },
+          "on_exhaustion": {"enum": ["DENY", "REQUIRE_APPROVAL", "SUSPENDED"]},
+          "parameter": {"type": "string", "minLength": 1, "description": "Name of an allowed Action Request parameter. The gate measures the UTF-8 byte length of its canonical JSON encoding; the caller does not supply a cost."},
+          "maximum_per_action": {"type": "integer", "minimum": 0}
+        },
+        "allOf": [
+          {
+            "if": {"properties": {"measure": {"const": "egress_bytes"}}, "required": ["measure"]},
+            "then": {"required": ["parameter", "maximum_per_action"]},
+            "else": {"not": {"anyOf": [{"required": ["parameter"]}, {"required": ["maximum_per_action"]}]}}
+          }
+        ]
+      }
+    },
+    "campaign_rules": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["rule_id", "indicator", "threshold", "window_seconds", "scope", "mode"],
+        "properties": {
+          "rule_id": {"type": "string", "minLength": 1},
+          "indicator": {"type": "string", "minLength": 1},
+          "threshold": {"type": "integer", "minimum": 1},
+          "window_seconds": {"type": "integer", "minimum": 1},
+          "scope": {"enum": ["actor", "program", "profile", "operation"]},
+          "mode": {"enum": ["REQUIRE_APPROVAL", "SUSPENDED"]}
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,119 @@
+{
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "const": "0.3.7"
+    },
+    "policy_id": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 256
+    },
+    "policy_version": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 256
+    },
+    "description": {
+      "type": "string",
+      "maxLength": 2000
+    },
+    "rules": {
+      "type": "array",
+      "maxItems": 64,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "rule_id": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 256
+          },
+          "signal": {
+            "enum": [
+              "EXECUTION_UNKNOWN",
+              "EVIDENCE_CONFLICT",
+              "VERIFICATION_FAILED",
+              "EVALUATION_REGRESSION",
+              "ADAPTER_MISMATCH",
+              "OVERDUE_EXECUTION",
+              "OVERDUE_VERIFICATION"
+            ]
+          },
+          "mode": {
+            "enum": [
+              "REQUIRE_APPROVAL",
+              "SUSPENDED"
+            ]
+          },
+          "scope": {
+            "enum": [
+              "profile",
+              "operation",
+              "action"
+            ]
+          },
+          "threshold": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 1000
+          },
+          "window_seconds": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 86400
+          }
+        },
+        "required": [
+          "rule_id",
+          "signal",
+          "mode",
+          "scope",
+          "threshold",
+          "window_seconds"
+        ]
+      }
+    },
+    "signal_max_age_seconds": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 86400
+    },
+    "overdue_execution_seconds": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 86400
+    },
+    "overdue_verification_seconds": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 86400
+    },
+    "max_export_backlog": {
+      "type": "integer",
+      "minimum": 100,
+      "maximum": 1000000
+    },
+    "audit_consumer": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 256
+    }
+  },
+  "required": [
+    "schema_version",
+    "policy_id",
+    "policy_version",
+    "description",
+    "rules",
+    "signal_max_age_seconds",
+    "overdue_execution_seconds",
+    "overdue_verification_seconds",
+    "max_export_backlog",
+    "audit_consumer"
+  ],
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "AAM governed feedback policy"
+}

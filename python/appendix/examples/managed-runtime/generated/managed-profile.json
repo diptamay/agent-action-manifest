@@ -1,0 +1,587 @@
+{
+  "schema_version": "0.3.7",
+  "profile_id": "aap:acme:invoice-triage",
+  "profile_version": "1.0.7",
+  "issued_at": "2026-08-15T00:00:00Z",
+  "identity": {
+    "agent_name": "invoice-triage",
+    "agent_version": "1.4",
+    "model": {
+      "provider": "<provider>",
+      "identifier": "<model@2026-05>"
+    },
+    "prompt": {
+      "version": "9",
+      "hash": "sha256:5d0c...e7"
+    },
+    "policy": {
+      "version": "3",
+      "hash": "sha256:3f0a...b1"
+    },
+    "owner": "AP Platform Lead"
+  },
+  "authority_scope": {
+    "tenant": "ACME",
+    "environment": "prod",
+    "systems": [
+      "erp.ap",
+      "ticketing",
+      "email"
+    ],
+    "selector": "invoices.status == 'review'",
+    "targets": [
+      {
+        "type": "invoice",
+        "selector": "invoice.status == 'review'",
+        "enforcement": "typed",
+        "selector_id": "invoice_in_review"
+      },
+      {
+        "type": "email_address",
+        "selector": "address on vendor file",
+        "enforcement": "typed",
+        "selector_id": "address_on_vendor_file"
+      },
+      {
+        "type": "ticket",
+        "selector": "AP queue",
+        "enforcement": "typed",
+        "selector_id": "ap_ticket_queue"
+      }
+    ],
+    "max_review_window_minutes": 1440,
+    "max_execution_authority_seconds": 300
+  },
+  "permissions": {
+    "default_deny": true,
+    "allowed": [
+      {
+        "tool": "erp.ap",
+        "operation": "read_invoice",
+        "effect_target": {
+          "type": "invoice"
+        },
+        "impact": {
+          "domains": [
+            "operational"
+          ],
+          "severity": "low",
+          "blast_radius": "Read-only; changes nothing.",
+          "reversible": true,
+          "max_affected_objects": 0
+        },
+        "default_mode": "execute_allowlisted",
+        "max_mode": "execute_allowlisted",
+        "verification": {
+          "expected_postconditions": [
+            "Read completed without any write"
+          ],
+          "tests": [
+            {
+              "method": "read_system_of_record",
+              "source": "audit_store",
+              "assertion": "no write recorded for this manifest",
+              "test_id": "postcondition-1",
+              "postcondition_index": 0
+            }
+          ],
+          "on_failure": "escalate",
+          "completion_rule": "all_postconditions_verified",
+          "max_observation_age_seconds": 300
+        },
+        "summary_template": "Read {effect_target}. No changes.",
+        "privileges_required": [
+          "erp.ap:read"
+        ],
+        "allowed_parameters": [
+          "invoice"
+        ]
+      },
+      {
+        "tool": "erp.ap",
+        "operation": "match_po",
+        "effect_target": {
+          "type": "invoice"
+        },
+        "impact": {
+          "domains": [
+            "operational"
+          ],
+          "severity": "low",
+          "blast_radius": "Read-only; changes nothing.",
+          "reversible": true,
+          "max_affected_objects": 0
+        },
+        "default_mode": "execute_allowlisted",
+        "max_mode": "execute_allowlisted",
+        "verification": {
+          "expected_postconditions": [
+            "Read completed without any write"
+          ],
+          "tests": [
+            {
+              "method": "read_system_of_record",
+              "source": "audit_store",
+              "assertion": "no write recorded for this manifest",
+              "test_id": "postcondition-1",
+              "postcondition_index": 0
+            }
+          ],
+          "on_failure": "escalate",
+          "completion_rule": "all_postconditions_verified",
+          "max_observation_age_seconds": 300
+        },
+        "summary_template": "Match invoice {subject} to its purchase order. Changes nothing.",
+        "privileges_required": [
+          "erp.ap:read"
+        ],
+        "allowed_parameters": [
+          "invoice"
+        ]
+      },
+      {
+        "tool": "email",
+        "operation": "draft_email",
+        "constraints": {
+          "recipient_class": "vendor_on_file",
+          "max_recipients": 1
+        },
+        "max_mode": "execute_allowlisted",
+        "reversible": true,
+        "allowed_parameters": [
+          "recipient",
+          "invoice",
+          "po",
+          "variance_usd",
+          "subject_line"
+        ],
+        "material_parameters": [
+          "recipient",
+          "invoice",
+          "po",
+          "variance_usd"
+        ],
+        "effect_target": {
+          "type": "email_address",
+          "classes": [
+            "vendor_on_file"
+          ]
+        },
+        "impact": {
+          "domains": [
+            "external_communication",
+            "financial"
+          ],
+          "severity": "low",
+          "blast_radius": "One outbound draft to one vendor about one invoice. No money movement.",
+          "bounded_by": [
+            "invoice={invoice}",
+            "vendor=on file"
+          ],
+          "reversible": true,
+          "max_affected_objects": 1
+        },
+        "default_mode": "execute_allowlisted",
+        "privileges_required": [
+          "erp.ap:read",
+          "email:draft"
+        ],
+        "egress_fields": [],
+        "systems": [
+          "erp.ap",
+          "email"
+        ],
+        "verification": {
+          "expected_postconditions": [
+            "Draft exists in email system addressed to the vendor on file",
+            "Draft references invoice {invoice} and PO {po}",
+            "Invoice status unchanged"
+          ],
+          "tests": [
+            {
+              "method": "read_system_of_record",
+              "source": "email",
+              "assertion": "draft for invoice {invoice} exists, unsent, single recipient {recipient}",
+              "timeout_minutes": 5,
+              "test_id": "postcondition-1",
+              "postcondition_index": 0
+            },
+            {
+              "method": "read_system_of_record",
+              "source": "erp.ap",
+              "assertion": "invoice {invoice} status == 'review' and payment_scheduled == false",
+              "timeout_minutes": 5,
+              "test_id": "postcondition-2",
+              "postcondition_index": 2
+            },
+            {
+              "test_id": "postcondition-3",
+              "postcondition_index": 1,
+              "method": "read_system_of_record",
+              "source": "email",
+              "assertion": "draft for invoice {invoice} references invoice {invoice} and PO {po}",
+              "timeout_minutes": 5
+            }
+          ],
+          "on_failure": "reopen",
+          "completion_rule": "all_postconditions_verified",
+          "max_observation_age_seconds": 300
+        },
+        "summary_template": "Draft (not send) an email to {effect_target} asking them to confirm the ${variance_usd} unit-price variance on invoice {invoice} against PO {po}. Will not release payment, change vendor details, or send without approval.",
+        "approver_roles": [
+          "ap_manager"
+        ]
+      },
+      {
+        "tool": "ticketing",
+        "operation": "create_ticket",
+        "max_mode": "execute_allowlisted",
+        "reversible": true,
+        "allowed_parameters": [
+          "invoice",
+          "reason"
+        ],
+        "material_parameters": [
+          "invoice",
+          "reason"
+        ],
+        "effect_target": {
+          "type": "ticket"
+        },
+        "impact": {
+          "domains": [
+            "operational"
+          ],
+          "severity": "low",
+          "blast_radius": "One ticket in the AP queue.",
+          "reversible": true,
+          "max_affected_objects": 1
+        },
+        "default_mode": "execute_allowlisted",
+        "privileges_required": [
+          "ticketing:write"
+        ],
+        "verification": {
+          "expected_postconditions": [
+            "Ticket exists for invoice {invoice}"
+          ],
+          "tests": [
+            {
+              "method": "read_system_of_record",
+              "source": "ticketing",
+              "assertion": "ticket exists for invoice {invoice} with reason {reason}",
+              "test_id": "postcondition-1",
+              "postcondition_index": 0
+            }
+          ],
+          "on_failure": "reopen",
+          "completion_rule": "all_postconditions_verified",
+          "max_observation_age_seconds": 300
+        },
+        "summary_template": "Open an AP exception ticket for invoice {invoice}: {reason}."
+      },
+      {
+        "tool": "erp.ap",
+        "operation": "set_status",
+        "constraints": {
+          "transition": [
+            "review->matched",
+            "review->exception"
+          ]
+        },
+        "max_mode": "execute_allowlisted",
+        "reversible": true,
+        "allowed_parameters": [
+          "invoice",
+          "transition"
+        ],
+        "material_parameters": [
+          "invoice",
+          "transition"
+        ],
+        "effect_target": {
+          "type": "invoice"
+        },
+        "impact": {
+          "domains": [
+            "operational",
+            "financial"
+          ],
+          "severity": "moderate",
+          "blast_radius": "Status of one invoice.",
+          "reversible": true,
+          "max_affected_objects": 1
+        },
+        "default_mode": "execute_allowlisted",
+        "privileges_required": [
+          "erp.ap:status_write"
+        ],
+        "verification": {
+          "expected_postconditions": [
+            "Invoice {invoice} status updated"
+          ],
+          "tests": [
+            {
+              "method": "read_system_of_record",
+              "source": "erp.ap",
+              "assertion": "invoice {invoice} status transition {transition} recorded with manifest id",
+              "test_id": "postcondition-1",
+              "postcondition_index": 0
+            }
+          ],
+          "on_failure": "rollback",
+          "completion_rule": "all_postconditions_verified",
+          "max_observation_age_seconds": 300
+        },
+        "summary_template": "Set status of invoice {invoice}: {transition}."
+      }
+    ],
+    "prohibited": [
+      {
+        "description": "Release or schedule any payment",
+        "tool": "erp.ap",
+        "operation": "release_payment"
+      },
+      {
+        "description": "Edit vendor bank or remittance details",
+        "tool": "erp.ap",
+        "operation": "update_vendor_bank_details"
+      },
+      {
+        "description": "Create or delete vendor master records",
+        "tool": "erp.ap",
+        "operation": "modify_vendor_master"
+      },
+      {
+        "description": "Approve the agent's own drafts",
+        "rule": "approver.principal != agent.identity",
+        "enforcement": "typed",
+        "rule_id": "no_self_approval"
+      },
+      {
+        "description": "Email any address not on the vendor domain allowlist",
+        "rule": "recipient.domain in vendor_domains_on_file",
+        "enforcement": "typed",
+        "rule_id": "recipient_domain_on_file"
+      }
+    ]
+  },
+  "impact_envelope": {
+    "allowed_domains": [
+      "financial",
+      "external_communication",
+      "operational"
+    ],
+    "max_severity": "moderate",
+    "max_affected_objects": 2,
+    "irreversible_allowed": false
+  },
+  "autonomy_policy": {
+    "default_mode": "request_approval",
+    "max_mode": "execute_allowlisted",
+    "thresholds": [
+      {
+        "description": "variance <= $2,000 and a PO exists -> ticket and status may run without approval",
+        "enforcement": "typed",
+        "threshold_id": "small_variance_with_po",
+        "mode": "execute_allowlisted",
+        "operations": [
+          "ticketing.create_ticket",
+          "erp.ap.set_status"
+        ]
+      },
+      {
+        "description": "vendor is new -> recommend only",
+        "enforcement": "documentation_only",
+        "mode": "recommend"
+      }
+    ],
+    "downgrade_on": [
+      "evaluation_regression",
+      "anomaly_alert"
+    ]
+  },
+  "approval_policy": {
+    "approver_roles": [
+      "ap_manager",
+      "finance_controller"
+    ],
+    "required_evidence": [
+      "invoice_image",
+      "po_match_evidence",
+      "variance",
+      "draft_text"
+    ],
+    "one_approval_one_action": true,
+    "dual_approval_for": [],
+    "approval_timeout_minutes": 1440,
+    "distinct_principals_required": true,
+    "principal_authentication_required": true
+  },
+  "input_trust": {
+    "untrusted_sources": [
+      "invoice_pdfs",
+      "vendor_emails",
+      "ocr_output"
+    ],
+    "content_is_data_not_instructions": true,
+    "mitigations": [
+      "retrieved text rendered as data blocks",
+      "bank-detail edits denied at gate regardless of content"
+    ],
+    "injection_test_set": {
+      "identifier": "inj-ap-v2",
+      "last_passed_versions": "model@2026-05/prompt9/policy3",
+      "last_run": "2026-08-30T00:00:00Z"
+    }
+  },
+  "credentials_policy": {
+    "identity": "svc:ap-agent",
+    "privileges": [
+      "erp.ap:read",
+      "erp.ap:status_write",
+      "ticketing:write",
+      "email:draft"
+    ],
+    "max_ttl_minutes": 240,
+    "fail_closed_on_expiry": true
+  },
+  "data_boundary": {
+    "model_hosting": "customer_boundary",
+    "egress_policy": "none",
+    "never_egress": [
+      "bank_details",
+      "personal_data"
+    ],
+    "log_retention_days": 30,
+    "log_location": "in-tenant audit store",
+    "tenant_isolation_tested": true
+  },
+  "audit_policy": {
+    "records": [
+      "tool_calls",
+      "evidence_refs",
+      "gate_decision",
+      "approvals",
+      "denials",
+      "outcome"
+    ],
+    "append_only": true,
+    "log_store": "in-tenant audit store",
+    "readers": [
+      "ap_platform_lead",
+      "finance_controller",
+      "security"
+    ],
+    "alert_on": [
+      "release_payment_attempt",
+      "bank_detail_edit_attempt",
+      "email_to_unlisted_domain"
+    ]
+  },
+  "recovery_policy": {
+    "owner": "ap_platform_lead",
+    "requires_tested_recovery_for_execution": true,
+    "templates": [
+      {
+        "tool": "email",
+        "operation": "draft_email",
+        "method": "delete draft; if sent, send correction email",
+        "tested": true,
+        "last_tested": "2026-08-30",
+        "time_to_recover_minutes": 5,
+        "tested_evidence_ref": "testrun:recovery:ap-agent:2026-08-30#7",
+        "owner": "ap_platform_lead",
+        "irreversible": false
+      },
+      {
+        "tool": "erp.ap",
+        "operation": "set_status",
+        "method": "revert to review",
+        "tested": true,
+        "last_tested": "2026-08-30",
+        "time_to_recover_minutes": 1,
+        "tested_evidence_ref": "testrun:recovery:ap-agent:2026-08-30#8",
+        "owner": "ap_platform_lead",
+        "irreversible": false
+      },
+      {
+        "tool": "ticketing",
+        "operation": "create_ticket",
+        "method": "close ticket with reason",
+        "tested": true,
+        "last_tested": "2026-08-30",
+        "time_to_recover_minutes": 1,
+        "tested_evidence_ref": "testrun:recovery:ap-agent:2026-08-30#9",
+        "owner": "ap_platform_lead",
+        "irreversible": false
+      },
+      {
+        "tool": "erp.ap",
+        "operation": "read_invoice",
+        "method": "none needed (read-only)",
+        "tested": true,
+        "last_tested": "2026-08-30",
+        "time_to_recover_minutes": 0,
+        "tested_evidence_ref": "testrun:recovery:ap-agent:2026-08-30#10",
+        "owner": "ap_platform_lead",
+        "irreversible": false
+      },
+      {
+        "tool": "erp.ap",
+        "operation": "match_po",
+        "method": "none needed (computes only)",
+        "tested": true,
+        "last_tested": "2026-08-30",
+        "time_to_recover_minutes": 0,
+        "tested_evidence_ref": "testrun:recovery:ap-agent:2026-08-30#11",
+        "owner": "ap_platform_lead",
+        "irreversible": false
+      }
+    ],
+    "test_evidence_required": true,
+    "test_max_age_days": 90
+  },
+  "emergency_disable": {
+    "mechanism": "feature flag ap-agent.enabled",
+    "execution_state": "allowed",
+    "state_source": "flags://acme/ap-agent.enabled",
+    "operators": [
+      "ap_platform_lead",
+      "finance_controller"
+    ],
+    "checked_at_gate": true,
+    "halts_pending": true,
+    "halts_in_flight_where_possible": true
+  },
+  "conformance": {
+    "level": "L2",
+    "assessed_at": "2026-08-30",
+    "assessor": "AP Platform Lead",
+    "enforcement": {
+      "gate_id": "policy-gate:finance-agents-v1",
+      "outside_model": true,
+      "checks_action_target": true,
+      "checks_manifest_within_profile": true,
+      "checks_scope_permissions_credentials_stop": true,
+      "containment_check_implementation": "aam-check-containment/0.3.0"
+    },
+    "evaluation": {
+      "golden_set": "golden-ap-v3",
+      "includes_abstention_cases": true,
+      "injection_set": "inj-ap-v2",
+      "prohibited_action_set": "deny-ap-v1",
+      "ci_or_release_gated": false
+    }
+  },
+  "integrity": {
+    "method": "ed25519",
+    "key_id": "demo-profile-signing-2026",
+    "value": "5d33e1b53cde76b8d355ef7172b67b25c7cd7f130f6bd8977ae370c05ae7ba9ac052b0f743767d95e649cb34aa085b4c1d9ee5948f4ba614d79160870f468c0d"
+  },
+  "monitoring_policy_ref": {
+    "policy_id": "feedback:ap-demo",
+    "policy_version": "1",
+    "policy_digest": "sha256:36e7f620ba14994e2e63ad96b4c8125001f2291216fd71213284efdb5a69ff8b"
+  }
+}

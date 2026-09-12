@@ -1,0 +1,12 @@
+Agent Action Manifest
+
+The Apache License 2.0 in LICENSE applies to the first-party content in this
+release package, including the documentation, diagrams and editable sources,
+Python reference implementation, schemas, tests, and synthetic examples.
+
+Third-party software is not relicensed by this repository. Python dependencies
+are installed separately and remain subject to their respective licenses and
+notices. Preserve any third-party license or attribution notice accompanying a
+dependency or incorporated asset.
+
+Names and marks of outside organizations are not endorsements of this work.

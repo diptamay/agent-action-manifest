@@ -1,0 +1,46 @@
+{
+  "action_id": "inv-48211-email",
+  "tool": "email",
+  "operation": "draft_email",
+  "subject": {
+    "type": "invoice",
+    "identifier": "48211",
+    "system": "erp.ap",
+    "display": "Invoice 48211 from Northwind Supply ($4,812.00)"
+  },
+  "effect_target": {
+    "type": "email_address",
+    "identifier": "ap@northwind-supply.example",
+    "system": "email",
+    "class": "vendor_on_file",
+    "display": "ap@northwind-supply.example (Northwind Supply, vendor on file)"
+  },
+  "parameters": {
+    "recipient_class": "vendor_on_file",
+    "max_recipients": 1,
+    "recipient": "ap@northwind-supply.example",
+    "invoice": "48211",
+    "po": "77102",
+    "variance_usd": 312,
+    "subject_line": "Invoice 48211 \u2013 price variance vs PO 77102"
+  },
+  "evidence_refs": [
+    "invoice:48211:image",
+    "po:77102",
+    "match:48211:77102:variance=312",
+    "draft:48211:v1"
+  ],
+  "provenance": [
+    "customer_supplied",
+    "customer_supplied",
+    "derived",
+    "derived"
+  ],
+  "unresolved_conflicts": [
+    "Invoice quantity matches PO; unit price differs by $312."
+  ],
+  "untrusted_sources_present": [
+    "invoice_pdfs",
+    "ocr_output"
+  ]
+}

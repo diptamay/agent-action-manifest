@@ -1,0 +1,23 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.org/schemas/agent-action-manifest/0.4.0/delegation-attestation.schema.json",
+  "title": "Delegation Attestation",
+  "description": "Authenticated host record binding one child request to an admitted parent action and an approved attenuated child Profile.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["attestation_id", "parent_manifest_id", "parent_profile_id", "parent_action_id", "child_profile_id", "child_action_id", "delegation_depth", "child_profile_digest", "issued_at", "expires_at", "principal", "auth_ref"],
+  "properties": {
+    "attestation_id": {"type": "string", "minLength": 1},
+    "parent_manifest_id": {"type": "string", "minLength": 1},
+    "parent_profile_id": {"type": "string", "minLength": 1},
+    "parent_action_id": {"type": "string", "minLength": 1},
+    "child_profile_id": {"type": "string", "minLength": 1},
+    "child_action_id": {"type": "string", "minLength": 1},
+    "delegation_depth": {"type": "integer", "minimum": 1},
+    "child_profile_digest": {"type": "string", "pattern": "^sha256:[0-9a-f]{64}$"},
+    "issued_at": {"type": "string", "format": "date-time"},
+    "expires_at": {"type": "string", "format": "date-time"},
+    "principal": {"type": "string", "minLength": 1},
+    "auth_ref": {"type": "string", "minLength": 1}
+  }
+}

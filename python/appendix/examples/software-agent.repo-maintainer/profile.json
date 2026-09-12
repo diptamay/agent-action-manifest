@@ -1,0 +1,642 @@
+{
+  "schema_version": "0.3.6",
+  "profile_id": "aap:acme-eng:repo-maintainer",
+  "profile_version": "2.1.0",
+  "issued_at": "2026-09-01T00:00:00Z",
+  "identity": {
+    "agent_name": "repo-maintainer",
+    "agent_version": "2.1",
+    "model": {
+      "provider": "<provider>",
+      "identifier": "<model@2026-06>"
+    },
+    "prompt": {
+      "version": "14",
+      "hash": "sha256:a91f...c2"
+    },
+    "policy": {
+      "version": "5",
+      "hash": "sha256:9c1e...77"
+    },
+    "owner": "Engineering Productivity PM"
+  },
+  "authority_scope": {
+    "tenant": "acme-eng",
+    "environment": "prod",
+    "systems": [
+      "github",
+      "ci"
+    ],
+    "selector": "repos.tagged('agent-enabled') and branch != default",
+    "notes": "Non-default branches only.",
+    "targets": [
+      {
+        "type": "repository",
+        "selector": "repos.tagged('agent-enabled')",
+        "enforcement": "typed",
+        "selector_id": "repo_tagged_agent_enabled"
+      },
+      {
+        "type": "branch",
+        "selector": "branch != default",
+        "enforcement": "typed",
+        "selector_id": "branch_is_non_default"
+      },
+      {
+        "type": "pull_request",
+        "selector": "pr.repo in agent-enabled repos",
+        "enforcement": "typed",
+        "selector_id": "pr_in_agent_enabled_repo"
+      }
+    ],
+    "max_review_window_minutes": 60,
+    "max_execution_authority_seconds": 300
+  },
+  "permissions": {
+    "default_deny": true,
+    "allowed": [
+      {
+        "tool": "github",
+        "operation": "read_repo",
+        "effect_target": {
+          "type": "repository"
+        },
+        "impact": {
+          "domains": [
+            "operational"
+          ],
+          "severity": "low",
+          "blast_radius": "Read-only; changes nothing.",
+          "reversible": true,
+          "max_affected_objects": 0
+        },
+        "default_mode": "execute_allowlisted",
+        "max_mode": "execute_allowlisted",
+        "verification": {
+          "expected_postconditions": [
+            "Read completed without any write"
+          ],
+          "tests": [
+            {
+              "method": "read_system_of_record",
+              "source": "audit_store",
+              "assertion": "no write recorded for this manifest",
+              "test_id": "postcondition-1",
+              "postcondition_index": 0
+            }
+          ],
+          "on_failure": "escalate",
+          "completion_rule": "all_postconditions_verified",
+          "max_observation_age_seconds": 300
+        },
+        "summary_template": "Read {effect_target}. No changes.",
+        "privileges_required": [
+          "contents:read"
+        ]
+      },
+      {
+        "tool": "ci",
+        "operation": "run_tests",
+        "effect_target": {
+          "type": "branch"
+        },
+        "impact": {
+          "domains": [
+            "code_or_data_integrity"
+          ],
+          "severity": "low",
+          "blast_radius": "One CI run on one branch.",
+          "reversible": true,
+          "max_affected_objects": 1
+        },
+        "default_mode": "execute_allowlisted",
+        "max_mode": "execute_allowlisted",
+        "privileges_required": [
+          "checks:read"
+        ],
+        "verification": {
+          "expected_postconditions": [
+            "CI run recorded for {effect_target}"
+          ],
+          "tests": [
+            {
+              "method": "read_system_of_record",
+              "source": "ci",
+              "assertion": "a CI run exists for branch {effect_target_id} started by this manifest",
+              "test_id": "postcondition-1",
+              "postcondition_index": 0
+            }
+          ],
+          "on_failure": "reopen",
+          "completion_rule": "all_postconditions_verified",
+          "max_observation_age_seconds": 300
+        },
+        "summary_template": "Run tests on {effect_target}."
+      },
+      {
+        "tool": "github",
+        "operation": "open_pull_request",
+        "max_mode": "execute_allowlisted",
+        "reversible": true,
+        "allowed_parameters": [
+          "branch",
+          "dependency",
+          "from",
+          "to",
+          "title"
+        ],
+        "material_parameters": [
+          "branch",
+          "dependency",
+          "from",
+          "to"
+        ],
+        "effect_target": {
+          "type": "branch"
+        },
+        "impact": {
+          "domains": [
+            "code_or_data_integrity",
+            "security"
+          ],
+          "severity": "moderate",
+          "blast_radius": "One repository and one agent branch. No merge or deployment authority.",
+          "bounded_by": [
+            "repo={subject}",
+            "branch={effect_target_id}"
+          ],
+          "reversible": true,
+          "max_affected_objects": 1
+        },
+        "default_mode": "execute_allowlisted",
+        "privileges_required": [
+          "contents:read",
+          "pull_requests:write",
+          "checks:read"
+        ],
+        "egress_fields": [
+          "diff_hunks",
+          "test_output",
+          "dependency_advisory"
+        ],
+        "systems": [
+          "github",
+          "ci"
+        ],
+        "verification": {
+          "expected_postconditions": [
+            "PR exists on non-default branch {branch}",
+            "CI status attached to PR",
+            "Audit event written with manifest id"
+          ],
+          "tests": [
+            {
+              "method": "read_system_of_record",
+              "source": "github",
+              "assertion": "PR exists on branch {branch} with base != default and state == open",
+              "timeout_minutes": 5,
+              "test_id": "postcondition-1",
+              "postcondition_index": 0
+            },
+            {
+              "method": "read_system_of_record",
+              "source": "audit_store",
+              "assertion": "audit event exists for this manifest",
+              "timeout_minutes": 5,
+              "test_id": "postcondition-2",
+              "postcondition_index": 2
+            },
+            {
+              "method": "tool_return_code",
+              "source": "github",
+              "assertion": "HTTP 201",
+              "test_id": "postcondition-3"
+            },
+            {
+              "test_id": "postcondition-4",
+              "postcondition_index": 1,
+              "method": "read_system_of_record",
+              "source": "github",
+              "assertion": "CI status is attached to the PR on branch {branch}",
+              "timeout_minutes": 5
+            }
+          ],
+          "on_failure": "reopen",
+          "completion_rule": "all_postconditions_verified",
+          "max_observation_age_seconds": 300
+        },
+        "summary_template": "Open a pull request bumping {dependency} from {from} to {to} in {subject} on branch {branch}. Will not merge."
+      },
+      {
+        "tool": "github",
+        "operation": "comment",
+        "max_mode": "execute_allowlisted",
+        "reversible": true,
+        "allowed_parameters": [
+          "pull_request",
+          "text",
+          "label"
+        ],
+        "effect_target": {
+          "type": "pull_request"
+        },
+        "impact": {
+          "domains": [
+            "code_or_data_integrity"
+          ],
+          "severity": "low",
+          "blast_radius": "One comment on one pull request.",
+          "reversible": true,
+          "max_affected_objects": 1
+        },
+        "default_mode": "execute_allowlisted",
+        "privileges_required": [
+          "issues:write"
+        ],
+        "verification": {
+          "expected_postconditions": [
+            "Comment exists on {effect_target}"
+          ],
+          "tests": [
+            {
+              "method": "read_system_of_record",
+              "source": "github",
+              "assertion": "comment by the agent exists on {effect_target_id}",
+              "test_id": "postcondition-1",
+              "postcondition_index": 0
+            }
+          ],
+          "on_failure": "reopen",
+          "completion_rule": "all_postconditions_verified",
+          "max_observation_age_seconds": 300
+        },
+        "summary_template": "Comment on {effect_target}."
+      },
+      {
+        "tool": "github",
+        "operation": "label",
+        "max_mode": "execute_allowlisted",
+        "reversible": true,
+        "allowed_parameters": [
+          "pull_request",
+          "text",
+          "label"
+        ],
+        "effect_target": {
+          "type": "pull_request"
+        },
+        "impact": {
+          "domains": [
+            "code_or_data_integrity"
+          ],
+          "severity": "low",
+          "blast_radius": "One label on one pull request.",
+          "reversible": true,
+          "max_affected_objects": 1
+        },
+        "default_mode": "execute_allowlisted",
+        "privileges_required": [
+          "issues:write"
+        ],
+        "verification": {
+          "expected_postconditions": [
+            "Label present on {effect_target}"
+          ],
+          "tests": [
+            {
+              "method": "read_system_of_record",
+              "source": "github",
+              "assertion": "label {label} present on {effect_target_id}",
+              "test_id": "postcondition-1",
+              "postcondition_index": 0
+            }
+          ],
+          "on_failure": "reopen",
+          "completion_rule": "all_postconditions_verified",
+          "max_observation_age_seconds": 300
+        },
+        "summary_template": "Add label {label} to {effect_target}."
+      },
+      {
+        "tool": "github",
+        "operation": "update_dependency",
+        "constraints": {
+          "semver": [
+            "patch",
+            "minor"
+          ]
+        },
+        "max_mode": "request_approval",
+        "reversible": true,
+        "allowed_parameters": [
+          "branch",
+          "dependency",
+          "from",
+          "to"
+        ],
+        "material_parameters": [
+          "branch",
+          "dependency",
+          "from",
+          "to"
+        ],
+        "effect_target": {
+          "type": "branch"
+        },
+        "impact": {
+          "domains": [
+            "code_or_data_integrity",
+            "security"
+          ],
+          "severity": "moderate",
+          "blast_radius": "One dependency change on one agent branch.",
+          "reversible": true,
+          "max_affected_objects": 1
+        },
+        "default_mode": "request_approval",
+        "privileges_required": [
+          "contents:read",
+          "pull_requests:write"
+        ],
+        "egress_fields": [
+          "diff_hunks",
+          "dependency_advisory"
+        ],
+        "verification": {
+          "expected_postconditions": [
+            "Lockfile updated on {branch} only"
+          ],
+          "tests": [
+            {
+              "method": "read_system_of_record",
+              "source": "github",
+              "assertion": "commit on {branch} changes only dependency {dependency}",
+              "test_id": "postcondition-1",
+              "postcondition_index": 0
+            }
+          ],
+          "on_failure": "rollback",
+          "completion_rule": "all_postconditions_verified",
+          "max_observation_age_seconds": 300
+        },
+        "summary_template": "Update {dependency} {from} -> {to} on branch {branch}. Requires approval."
+      }
+    ],
+    "prohibited": [
+      {
+        "description": "Merge to main or release branches",
+        "tool": "github",
+        "operation": "merge",
+        "rule": "branch in ('main','release/*')",
+        "enforcement": "typed",
+        "rule_id": "protected_branch"
+      },
+      {
+        "description": "Delete any branch or repository",
+        "tool": "github",
+        "operation": "delete"
+      },
+      {
+        "description": "Modify CI secrets or workflow definitions",
+        "tool": "github",
+        "operation": "modify_workflow"
+      },
+      {
+        "description": "Force-push",
+        "tool": "github",
+        "operation": "force_push"
+      },
+      {
+        "description": "Change branch protection rules",
+        "tool": "github",
+        "operation": "update_branch_protection"
+      }
+    ]
+  },
+  "impact_envelope": {
+    "allowed_domains": [
+      "code_or_data_integrity",
+      "security"
+    ],
+    "max_severity": "moderate",
+    "max_affected_objects": 1,
+    "irreversible_allowed": false
+  },
+  "autonomy_policy": {
+    "default_mode": "request_approval",
+    "max_mode": "execute_allowlisted",
+    "thresholds": [
+      {
+        "description": "open_pull_request, comment, label run without per-action approval on agent-enabled repos",
+        "enforcement": "typed",
+        "threshold_id": "agent_enabled_repo_no_approval",
+        "mode": "execute_allowlisted",
+        "operations": [
+          "github.open_pull_request",
+          "github.comment",
+          "github.label"
+        ]
+      }
+    ],
+    "downgrade_on": [
+      "evaluation_regression",
+      "anomaly_alert"
+    ]
+  },
+  "approval_policy": {
+    "approver_roles": [
+      "code_owner_of_touched_path",
+      "engineering_manager"
+    ],
+    "required_evidence": [
+      "diff",
+      "test_results"
+    ],
+    "one_approval_one_action": true,
+    "dual_approval_for": [],
+    "approval_timeout_minutes": 2880,
+    "distinct_principals_required": true,
+    "principal_authentication_required": true
+  },
+  "input_trust": {
+    "untrusted_sources": [
+      "issue_text",
+      "pr_descriptions",
+      "dependency_changelogs",
+      "readme_content",
+      "ci_output"
+    ],
+    "content_is_data_not_instructions": true,
+    "mitigations": [
+      "structural separation of retrieved text from instructions",
+      "denied-action alerts"
+    ],
+    "injection_test_set": {
+      "identifier": "inj-repo-v3",
+      "last_passed_versions": "model@2026-06/prompt14/policy5",
+      "last_run": "2026-09-01T00:00:00Z"
+    }
+  },
+  "credentials_policy": {
+    "identity": "github-app:repo-maintainer",
+    "privileges": [
+      "contents:read",
+      "pull_requests:write",
+      "issues:write",
+      "checks:read"
+    ],
+    "max_ttl_minutes": 60,
+    "fail_closed_on_expiry": true,
+    "rotation": "per-run installation token"
+  },
+  "data_boundary": {
+    "model_hosting": "regional",
+    "egress_policy": "allowlisted_fields",
+    "egress_allowlist": [
+      "diff_hunks",
+      "test_output",
+      "issue_text",
+      "dependency_advisory"
+    ],
+    "never_egress": [
+      "secrets",
+      "credentials_files",
+      "customer_data_fixtures"
+    ],
+    "log_retention_days": 14,
+    "log_location": "in-org audit bucket",
+    "tenant_isolation_tested": true
+  },
+  "audit_policy": {
+    "records": [
+      "tool_calls",
+      "arguments",
+      "evidence_refs",
+      "gate_decision",
+      "approvals",
+      "denials",
+      "outcome"
+    ],
+    "append_only": true,
+    "log_store": "append-only audit log",
+    "readers": [
+      "platform_oncall",
+      "security"
+    ],
+    "alert_on": [
+      "action_outside_allowed_repos",
+      "prohibited_action_attempt",
+      "credential_expiry_during_run"
+    ]
+  },
+  "recovery_policy": {
+    "owner": "platform_oncall",
+    "requires_tested_recovery_for_execution": true,
+    "templates": [
+      {
+        "tool": "github",
+        "operation": "open_pull_request",
+        "method": "close PR and delete agent branch",
+        "tested": true,
+        "last_tested": "2026-08-28",
+        "time_to_recover_minutes": 2,
+        "tested_evidence_ref": "testrun:recovery:repo-maintainer:2026-08-28#41",
+        "owner": "platform_oncall",
+        "irreversible": false
+      },
+      {
+        "tool": "github",
+        "operation": "update_dependency",
+        "method": "revert commit on agent branch",
+        "tested": true,
+        "last_tested": "2026-08-28",
+        "time_to_recover_minutes": 2,
+        "tested_evidence_ref": "testrun:recovery:repo-maintainer:2026-08-28#42",
+        "owner": "platform_oncall",
+        "irreversible": false
+      },
+      {
+        "tool": "github",
+        "operation": "comment",
+        "method": "delete comment",
+        "tested": true,
+        "last_tested": "2026-08-28",
+        "time_to_recover_minutes": 1,
+        "tested_evidence_ref": "testrun:recovery:repo-maintainer:2026-08-28#43",
+        "owner": "platform_oncall",
+        "irreversible": false
+      },
+      {
+        "tool": "github",
+        "operation": "label",
+        "method": "remove label",
+        "tested": true,
+        "last_tested": "2026-08-28",
+        "time_to_recover_minutes": 1,
+        "tested_evidence_ref": "testrun:recovery:repo-maintainer:2026-08-28#44",
+        "owner": "platform_oncall",
+        "irreversible": false
+      },
+      {
+        "tool": "ci",
+        "operation": "run_tests",
+        "method": "none needed (read-only side effect)",
+        "tested": true,
+        "last_tested": "2026-08-28",
+        "time_to_recover_minutes": 0,
+        "tested_evidence_ref": "testrun:recovery:repo-maintainer:2026-08-28#45",
+        "owner": "platform_oncall",
+        "irreversible": false
+      },
+      {
+        "tool": "github",
+        "operation": "read_repo",
+        "method": "none needed (read-only)",
+        "tested": true,
+        "last_tested": "2026-08-28",
+        "time_to_recover_minutes": 0,
+        "tested_evidence_ref": "testrun:recovery:repo-maintainer:2026-08-28#46",
+        "owner": "platform_oncall",
+        "irreversible": false
+      }
+    ],
+    "test_evidence_required": true,
+    "test_max_age_days": 90
+  },
+  "emergency_disable": {
+    "mechanism": "feature flag repo-maintainer.enabled",
+    "execution_state": "allowed",
+    "state_source": "flags://acme-eng/repo-maintainer.enabled",
+    "operators": [
+      "platform_oncall",
+      "engineering_manager"
+    ],
+    "checked_at_gate": true,
+    "halts_pending": true,
+    "halts_in_flight_where_possible": true
+  },
+  "conformance": {
+    "level": "L2",
+    "assessed_at": "2026-09-01",
+    "assessor": "Engineering Productivity PM",
+    "enforcement": {
+      "gate_id": "policy-gate:eng-agents-v3",
+      "outside_model": true,
+      "checks_action_target": true,
+      "checks_manifest_within_profile": true,
+      "checks_scope_permissions_credentials_stop": true,
+      "containment_check_implementation": "aam-check-containment/0.3.0"
+    },
+    "evaluation": {
+      "golden_set": "golden-repo-v2",
+      "includes_abstention_cases": true,
+      "injection_set": "inj-repo-v3",
+      "ci_or_release_gated": false
+    }
+  },
+  "integrity": {
+    "method": "ed25519",
+    "key_id": "demo-profile-signing-2026",
+    "value": "6fdb599dd719643dd5d428fdbf405a9943e908834add1167b0c690a46d06fa75f7028874aa2cf62d829d8a9ed6f68398e5100ed81acd05300aca2b010b813205"
+  }
+}

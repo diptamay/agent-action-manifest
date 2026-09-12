@@ -1,0 +1,22 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.org/schemas/agent-action-manifest/0.4.0/campaign-observation.schema.json",
+  "title": "Campaign Observation",
+  "description": "Authenticated domain-neutral observation used only by reviewed rules that restrict authority.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["observation_id", "indicator", "observed_at", "profile_id", "profile_digest", "program_id", "actor_group_id", "tool", "operation", "context_digest", "evidence_ref"],
+  "properties": {
+    "observation_id": {"type": "string", "minLength": 1, "maxLength": 512},
+    "indicator": {"type": "string", "minLength": 1, "maxLength": 512},
+    "observed_at": {"type": "string", "format": "date-time"},
+    "profile_id": {"type": "string", "minLength": 1},
+    "profile_digest": {"type": "string", "pattern": "^sha256:[0-9a-f]{64}$"},
+    "program_id": {"type": "string", "minLength": 1},
+    "actor_group_id": {"type": "string", "minLength": 1},
+    "tool": {"type": "string", "minLength": 1},
+    "operation": {"type": "string", "minLength": 1},
+    "context_digest": {"type": "string", "pattern": "^sha256:[0-9a-f]{64}$"},
+    "evidence_ref": {"type": "string", "minLength": 1, "maxLength": 512}
+  }
+}

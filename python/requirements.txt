@@ -1,0 +1,4 @@
+# Pinned reference environment, not a claim of latest versions.
+jsonschema==4.25.1
+cryptography==46.0.4
+rfc3339-validator==0.1.4

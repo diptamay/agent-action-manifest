@@ -1,0 +1,606 @@
+{
+  "release": "0.3.7",
+  "run_at_utc": "2026-09-07T15:32:21.892938+00:00",
+  "python": "3.13.5",
+  "platform": "Linux-6.18.35-x86_64-with-glibc2.41",
+  "dependencies": {
+    "jsonschema": "4.26.0",
+    "cryptography": "46.0.4",
+    "rfc3339-validator": "0.1.4"
+  },
+  "scope": "Offline synthetic reference checks; not live integration, independent certification or production-safety proof.",
+  "suites": [
+    {
+      "name": "core suite (174 checks)",
+      "command": [
+        "/mnt/data/aam_python_v037/qa/isolated-env/bin/python",
+        "tests/run_tests.py"
+      ],
+      "returncode": 0,
+      "passed": true,
+      "stdout": "PASS examples present\nPASS schema profile   business\nPASS schema request   business\nPASS schema manifest  business (gate-built)\nPASS schema profile   plant\nPASS schema request   plant\nPASS schema manifest  plant (gate-built)\nPASS schema profile   software\nPASS schema request   software\nPASS schema manifest  software (gate-built)\nPASS ingress rejects  profile default_deny=false\nPASS ingress rejects  profile unknown autonomy enum\nPASS ingress rejects  profile envelope without object count\nPASS ingress rejects  profile operation without impact binding\nPASS ingress rejects  profile operation without verification binding\nPASS ingress rejects  L2 profile without signature\nPASS ingress rejects  L2 profile edited after signing (signature invalid)\nPASS ingress rejects  L2 profile signed by unknown key\nPASS ingress accepts  L0 profile without signature\nPASS ingress rejects  HMAC-authenticated L2 Profile (Ed25519 required)\nPASS ingress rejects  hmac profile with wrong shared secret\nPASS builder          business reproduces the example Manifest from request + profile\nPASS builder          business decision ALLOW with full live provider\nPASS builder          plant reproduces the example Manifest from request + profile\nPASS builder          plant decision ALLOW with full live provider\nPASS builder          software reproduces the example Manifest from request + profile\nPASS builder          software decision ALLOW with full live provider\nPASS builder          request with authority claims is rejected at ingress\nPASS builder          caller narrative cannot replace the operation summary; recorded as a conflict\nPASS builder          unknown operation is denied without publishing an invalid Manifest\nPASS builder          Manifest carries built_by, gate seal, enforced/documented split\nPASS containment      business pure check is INDETERMINATE and not executable\nPASS containment      business ALLOW when all delegations resolved\nPASS containment      business DENY when a delegation resolves failed\nPASS containment      plant pure check is INDETERMINATE and not executable\nPASS containment      plant ALLOW when all delegations resolved\nPASS containment      plant DENY when a delegation resolves failed\nPASS containment      software pure check is INDETERMINATE and not executable\nPASS containment      software ALLOW when all delegations resolved\nPASS containment      software DENY when a delegation resolves failed\nPASS containment      expired Manifest fails by default (real current time)\nPASS rejects          unknown autonomy mode fails closed\nPASS rejects          unknown severity fails closed\nPASS rejects          policy hash drift\nPASS rejects          prompt hash drift\nPASS rejects          model drift\nPASS rejects          missing object count is not zero\nPASS rejects          missing blast radius\nPASS rejects          object count above envelope\nPASS rejects          severity above envelope\nPASS rejects          domain outside envelope\nPASS rejects          irreversible not allowed\nPASS rejects          effect target type not in profile targets\nPASS rejects          asset outside enumeration\nPASS rejects          system outside scope\nPASS rejects          operation not allowlisted\nPASS rejects          unknown parameter\nPASS rejects          constraint violated\nPASS rejects          effect target class not permitted\nPASS rejects          privileges beyond operation's least-privilege set\nPASS rejects          material parameter differs from actual\nPASS rejects          wildcard prohibition control_system.*\nPASS rejects          prohibition wins over allowlist\nPASS rejects          'can never' list includes an unenforced rule\nPASS rejects          'stated, not enforced' list drifted\nPASS rejects          L1+ rule without enforcement kind\nPASS rejects          L1+ selector without enforcement kind\nPASS rejects          executing above default without typed threshold\nPASS rejects          mode above profile max\nPASS rejects          dual approval omitted for revocation\nPASS rejects          ttl exceeds policy\nPASS rejects          identity mismatch\nPASS rejects          never-egress field\nPASS rejects          egress under policy none\nPASS rejects          inference location drift\nPASS rejects          audit below minimum\nPASS rejects          kill switch snapshot blocked\nPASS rejects          self-attested recovery in executing mode\nPASS rejects          evidence ref is arbitrary text\nPASS rejects          future-dated recovery test date\nPASS rejects          stale recovery test\nPASS rejects          only tool return code as verification\nPASS rejects          undeclared untrusted source\nPASS rejects          stale request digest\nPASS rejects          no builder identity\nPASS rejects          review window exceeds profile max\nPASS rejects          malformed issued_at\nPASS rejects          timestamp without timezone\nPASS rules            documentation_only rule accepted only when listed as NOT enforced\nPASS rules            documentation_only prohibition never appears under 'can never' on the Card\nPASS gate             propose -> ALLOW, execution window, bound to Profile digest\nPASS schema record    GateDecision\nPASS schema record    ApprovalRecord\nPASS gate             execute -> ALLOW; executor called once with the canonical material request\nPASS schema record    ExecutionRecord\nPASS gate             receipt recorded from executor\nPASS gate             outcome verified from system-of-record reads\nPASS schema record    OutcomeVerificationRecord\nPASS gate             tool success is not outcome success (one post-condition false -> reopen)\nPASS gate             unobservable post-conditions do not verify\nPASS gate             sealed verifier attestations accepted when the gate cannot observe\nPASS gate             unsealed/forged attestations ignored\nPASS gate             verify_outcome for a forged execution id is not verified\nPASS gate             unresolved typed selector/rule -> INDETERMINATE, no execution window\nPASS gate             INDETERMINATE cannot be executed\nPASS gate             execute_allowlisted via typed threshold -> ALLOW, no approval needed\nPASS gate             typed threshold true elevates default request_approval to execute_allowlisted\nPASS gate             threshold false -> builder keeps request_approval\nPASS gate             documentation_only threshold never elevates autonomy\nPASS attack           approval replay denied; executor called once\nPASS attack           concurrent execute -> exactly one ALLOW, one executor call\nPASS attack           tampered stored Manifest fails its gate seal\nPASS attack           execution after review window denied\nPASS attack           kill switch flipped before execution denied\nPASS attack           typed rule flipped before execution denied\nPASS attack           typed selector flipped before execution denied\nPASS attack           effect target left class before execution denied\nPASS attack           credential invalid at execution denied\nPASS attack           Profile revoked after approval -> denied\nPASS attack           Profile body changed after approval -> denied\nPASS attack           unknown approval id denied\nPASS attack           tampered stored approval fails seal\nPASS attack           agent approving itself denied\nPASS attack           role allowed by Profile but not by Manifest's narrowed set denied\nPASS attack           unauthenticated approver denied\nPASS attack           approval outside review window denied\nPASS attack           approval required but missing denied\nPASS attack           malformed now fails closed\nPASS attack           propose with malformed now fails closed\nPASS attack           execute of a Manifest not built by this gate denied\nPASS attack           Manifest imported into another gate fails that gate's seal\nPASS attack           no registered executor -> DENY (gate never hands out authorization)\nPASS attack           executor exception preserves authorization and records EXECUTION_UNKNOWN\nPASS dual             revocation Manifest requires dual approval and evaluates ALLOW\nPASS dual             two roles, same principal -> denied\nPASS dual             two distinct authenticated principals -> ALLOW\nPASS adv-1            unknown autonomy mode cannot be injected (request schema rejects; checker fails closed)\nPASS adv-2            future-dated approval rejected\nPASS adv-3            policy hash drift rejected (see 'rejects policy hash drift')\nPASS adv-4            documentation_only prohibition is never rendered as 'can never'\nPASS adv-5            caller-supplied booleans do not verify an outcome\nPASS adv-6            unsigned L2 Profile refused at ingress (see 'ingress rejects L2 profile without signature')\nPASS adv-7            future-dated recovery evidence rejected\nPASS adv-8            render_card.py CLI prints the Card\nPASS adv-9            omitted object count is a violation, not zero (see 'rejects missing object count')\nPASS adv-10           signed_summary egress policy resolves through the StateProvider\nPASS adv-10b          egress policy resolver can deny\nPASS card parity      business\nPASS card coverage    business: every Manifest leaf appears on the Card\nPASS readback coverage business\nPASS readback split   business: Part A \u222a Part B = whole Profile\nPASS readback split   business: model pins and credentials are engineering, never-list and approvers are product\nPASS card parity      plant\nPASS card coverage    plant: every Manifest leaf appears on the Card\nPASS readback coverage plant\nPASS readback split   plant: Part A \u222a Part B = whole Profile\nPASS readback split   plant: model pins and credentials are engineering, never-list and approvers are product\nPASS card parity      software\nPASS card coverage    software: every Manifest leaf appears on the Card\nPASS readback coverage software\nPASS readback split   software: Part A \u222a Part B = whole Profile\nPASS readback split   software: model pins and credentials are engineering, never-list and approvers are product\nPASS card tamper      softened blast radius detected\nPASS card tamper      omitted uncertainty detected\nPASS card tamper      added narrative detected\nPASS card content     AP card shows recipient address and material details\nPASS authoring        generated Profile validates (L1 without signature)\nPASS authoring        generated Profile publishes and builds a Manifest from the AP request\nPASS authoring        read-back complete and split into Part A / Part B with three digests\nPASS authoring        untyped thresholds default to documentation_only and cannot elevate\nPASS deterministic    business\nPASS deterministic    plant\nPASS deterministic    software\nPASS vectors          exported\n\n174/174 passed\n",
+      "stderr": ""
+    },
+    {
+      "name": "prior-review regressions (10 cases; overlap core)",
+      "command": [
+        "/mnt/data/aam_python_v037/qa/isolated-env/bin/python",
+        "tests/adversarial_regressions.py"
+      ],
+      "returncode": 0,
+      "passed": true,
+      "stdout": "PASS 1 unknown autonomy mode -- propose=DENY\nPASS 2 future-dated approval -- ['approval is dated in the future']\nPASS 3 policy hash drift \nPASS 4 unenforced never-list not shown as promise \nPASS 5 caller cannot self-attest outcome -- verified=False\nPASS 6 unsigned L2 profile refused at ingress -- [\"schema/semantics: 'integrity' is a required property\", \"schema/semantics: 'integrity' is a require\nPASS 7 future-dated recovery evidence -- [\"C13.recovery_evidence: resolved by gate as FAILED (resolve 'testrun:recovery:repo-maintainer:2026-08-28#41': must exis\nPASS 8 render_card.py CLI prints \nPASS 9 omitted object count is a violation \nPASS 10 signed_summary egress resolves via StateProvider -- []\n\nall findings resisted\n",
+      "stderr": ""
+    },
+    {
+      "name": "v0.3.5 boundary regressions retained (71 cases)",
+      "command": [
+        "/mnt/data/aam_python_v037/qa/isolated-env/bin/python",
+        "tests/boundary_regressions.py"
+      ],
+      "returncode": 0,
+      "passed": true,
+      "stdout": "PASS fresh structured system-of-record evidence completes all three declared AP postconditions\nPASS valid execution-bound verifier evidence completes; no gate signing-oracle API\nPASS legacy assertion-only attestations are rejected even with a valid old-format HMAC\nPASS proof replay fails across executions with identical rendered assertions\nPASS proof replay fails across targets\nPASS authenticated evidence with wrong execution_id cannot complete\nPASS authenticated evidence with wrong manifest_digest cannot complete\nPASS authenticated evidence with wrong request_digest cannot complete\nPASS authenticated evidence with wrong test_id cannot complete\nPASS authenticated evidence with wrong assertion_digest cannot complete\nPASS authenticated evidence with wrong postcondition_digest cannot complete\nPASS authenticated evidence with wrong effect_target_digest cannot complete\nPASS authenticated evidence with wrong method cannot complete\nPASS authenticated evidence with wrong source cannot complete\nPASS pre-dispatch observation fails closed\nPASS future observation, including one second of skew fails closed\nPASS stale observation fails closed\nPASS timezone-less observation fails closed\nPASS malformed observation time fails closed\nPASS truthy non-boolean observation fails closed\nPASS empty source version fails closed\nPASS missing evidence reference fails closed\nPASS authenticated negative observations do not complete\nPASS conflicting authenticated evidence is unresolved, not last-write-wins\nPASS identical repeated evidence within the same execution is harmless\nPASS registered verifier outside source scope is rejected\nPASS registered verifier outside method scope is rejected\nPASS human confirmations use the same binding and scoped authenticated-verifier path\nPASS raw booleans from StateProvider.observe are no longer accepted\nPASS structured direct-read evidence must bind to the exact execution too\nPASS observation exception creates an unverified record without escaping or leaking details\nPASS valid bound evidence can reconcile an unobservable test, not an ambiguous dispatch\nPASS designated tests define completion; non-designated failures stay visible on records/Card\nPASS publication rejects missing designated IDs\nPASS publication rejects unknown designated ID\nPASS publication rejects duplicate designated IDs\nPASS publication rejects duplicate test IDs\nPASS publication rejects all-mode with designated IDs\nPASS publication rejects uncovered postcondition in all-mode\nPASS publication rejects out-of-range postcondition mapping\nPASS publication rejects tool-return-only designation\nPASS containment rejects a well-shaped but weakened Profile-derived completion plan\nPASS commit-then-timeout remains ALLOW/EXECUTION_UNKNOWN, preserves history, blocks retry and completion\nPASS rebuilt Manifest with the same action_id is not dispatched twice\nPASS reusing action_id for different material is also denied, not silently retried\nPASS single-dispatch reservation also protects approval-free autonomous Manifests\nPASS eight concurrent dispatch attempts consume one approval and invoke one executor\nPASS executor can call a gate read/reevaluation without global-lock deadlock\nPASS slow executor does not hold the ledger lock or permit premature verification\nPASS non-JSON receipt after dispatch is ambiguous too, never DENY\nPASS kill_switch_allows exception yields recorded INDETERMINATE without dispatch\nPASS effect_target_in_class exception yields recorded INDETERMINATE without dispatch\nPASS evaluate_rule exception yields recorded INDETERMINATE without dispatch\nPASS evaluate_selector exception yields recorded INDETERMINATE without dispatch\nPASS credential_valid exception yields recorded INDETERMINATE without dispatch\nPASS authenticated exception yields recorded INDETERMINATE without dispatch\nPASS credential predicate None is not silently treated as permission\nPASS credential predicate truthy string is not silently treated as permission\nPASS credential predicate integer one is not silently treated as permission\nPASS credential predicate explicit false is not silently treated as permission\nPASS threshold provider failure cannot escape the decision model\nPASS recovery provider failure cannot escape the decision model\nPASS egress provider failure cannot escape the decision model\nPASS ProfileStore read failure yields non-executable records at propose and execute\nPASS known policy failure remains DENY even when a different dependency is unavailable\nPASS clock advances during a provider call: expired authorization is not dispatched\nPASS fresh synchronous read after verification starts is not misclassified as future evidence\nPASS earlier observation is rechecked for staleness at final verification time\nPASS returned Manifests and records are detached copies, not mutable ledger references\nPASS HMAC authenticates an explicitly configured L1 Profile; L2/L3 still require Ed25519\nPASS every accumulated success, denial, unresolved, in-flight and unknown record validates and is sealed\n\n71/71 boundary regressions passed\n",
+      "stderr": ""
+    },
+    {
+      "name": "v0.3.6 merge regressions (95 cases)",
+      "command": [
+        "/mnt/data/aam_python_v037/qa/isolated-env/bin/python",
+        "tests/merge_regressions.py"
+      ],
+      "returncode": 0,
+      "passed": true,
+      "stdout": "PASS positive postconditions alone never reconcile an unknown dispatch\nPASS terminal transaction evidence reconciles unknown to committed; verification is separate\nPASS committed transaction with unobservable postconditions is not business completion\nPASS not committed preserves attempted history and never restores approval or redispatch\nPASS ExecutorNotAttempted records preflight no-attempt without approval restoration\nPASS ordinary timeout still means unknown; adapter exception text is not persisted\nPASS unresolved reconciliation is recorded and can later be settled\nPASS reconciliation rejects wrong execution_id\nPASS reconciliation rejects wrong manifest_id\nPASS reconciliation rejects wrong manifest_digest\nPASS reconciliation rejects wrong request_digest\nPASS reconciliation rejects wrong idempotency_key\nPASS reconciliation rejects wrong action_id\nPASS reconciliation rejects wrong profile_digest\nPASS reconciliation rejects wrong effect_target_digest\nPASS reconciliation rejects bare status string\nPASS reconciliation rejects bare boolean\nPASS reconciliation rejects missing evidence\nPASS reconciliation rejects non-JSON evidence\nPASS reconciliation rejects non-final negative\nPASS reconciliation rejects unknown marked final\nPASS reconciliation rejects observation instead of transaction evidence\nPASS reconciliation rejects empty source version\nPASS reconciliation rejects missing transaction reference\nPASS reconciliation rejects pre-attempt evidence\nPASS reconciliation rejects future evidence\nPASS reconciliation rejects malformed evidence time\nPASS reconciliation enforces its configured evidence-age window\nPASS reconciliation provider exception produces a sealed unresolved record\nPASS unknown execution id and malformed reconciliation time never call the adapter\nPASS acknowledged executions cannot be overwritten by reconciliation\nPASS settled execution ignores repeated reconciliation without another provider call\nPASS delayed NOT_COMMITTED cannot overwrite already settled COMMITTED\nPASS delayed COMMITTED cannot overwrite already settled NOT_COMMITTED\nPASS delayed COMMITTED cannot overwrite already settled COMMITTED\nPASS reconciliation I/O is outside the gate mutex and receives detached snapshots\nPASS reconciliation can inspect historical attempts after revocation but cannot authorize new effects\nPASS reconciliation records and sequence-linked execution history are detached copies\nPASS live True versus authenticated False remains unresolved with both evidence records\nPASS live False versus authenticated True remains unresolved with both evidence records\nPASS agreeing live and authenticated evidence can establish completion\nPASS unauthenticated negative input cannot manufacture an evidence conflict\nPASS authentic evidence for another execution is inadmissible rather than a conflict\nPASS concurrent reconciliation invalidates the old verification snapshot instead of reporting stale completion\nPASS future observation exactly at configured skew boundary passes both freshness checks\nPASS future observation beyond configured skew boundary remains unresolved\nPASS clock skew never admits a pre-dispatch-attempt observation\nPASS clock skew does not extend maximum observation age or test deadline\nPASS registered attestation uses the same configured clock policy as live reads\nPASS reconciliation applies and records bounded future-clock tolerance\nPASS observation clock skew never expands approval validity\nPASS invalid trusted clock-skew config rejected: -1\nPASS invalid trusted clock-skew config rejected: 61\nPASS invalid trusted clock-skew config rejected: 1.5\nPASS invalid trusted clock-skew config rejected: True\nPASS invalid trusted clock-skew config rejected: nan\nPASS invalid trusted clock-skew config rejected: '5'\nPASS serialized A sign-off independently verifies and binds exact rendered review\nPASS serialized B sign-off independently verifies and binds exact rendered review\nPASS serialized profile sign-off independently verifies and binds exact rendered review\nPASS sign-off rejects tampered binding\nPASS sign-off rejects tampered principal\nPASS sign-off rejects tampered role\nPASS sign-off rejects tampered part\nPASS sign-off rejects tampered key_id\nPASS sign-off rejects tampered profile_digest\nPASS sign-off rejects tampered review_digest\nPASS sign-off rejects tampered readback_digest\nPASS sign-off rejects tampered signed_at\nPASS sign-off rejects tampered signoff_id\nPASS old review cannot approve a changed Profile\nPASS sign-off rejects wrong public key\nPASS sign-off rejects wrong principal mapping\nPASS sign-off rejects wrong role authorization\nPASS sign-off rejects wrong part authorization\nPASS sign-off rejects revoked key\nPASS sign-off rejects expired key\nPASS sign-off rejects not-yet-valid key\nPASS sign-off rejects unknown key\nPASS sign-off verification does not accept future approvals\nPASS optional publication enforcement requires exact valid Part A and B approvals\nPASS publication requires different product-owner and engineering principals\nPASS whole-Profile sign-off cannot silently replace two required Part A/B approvals\nPASS a valid signature without trusted principal role and part mapping is insufficient\nPASS schema and parser reject unsupported timestamp bad-time\nPASS schema and parser reject unsupported timestamp 2026-09-05\nPASS schema and parser reject unsupported timestamp 2026-09-05 14:15:00Z\nPASS schema and parser reject unsupported timestamp 2026-09-05T14:15:00\nPASS schema and parser reject unsupported timestamp 2026-99-05T14:15:00Z\nPASS schema and parser reject unsupported timestamp 2026-09-05T14:15:00+0000\nPASS schema and parser reject unsupported timestamp 2026-09-05T14:15:60Z\nPASS required format checker and parser agree on supported RFC3339 offsets and fractions\nPASS gate fails closed at import when required timestamp validator is absent\nPASS CLI validation fails closed when required timestamp validator is absent\nPASS all accumulated success failure conflict and reconciliation records validate and authenticate\n\n95/95 v0.3.6 merge regressions passed\n",
+      "stderr": ""
+    },
+    {
+      "name": "v0.3.7 audit and governed feedback (73 tests)",
+      "command": [
+        "/mnt/data/aam_python_v037/qa/isolated-env/bin/python",
+        "tests/audit_feedback_regressions.py"
+      ],
+      "returncode": 0,
+      "passed": true,
+      "stdout": "{\"suite\": \"v0.3.7 audit/feedback regressions\", \"tests_run\": 73, \"passed\": 73, \"failed\": 0, \"limitations\": [\"synthetic providers\", \"POSIX process exit tested, not hardware power loss\", \"no remote integrations\"]}\n",
+      "stderr": "test_01_durable_lifecycle_and_schema (__main__.AuditFeedbackTests.test_01_durable_lifecycle_and_schema) ... ok\ntest_02_memory_store_same_lifecycle_without_durability_claim (__main__.AuditFeedbackTests.test_02_memory_store_same_lifecycle_without_durability_claim) ... ok\ntest_03_required_append_failure_before_dispatch (__main__.AuditFeedbackTests.test_03_required_append_failure_before_dispatch) ... ok\ntest_04_persistence_failure_after_effect_latches_and_recovers_unknown (__main__.AuditFeedbackTests.test_04_persistence_failure_after_effect_latches_and_recovers_unknown) ... ok\ntest_05_lost_local_commit_ack_never_invokes_adapter (__main__.AuditFeedbackTests.test_05_lost_local_commit_ack_never_invokes_adapter) ... ok\ntest_06_admission_consumption_and_audit_commit_precede_callback (__main__.AuditFeedbackTests.test_06_admission_consumption_and_audit_commit_precede_callback) ... ok\ntest_07_process_exit_after_remote_effect (__main__.AuditFeedbackTests.test_07_process_exit_after_remote_effect) ... ok\ntest_08_action_identity_block_survives_restart (__main__.AuditFeedbackTests.test_08_action_identity_block_survives_restart) ... ok\ntest_09_approval_consumption_survives_restart (__main__.AuditFeedbackTests.test_09_approval_consumption_survives_restart) ... ok\ntest_10_single_owner_process_lock (__main__.AuditFeedbackTests.test_10_single_owner_process_lock) ... ok\ntest_11_wrong_gate_key_on_reopen (__main__.AuditFeedbackTests.test_11_wrong_gate_key_on_reopen) ... ok\ntest_12_scope_and_policy_mismatches_refuse_publication (__main__.AuditFeedbackTests.test_12_scope_and_policy_mismatches_refuse_publication) ... ok\ntest_13_policy_change_requires_explicit_migration (__main__.AuditFeedbackTests.test_13_policy_change_requires_explicit_migration) ... ok\ntest_14_snapshot_tampering_detected (__main__.AuditFeedbackTests.test_14_snapshot_tampering_detected) ... ok\ntest_15_append_only_event_sql_guard (__main__.AuditFeedbackTests.test_15_append_only_event_sql_guard) ... ok\ntest_16_unkeyed_chain_corruption_detected (__main__.AuditFeedbackTests.test_16_unkeyed_chain_corruption_detected) ... ok\ntest_17_export_retry_does_not_retry_action (__main__.AuditFeedbackTests.test_17_export_retry_does_not_retry_action) ... ok\ntest_18_receiver_deduplicates_checkpoint_replay (__main__.AuditFeedbackTests.test_18_receiver_deduplicates_checkpoint_replay) ... ok\ntest_19_metrics_observer_failure_does_not_change_authorization (__main__.AuditFeedbackTests.test_19_metrics_observer_failure_does_not_change_authorization) ... ok\ntest_20_allowlisted_export_omits_sensitive_bodies (__main__.AuditFeedbackTests.test_20_allowlisted_export_omits_sensitive_bodies) ... ok\ntest_21_unknown_signal_source_rejected (__main__.AuditFeedbackTests.test_21_unknown_signal_source_rejected) ... ok\ntest_22_signal_authentication_failure_rejected (__main__.AuditFeedbackTests.test_22_signal_authentication_failure_rejected) ... ok\ntest_23_signal_stale_and_future_rejected (__main__.AuditFeedbackTests.test_23_signal_stale_and_future_rejected) ... ok\ntest_24_signal_wrong_profile_version_rejected (__main__.AuditFeedbackTests.test_24_signal_wrong_profile_version_rejected) ... ok\ntest_25_duplicate_signal_never_inflates_threshold (__main__.AuditFeedbackTests.test_25_duplicate_signal_never_inflates_threshold) ... ok\ntest_26_signal_id_reuse_with_changed_content_rejected (__main__.AuditFeedbackTests.test_26_signal_id_reuse_with_changed_content_rejected) ... ok\ntest_27_source_cannot_target_another_profile (__main__.AuditFeedbackTests.test_27_source_cannot_target_another_profile) ... ok\ntest_28_unknown_action_hold_does_not_block_unrelated_action (__main__.AuditFeedbackTests.test_28_unknown_action_hold_does_not_block_unrelated_action) ... ok\ntest_29_feedback_requires_new_approval_context (__main__.AuditFeedbackTests.test_29_feedback_requires_new_approval_context) ... ok\ntest_30_extra_approval_never_allows_prohibited_operation (__main__.AuditFeedbackTests.test_30_extra_approval_never_allows_prohibited_operation) ... ok\ntest_31_feedback_never_mutates_standing_profile (__main__.AuditFeedbackTests.test_31_feedback_never_mutates_standing_profile) ... ok\ntest_32_holds_survive_restart (__main__.AuditFeedbackTests.test_32_holds_survive_restart) ... ok\ntest_33_restoration_unauthorized_rejected (__main__.AuditFeedbackTests.test_33_restoration_unauthorized_rejected) ... ok\ntest_34_restoration_stale_revision_rejected (__main__.AuditFeedbackTests.test_34_restoration_stale_revision_rejected) ... ok\ntest_35_unknown_execution_prevents_restoration (__main__.AuditFeedbackTests.test_35_unknown_execution_prevents_restoration) ... ok\ntest_36_clear_one_hold_does_not_clear_another (__main__.AuditFeedbackTests.test_36_clear_one_hold_does_not_clear_another) ... ok\ntest_37_restoration_does_not_revalidate_old_manifest_ABA (__main__.AuditFeedbackTests.test_37_restoration_does_not_revalidate_old_manifest_ABA) ... ok\ntest_38_no_timer_based_automatic_restoration (__main__.AuditFeedbackTests.test_38_no_timer_based_automatic_restoration) ... ok\ntest_39_watchdog_detects_missing_verification_once (__main__.AuditFeedbackTests.test_39_watchdog_detects_missing_verification_once) ... ok\ntest_40_watchdog_does_not_flag_verified_execution (__main__.AuditFeedbackTests.test_40_watchdog_does_not_flag_verified_execution) ... ok\ntest_41_verification_conflict_immediately_suspends_operation (__main__.AuditFeedbackTests.test_41_verification_conflict_immediately_suspends_operation) ... ok\ntest_42_controller_event_replay_does_not_duplicate_holds (__main__.AuditFeedbackTests.test_42_controller_event_replay_does_not_duplicate_holds) ... ok\ntest_43_repeated_verification_same_incident_not_multiple_samples (__main__.AuditFeedbackTests.test_43_repeated_verification_same_incident_not_multiple_samples) ... ok\ntest_44_executor_can_reenter_read_only_gate (__main__.AuditFeedbackTests.test_44_executor_can_reenter_read_only_gate) ... ok\ntest_45_same_manifest_two_approvals_concurrent_single_dispatch (__main__.AuditFeedbackTests.test_45_same_manifest_two_approvals_concurrent_single_dispatch) ... ok\ntest_46_restriction_before_final_admission_wins_race (__main__.AuditFeedbackTests.test_46_restriction_before_final_admission_wins_race) ... ok\ntest_47_restriction_after_admission_does_not_claim_cancellation (__main__.AuditFeedbackTests.test_47_restriction_after_admission_does_not_claim_cancellation) ... ok\ntest_48_card_covers_operational_context (__main__.AuditFeedbackTests.test_48_card_covers_operational_context) ... ok\ntest_49_base_gate_cannot_silently_ignore_managed_policy (__main__.AuditFeedbackTests.test_49_base_gate_cannot_silently_ignore_managed_policy) ... ok\ntest_50_invalid_feedback_policy_fails_at_configuration (__main__.AuditFeedbackTests.test_50_invalid_feedback_policy_fails_at_configuration) ... ok\ntest_51_revocation_survives_restart (__main__.AuditFeedbackTests.test_51_revocation_survives_restart) ... ok\ntest_52_export_checkpoint_persists_restart (__main__.AuditFeedbackTests.test_52_export_checkpoint_persists_restart) ... ok\ntest_53_backlog_limit_holds_new_effects_but_not_recovery (__main__.AuditFeedbackTests.test_53_backlog_limit_holds_new_effects_but_not_recovery) ... ok\ntest_54_adapter_version_change_invalidates_prior_approval (__main__.AuditFeedbackTests.test_54_adapter_version_change_invalidates_prior_approval) ... ok\ntest_55_manual_restoration_requires_evidence_and_correct_auth (__main__.AuditFeedbackTests.test_55_manual_restoration_requires_evidence_and_correct_auth) ... ok\ntest_56_two_restorations_cannot_both_clear_same_revision (__main__.AuditFeedbackTests.test_56_two_restorations_cannot_both_clear_same_revision) ... ok\ntest_57_not_attempted_is_preserved_and_does_not_release_reservation (__main__.AuditFeedbackTests.test_57_not_attempted_is_preserved_and_does_not_release_reservation) ... ok\ntest_58_clock_metrics_do_not_expose_action_ids_in_labels (__main__.AuditFeedbackTests.test_58_clock_metrics_do_not_expose_action_ids_in_labels) ... ok\ntest_59_profile_wide_hold_leaves_other_profile_unaffected (__main__.AuditFeedbackTests.test_59_profile_wide_hold_leaves_other_profile_unaffected) ... ok\ntest_60_read_methods_do_not_emit_extra_records (__main__.AuditFeedbackTests.test_60_read_methods_do_not_emit_extra_records) ... ok\ntest_61_authenticated_person_cannot_claim_unbound_role (__main__.AuditFeedbackTests.test_61_authenticated_person_cannot_claim_unbound_role) ... ok\ntest_62_feedback_keeps_existing_narrow_approver_roles (__main__.AuditFeedbackTests.test_62_feedback_keeps_existing_narrow_approver_roles) ... ok\ntest_63_final_emergency_stop_recheck_blocks_late_change (__main__.AuditFeedbackTests.test_63_final_emergency_stop_recheck_blocks_late_change) ... ok\ntest_64_untrusted_signal_extra_fields_cannot_supply_policy (__main__.AuditFeedbackTests.test_64_untrusted_signal_extra_fields_cannot_supply_policy) ... ok\ntest_65_control_snapshot_schema_active_and_restored (__main__.AuditFeedbackTests.test_65_control_snapshot_schema_active_and_restored) ... ok\ntest_66_offline_review_extracts_without_execution (__main__.AuditFeedbackTests.test_66_offline_review_extracts_without_execution) ... ok\ntest_67_offline_review_rejects_missing_reordered_or_tampered_events (__main__.AuditFeedbackTests.test_67_offline_review_rejects_missing_reordered_or_tampered_events) ... ok\ntest_68_resolved_policy_must_match_profile_digest (__main__.AuditFeedbackTests.test_68_resolved_policy_must_match_profile_digest) ... ok\ntest_69_policy_pin_in_part_a_and_complete_readback (__main__.AuditFeedbackTests.test_69_policy_pin_in_part_a_and_complete_readback) ... ok\ntest_70_cli_requires_policy_for_managed_review (__main__.AuditFeedbackTests.test_70_cli_requires_policy_for_managed_review) ... ok\ntest_71_runtime_failure_schema_preserves_unknown_not_false_denial (__main__.AuditFeedbackTests.test_71_runtime_failure_schema_preserves_unknown_not_false_denial) ... ok\ntest_72_policy_duplicate_rule_ids_refused (__main__.AuditFeedbackTests.test_72_policy_duplicate_rule_ids_refused) ... ok\ntest_73_serialized_card_round_trip_keeps_exact_parity (__main__.AuditFeedbackTests.test_73_serialized_card_round_trip_keeps_exact_parity) ... ok\n\n----------------------------------------------------------------------\nRan 73 tests in 6.292s\n\nOK\n"
+    }
+  ],
+  "integration_checks": [
+    {
+      "name": "all Python files parse",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "schema meta-validation: action-manifest.schema.json",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "schema meta-validation: action-request.schema.json",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "schema meta-validation: agent-authority-profile.schema.json",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "schema meta-validation: audit-event.schema.json",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "schema meta-validation: feedback-policy.schema.json",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "schema meta-validation: lifecycle-records.schema.json",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "schema meta-validation: runtime-control.schema.json",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "59 exported containment vectors replay",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "business-workflow-agent.invoice-triage: schema and verification plan",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "business-workflow-agent.invoice-triage: demo Ed25519 verifies",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "business-workflow-agent.invoice-triage: complete Card coverage/parity",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "physical-consequence-agent.plant-change-response: schema and verification plan",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "physical-consequence-agent.plant-change-response: demo Ed25519 verifies",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "physical-consequence-agent.plant-change-response: complete Card coverage/parity",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "software-agent.repo-maintainer: schema and verification plan",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "software-agent.repo-maintainer: demo Ed25519 verifies",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "software-agent.repo-maintainer: complete Card coverage/parity",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "bundled synthetic lifecycle trace validates",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "bundled Part A identity-bound demo signoff verifies",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "bundled Part B identity-bound demo signoff verifies",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "CLI worksheet init",
+      "command": [
+        "/mnt/data/aam_python_v037/qa/isolated-env/bin/python",
+        "tools/aam.py",
+        "init",
+        "--answers",
+        "examples/answers/ap-invoice-agent.answers.json",
+        "--out",
+        "/tmp/aam-release-qo6whvsz/profile.json",
+        "--version",
+        "1.4.0"
+      ],
+      "returncode": 0,
+      "passed": true,
+      "stdout": "\nwrote /tmp/aam-release-qo6whvsz/profile.json\nwrote /tmp/aam-release-qo6whvsz/profile.readback.md  <- review, then use aam signoff and verify-signoff with trusted principal keys\n",
+      "stderr": ""
+    },
+    {
+      "name": "CLI validate generated Profile",
+      "command": [
+        "/mnt/data/aam_python_v037/qa/isolated-env/bin/python",
+        "tools/aam.py",
+        "validate",
+        "/tmp/aam-release-qo6whvsz/profile.json"
+      ],
+      "returncode": 0,
+      "passed": true,
+      "stdout": "VALID\n",
+      "stderr": ""
+    },
+    {
+      "name": "CLI complete Part A/B read-back",
+      "command": [
+        "/mnt/data/aam_python_v037/qa/isolated-env/bin/python",
+        "tools/aam.py",
+        "readback",
+        "/tmp/aam-release-qo6whvsz/profile.json"
+      ],
+      "returncode": 0,
+      "passed": true,
+      "stdout": "# Read-back: invoice-triage v1.4  (profile aap:acme:invoice-triage v1.4.0)\nOwner: AP Platform Lead \u00b7 Tenant ACME \u00b7 prod \u00b7 Model <model@2026-05> \u00b7 prompt v9 \u00b7 policy v3\nConformance claimed: L1\n\nReview digests alone are not authenticated approvals. Use signoff to sign the exact Part A/B content and verify-signoff to verify the saved signature against trusted principal/role keys. Whole-Profile integrity is a separate check.\n\n## 1. What it may read\nSystems: erp.ap, ticketing, email\nRecords: invoice: invoice.status == 'review'; email_address: address on vendor file; ticket: AP queue\nInputs treated as untrusted: invoice_pdfs, vendor_emails, ocr_output\n\n## 2. What it may do\n- erp.ap.read_invoice \u2192 affects invoice; up to: execute_allowlisted\n- erp.ap.match_po \u2192 affects invoice; up to: execute_allowlisted\n- email.draft_email \u2192 affects email_address (vendor_on_file); approver sees: recipient, invoice, po, variance_usd; up to: execute_allowlisted\n- ticketing.create_ticket \u2192 affects ticket; approver sees: invoice, reason; up to: execute_allowlisted\n- erp.ap.set_status \u2192 affects invoice; approver sees: invoice, transition; up to: execute_allowlisted\nDefault when unsure: request_approval \u00b7 Never more than: execute_allowlisted\nMay run at a higher autonomy when: variance <= 2000 USD and PO exists -> execute_allowlisted -> request_approval [documentation only, NOT enforced]; vendor is new -> recommend -> request_approval [documentation only, NOT enforced]\n\n## 3. What it must never do\n- Release or schedule any payment  [erp.ap.release_payment]\n- Edit vendor bank or remittance details  [erp.ap.update_vendor_bank_details]\n- Create or delete vendor master records  [erp.ap.modify_vendor_master]\n- Approve the agent's own drafts\n- Email any address not on the vendor domain allowlist\n\n## 4. Biggest thing one action may affect\nKinds: financial, external_communication, operational \u00b7 max severity moderate \u00b7 at most 2 object(s) \u00b7 irreversible allowed: no\nWorst case: One draft to one vendor about one invoice; no money movement.\n\n## 5. Approval\nRoles: ap_manager, finance_controller \u00b7 must be shown: invoice_image, po_match_evidence, variance, draft_text \u00b7 two approvers for: none \u00b7 approval may wait 1440 min \u00b7 requests expire after 1440 min of review\n\n## 6. Data\nModel runs: customer_boundary \u00b7 may leave: none \u00b7 never leaves: bank_details, personal_data \u00b7 logs kept 30 days\n\n## 7. Credentials\nActs as svc:ap-agent \u00b7 may: erp.ap:read, erp.ap:status_write, ticketing:write, email:draft \u00b7 credential lasts 240 min and stops the agent when it expires\n\n## 8. Logging\nRecorded: tool_calls, evidence_refs, gate_decision, approvals, denials, outcome \u00b7 readable by: ap_platform_lead, finance_controller, security \u00b7 alerts on: release_payment_attempt, bank_detail_edit_attempt, email_to_unlisted_domain\n\n## 9. Emergency stop\nfeature flag ap-agent.enabled \u00b7 live state at flags://acme/ap-agent.enabled \u00b7 operated by: ap_platform_lead, finance_controller \u00b7 stops pending actions: yes\n\n## 10. Recovery\nOwner: ap_platform_lead \u00b7 executing operations need an exercised way back with evidence, no older than 90 days\nAfter the gate says yes, an action must run within 300 seconds or be re-checked.\n\nNo executable feedback policy is pinned. Legacy alert_on / downgrade_on strings are declarations, not activated controllers.\n\n# PART A \u2014 Product decisions (product owner reviews; approve the exact digest with aam signoff)\nEvery product-owned setting, exactly as it will be enforced. Rules, selectors, or thresholds marked documentation_only are shown to you but are NOT enforced by the gate.\n- identity.agent_name = invoice-triage\n- identity.agent_version = 1.4\n- identity.owner = AP Platform Lead\n- authority_scope.tenant = ACME\n- authority_scope.environment = prod\n- authority_scope.systems[0] = erp.ap\n- authority_scope.systems[1] = ticketing\n- authority_scope.systems[2] = email\n- authority_scope.targets[0].type = invoice\n- authority_scope.targets[0].selector = invoice.status == 'review'\n- authority_scope.targets[1].type = email_address\n- authority_scope.targets[1].selector = address on vendor file\n- authority_scope.targets[2].type = ticket\n- authority_scope.targets[2].selector = AP queue\n- authority_scope.max_review_window_minutes = 1440\n- permissions.default_deny = true\n- permissions.allowed[0].tool = erp.ap\n- permissions.allowed[0].operation = read_invoice\n- permissions.allowed[0].effect_target.type = invoice\n- permissions.allowed[0].max_mode = execute_allowlisted\n- permissions.allowed[0].default_mode = request_approval\n- permissions.allowed[0].reversible = true\n- permissions.allowed[0].impact.domains[0] = financial\n- permissions.allowed[0].impact.domains[1] = external_communication\n- permissions.allowed[0].impact.domains[2] = operational\n- permissions.allowed[0].impact.severity = moderate\n- permissions.allowed[0].impact.blast_radius = One draft to one vendor about one invoice; no money movement.\n- permissions.allowed[0].impact.reversible = true\n- permissions.allowed[0].impact.max_affected_objects = 2\n- permissions.allowed[1].tool = erp.ap\n- permissions.allowed[1].operation = match_po\n- permissions.allowed[1].effect_target.type = invoice\n- permissions.allowed[1].max_mode = execute_allowlisted\n- permissions.allowed[1].default_mode = request_approval\n- permissions.allowed[1].reversible = true\n- permissions.allowed[1].impact.domains[0] = financial\n- permissions.allowed[1].impact.domains[1] = external_communication\n- permissions.allowed[1].impact.domains[2] = operational\n- permissions.allowed[1].impact.severity = moderate\n- permissions.allowed[1].impact.blast_radius = One draft to one vendor about one invoice; no money movement.\n- permissions.allowed[1].impact.reversible = true\n- permissions.allowed[1].impact.max_affected_objects = 2\n- permissions.allowed[2].tool = email\n- permissions.allowed[2].operation = draft_email\n- permissions.allowed[2].effect_target.type = email_address\n- permissions.allowed[2].effect_target.classes[0] = vendor_on_file\n- permissions.allowed[2].material_parameters[0] = recipient\n- permissions.allowed[2].material_parameters[1] = invoice\n- permissions.allowed[2].material_parameters[2] = po\n- permissions.allowed[2].material_parameters[3] = variance_usd\n- permissions.allowed[2].max_mode = execute_allowlisted\n- permissions.allowed[2].default_mode = request_approval\n- permissions.allowed[2].reversible = true\n- permissions.allowed[2].impact.domains[0] = financial\n- permissions.allowed[2].impact.domains[1] = external_communication\n- permissions.allowed[2].impact.domains[2] = operational\n- permissions.allowed[2].impact.severity = moderate\n- permissions.allowed[2].impact.blast_radius = One draft to one vendor about one invoice; no money movement.\n- permissions.allowed[2].impact.reversible = true\n- permissions.allowed[2].impact.max_affected_objects = 2\n- permissions.allowed[3].tool = ticketing\n- permissions.allowed[3].operation = create_ticket\n- permissions.allowed[3].effect_target.type = ticket\n- permissions.allowed[3].material_parameters[0] = invoice\n- permissions.allowed[3].material_parameters[1] = reason\n- permissions.allowed[3].max_mode = execute_allowlisted\n- permissions.allowed[3].default_mode = request_approval\n- permissions.allowed[3].reversible = true\n- permissions.allowed[3].impact.domains[0] = financial\n- permissions.allowed[3].impact.domains[1] = external_communication\n- permissions.allowed[3].impact.domains[2] = operational\n- permissions.allowed[3].impact.severity = moderate\n- permissions.allowed[3].impact.blast_radius = One draft to one vendor about one invoice; no money movement.\n- permissions.allowed[3].impact.reversible = true\n- permissions.allowed[3].impact.max_affected_objects = 2\n- permissions.allowed[4].tool = erp.ap\n- permissions.allowed[4].operation = set_status\n- permissions.allowed[4].effect_target.type = invoice\n- permissions.allowed[4].material_parameters[0] = invoice\n- permissions.allowed[4].material_parameters[1] = transition\n- permissions.allowed[4].max_mode = execute_allowlisted\n- permissions.allowed[4].default_mode = request_approval\n- permissions.allowed[4].reversible = true\n- permissions.allowed[4].impact.domains[0] = financial\n- permissions.allowed[4].impact.domains[1] = external_communication\n- permissions.allowed[4].impact.domains[2] = operational\n- permissions.allowed[4].impact.severity = moderate\n- permissions.allowed[4].impact.blast_radius = One draft to one vendor about one invoice; no money movement.\n- permissions.allowed[4].impact.reversible = true\n- permissions.allowed[4].impact.max_affected_objects = 2\n- permissions.prohibited[0].description = Release or schedule any payment\n- permissions.prohibited[1].description = Edit vendor bank or remittance details\n- permissions.prohibited[2].description = Create or delete vendor master records\n- permissions.prohibited[3].description = Approve the agent's own drafts\n- permissions.prohibited[3].enforcement = typed\n- permissions.prohibited[4].description = Email any address not on the vendor domain allowlist\n- permissions.prohibited[4].enforcement = typed\n- impact_envelope.allowed_domains[0] = financial\n- impact_envelope.allowed_domains[1] = external_communication\n- impact_envelope.allowed_domains[2] = operational\n- impact_envelope.max_severity = moderate\n- impact_envelope.max_affected_objects = 2\n- impact_envelope.irreversible_allowed = false\n- impact_envelope.notes = One draft to one vendor about one invoice; no money movement.\n- autonomy_policy.default_mode = request_approval\n- autonomy_policy.max_mode = execute_allowlisted\n- autonomy_policy.thresholds[0].description = variance <= 2000 USD and PO exists -> execute_allowlisted\n- autonomy_policy.thresholds[0].enforcement = documentation_only\n- autonomy_policy.thresholds[0].mode = request_approval\n- autonomy_policy.thresholds[1].description = vendor is new -> recommend\n- autonomy_policy.thresholds[1].enforcement = documentation_only\n- autonomy_policy.thresholds[1].mode = request_approval\n- approval_policy.approver_roles[0] = ap_manager\n- approval_policy.approver_roles[1] = finance_controller\n- approval_policy.required_evidence[0] = invoice_image\n- approval_policy.required_evidence[1] = po_match_evidence\n- approval_policy.required_evidence[2] = variance\n- approval_policy.required_evidence[3] = draft_text\n- approval_policy.one_approval_one_action = true\n- approval_policy.approval_timeout_minutes = 1440\n- approval_policy.distinct_principals_required = true\n- approval_policy.principal_authentication_required = true\n- input_trust.untrusted_sources[0] = invoice_pdfs\n- input_trust.untrusted_sources[1] = vendor_emails\n- input_trust.untrusted_sources[2] = ocr_output\n- data_boundary.egress_policy = none\n- data_boundary.never_egress[0] = bank_details\n- data_boundary.never_egress[1] = personal_data\n- data_boundary.log_retention_days = 30\n- audit_policy.readers[0] = ap_platform_lead\n- audit_policy.readers[1] = finance_controller\n- audit_policy.readers[2] = security\n- audit_policy.alert_on[0] = release_payment_attempt\n- audit_policy.alert_on[1] = bank_detail_edit_attempt\n- audit_policy.alert_on[2] = email_to_unlisted_domain\n- recovery_policy.owner = ap_platform_lead\n- emergency_disable.operators[0] = ap_platform_lead\n- emergency_disable.operators[1] = finance_controller\n- emergency_disable.halts_pending = true\n- conformance.level = L1\n\nPart A review digest (identity-bound sign-off supported): sha256:bffa7680d8cee14ee6d3752dcade7f9711c10bd5eb9390960efb9c6dfb0b36f5\n\n# PART B \u2014 Engineering binding (engineering reviews; approve the exact digest with aam signoff)\nModel/prompt/policy pins, credentials, selectors and rule ids, constraints, parameters, verification templates, recovery evidence, kill-switch mechanism, execution authority.\n- profile_id = aap:acme:invoice-triage\n- profile_version = 1.4.0\n- issued_at = 2026-09-07T15:32:44Z\n- identity.model.provider = <provider>\n- identity.model.identifier = <model@2026-05>\n- identity.prompt.version = 9\n- identity.policy.version = 3\n- authority_scope.targets[0].enforcement = typed\n- authority_scope.targets[0].selector_id = invoice_in_review\n- authority_scope.targets[1].enforcement = typed\n- authority_scope.targets[1].selector_id = address_on_vendor_file\n- authority_scope.targets[2].enforcement = typed\n- authority_scope.targets[2].selector_id = ap_ticket_queue\n- authority_scope.max_execution_authority_seconds = 300\n- permissions.allowed[0].privileges_required[0] = erp.ap:read\n- permissions.allowed[0].privileges_required[1] = erp.ap:status_write\n- permissions.allowed[0].privileges_required[2] = ticketing:write\n- permissions.allowed[0].privileges_required[3] = email:draft\n- permissions.allowed[0].verification.expected_postconditions[0] = erp.ap.read_invoice completed as declared (engineering to replace)\n- permissions.allowed[0].verification.tests[0].method = human_confirmation\n- permissions.allowed[0].verification.tests[0].source = approver\n- permissions.allowed[0].verification.tests[0].assertion = human confirms erp.ap.read_invoice outcome (engineering to replace with a system-of-record read)\n- permissions.allowed[0].verification.tests[0].test_id = postcondition-1\n- permissions.allowed[0].verification.tests[0].postcondition_index = 0\n- permissions.allowed[0].verification.on_failure = escalate\n- permissions.allowed[0].verification.completion_rule = all_postconditions_verified\n- permissions.allowed[0].verification.max_observation_age_seconds = 300\n- permissions.allowed[1].privileges_required[0] = erp.ap:read\n- permissions.allowed[1].privileges_required[1] = erp.ap:status_write\n- permissions.allowed[1].privileges_required[2] = ticketing:write\n- permissions.allowed[1].privileges_required[3] = email:draft\n- permissions.allowed[1].verification.expected_postconditions[0] = erp.ap.match_po completed as declared (engineering to replace)\n- permissions.allowed[1].verification.tests[0].method = human_confirmation\n- permissions.allowed[1].verification.tests[0].source = approver\n- permissions.allowed[1].verification.tests[0].assertion = human confirms erp.ap.match_po outcome (engineering to replace with a system-of-record read)\n- permissions.allowed[1].verification.tests[0].test_id = postcondition-1\n- permissions.allowed[1].verification.tests[0].postcondition_index = 0\n- permissions.allowed[1].verification.on_failure = escalate\n- permissions.allowed[1].verification.completion_rule = all_postconditions_verified\n- permissions.allowed[1].verification.max_observation_age_seconds = 300\n- permissions.allowed[2].allowed_parameters[0] = recipient\n- permissions.allowed[2].allowed_parameters[1] = invoice\n- permissions.allowed[2].allowed_parameters[2] = po\n- permissions.allowed[2].allowed_parameters[3] = variance_usd\n- permissions.allowed[2].allowed_parameters[4] = subject_line\n- permissions.allowed[2].constraints.recipient_class = vendor_on_file\n- permissions.allowed[2].constraints.max_recipients = 1\n- permissions.allowed[2].privileges_required[0] = erp.ap:read\n- permissions.allowed[2].privileges_required[1] = erp.ap:status_write\n- permissions.allowed[2].privileges_required[2] = ticketing:write\n- permissions.allowed[2].privileges_required[3] = email:draft\n- permissions.allowed[2].verification.expected_postconditions[0] = email.draft_email completed as declared (engineering to replace)\n- permissions.allowed[2].verification.tests[0].method = human_confirmation\n- permissions.allowed[2].verification.tests[0].source = approver\n- permissions.allowed[2].verification.tests[0].assertion = human confirms email.draft_email outcome (engineering to replace with a system-of-record read)\n- permissions.allowed[2].verification.tests[0].test_id = postcondition-1\n- permissions.allowed[2].verification.tests[0].postcondition_index = 0\n- permissions.allowed[2].verification.on_failure = escalate\n- permissions.allowed[2].verification.completion_rule = all_postconditions_verified\n- permissions.allowed[2].verification.max_observation_age_seconds = 300\n- permissions.allowed[3].allowed_parameters[0] = invoice\n- permissions.allowed[3].allowed_parameters[1] = reason\n- permissions.allowed[3].privileges_required[0] = erp.ap:read\n- permissions.allowed[3].privileges_required[1] = erp.ap:status_write\n- permissions.allowed[3].privileges_required[2] = ticketing:write\n- permissions.allowed[3].privileges_required[3] = email:draft\n- permissions.allowed[3].verification.expected_postconditions[0] = ticketing.create_ticket completed as declared (engineering to replace)\n- permissions.allowed[3].verification.tests[0].method = human_confirmation\n- permissions.allowed[3].verification.tests[0].source = approver\n- permissions.allowed[3].verification.tests[0].assertion = human confirms ticketing.create_ticket outcome (engineering to replace with a system-of-record read)\n- permissions.allowed[3].verification.tests[0].test_id = postcondition-1\n- permissions.allowed[3].verification.tests[0].postcondition_index = 0\n- permissions.allowed[3].verification.on_failure = escalate\n- permissions.allowed[3].verification.completion_rule = all_postconditions_verified\n- permissions.allowed[3].verification.max_observation_age_seconds = 300\n- permissions.allowed[4].allowed_parameters[0] = invoice\n- permissions.allowed[4].constraints.transition[0] = review->matched\n- permissions.allowed[4].constraints.transition[1] = review->exception\n- permissions.allowed[4].privileges_required[0] = erp.ap:read\n- permissions.allowed[4].privileges_required[1] = erp.ap:status_write\n- permissions.allowed[4].privileges_required[2] = ticketing:write\n- permissions.allowed[4].privileges_required[3] = email:draft\n- permissions.allowed[4].verification.expected_postconditions[0] = erp.ap.set_status completed as declared (engineering to replace)\n- permissions.allowed[4].verification.tests[0].method = human_confirmation\n- permissions.allowed[4].verification.tests[0].source = approver\n- permissions.allowed[4].verification.tests[0].assertion = human confirms erp.ap.set_status outcome (engineering to replace with a system-of-record read)\n- permissions.allowed[4].verification.tests[0].test_id = postcondition-1\n- permissions.allowed[4].verification.tests[0].postcondition_index = 0\n- permissions.allowed[4].verification.on_failure = escalate\n- permissions.allowed[4].verification.completion_rule = all_postconditions_verified\n- permissions.allowed[4].verification.max_observation_age_seconds = 300\n- permissions.prohibited[0].tool = erp.ap\n- permissions.prohibited[0].operation = release_payment\n- permissions.prohibited[1].tool = erp.ap\n- permissions.prohibited[1].operation = update_vendor_bank_details\n- permissions.prohibited[2].tool = erp.ap\n- permissions.prohibited[2].operation = modify_vendor_master\n- permissions.prohibited[3].rule = approver.principal != agent.identity\n- permissions.prohibited[3].rule_id = no_self_approval\n- permissions.prohibited[4].rule = recipient.domain in vendor_domains_on_file\n- permissions.prohibited[4].rule_id = recipient_domain_on_file\n- autonomy_policy.downgrade_on[0] = evaluation_regression\n- autonomy_policy.downgrade_on[1] = anomaly_alert\n- input_trust.content_is_data_not_instructions = true\n- credentials_policy.identity = svc:ap-agent\n- credentials_policy.privileges[0] = erp.ap:read\n- credentials_policy.privileges[1] = erp.ap:status_write\n- credentials_policy.privileges[2] = ticketing:write\n- credentials_policy.privileges[3] = email:draft\n- credentials_policy.max_ttl_minutes = 240\n- credentials_policy.fail_closed_on_expiry = true\n- data_boundary.model_hosting = customer_boundary\n- audit_policy.records[0] = tool_calls\n- audit_policy.records[1] = evidence_refs\n- audit_policy.records[2] = gate_decision\n- audit_policy.records[3] = approvals\n- audit_policy.records[4] = denials\n- audit_policy.records[5] = outcome\n- audit_policy.append_only = true\n- recovery_policy.requires_tested_recovery_for_execution = true\n- recovery_policy.test_evidence_required = true\n- recovery_policy.test_max_age_days = 90\n- recovery_policy.templates[0].tool = erp.ap\n- recovery_policy.templates[0].operation = read_invoice\n- recovery_policy.templates[0].method = engineering to fill\n- recovery_policy.templates[0].tested = false\n- recovery_policy.templates[0].tested_evidence_ref = unset:not-yet-tested\n- recovery_policy.templates[0].owner = ap_platform_lead\n- recovery_policy.templates[0].irreversible = false\n- recovery_policy.templates[1].tool = erp.ap\n- recovery_policy.templates[1].operation = match_po\n- recovery_policy.templates[1].method = engineering to fill\n- recovery_policy.templates[1].tested = false\n- recovery_policy.templates[1].tested_evidence_ref = unset:not-yet-tested\n- recovery_policy.templates[1].owner = ap_platform_lead\n- recovery_policy.templates[1].irreversible = false\n- recovery_policy.templates[2].tool = email\n- recovery_policy.templates[2].operation = draft_email\n- recovery_policy.templates[2].method = engineering to fill\n- recovery_policy.templates[2].tested = false\n- recovery_policy.templates[2].tested_evidence_ref = unset:not-yet-tested\n- recovery_policy.templates[2].owner = ap_platform_lead\n- recovery_policy.templates[2].irreversible = false\n- recovery_policy.templates[3].tool = ticketing\n- recovery_policy.templates[3].operation = create_ticket\n- recovery_policy.templates[3].method = engineering to fill\n- recovery_policy.templates[3].tested = false\n- recovery_policy.templates[3].tested_evidence_ref = unset:not-yet-tested\n- recovery_policy.templates[3].owner = ap_platform_lead\n- recovery_policy.templates[3].irreversible = false\n- recovery_policy.templates[4].tool = erp.ap\n- recovery_policy.templates[4].operation = set_status\n- recovery_policy.templates[4].method = engineering to fill\n- recovery_policy.templates[4].tested = false\n- recovery_policy.templates[4].tested_evidence_ref = unset:not-yet-tested\n- recovery_policy.templates[4].owner = ap_platform_lead\n- recovery_policy.templates[4].irreversible = false\n- emergency_disable.mechanism = feature flag ap-agent.enabled\n- emergency_disable.execution_state = allowed\n- emergency_disable.state_source = flags://acme/ap-agent.enabled\n- emergency_disable.checked_at_gate = true\n- emergency_disable.halts_in_flight_where_possible = true\n- conformance.assessed_at = 2026-09-07\n- conformance.assessor = AP Platform Lead\n- conformance.enforcement.gate_id = fill-in\n- conformance.enforcement.outside_model = true\n- conformance.enforcement.checks_action_target = true\n- conformance.enforcement.checks_manifest_within_profile = true\n- conformance.enforcement.checks_scope_permissions_credentials_stop = true\n\nPart B review digest (identity-bound sign-off supported): sha256:698eb1394574bb60a371d0f3b9e978d12610078ab6c60317c05fd459e17380e4\n\nProfile digest (binds Part A and Part B; this is what the gate enforces): sha256:908247b6fb302b8d65747c20995608a4d79e897c658450e19a736a2e113d6a48\nThe Profile digest is what the gate enforces. It covers both parts; neither part can change without the digest changing.\n",
+      "stderr": ""
+    },
+    {
+      "name": "CLI keygen (temporary demo key)",
+      "command": [
+        "/mnt/data/aam_python_v037/qa/isolated-env/bin/python",
+        "tools/aam.py",
+        "keygen",
+        "--out",
+        "/tmp/aam-release-qo6whvsz/root"
+      ],
+      "returncode": 0,
+      "passed": true,
+      "stdout": "wrote /tmp/aam-release-qo6whvsz/root.key.hex (private, protect it) and /tmp/aam-release-qo6whvsz/root.pub.hex (trust root)\n",
+      "stderr": ""
+    },
+    {
+      "name": "CLI sign whole Profile",
+      "command": [
+        "/mnt/data/aam_python_v037/qa/isolated-env/bin/python",
+        "tools/aam.py",
+        "sign",
+        "/tmp/aam-release-qo6whvsz/profile.json",
+        "--key",
+        "/tmp/aam-release-qo6whvsz/root.key.hex",
+        "--key-id",
+        "temporary-test-root"
+      ],
+      "returncode": 0,
+      "passed": true,
+      "stdout": "signed with temporary-test-root; profile digest sha256:908247b6fb302b8d65747c20995608a4d79e897c658450e19a736a2e113d6a48\n",
+      "stderr": ""
+    },
+    {
+      "name": "CLI signature accepted by configured trust root",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "CLI signoff: finalized identity-bound Part A record",
+      "command": [
+        "/mnt/data/aam_python_v037/qa/isolated-env/bin/python",
+        "tools/aam.py",
+        "signoff",
+        "/tmp/aam-release-qo6whvsz/profile.json",
+        "--part",
+        "A",
+        "--principal",
+        "user:test-product-owner",
+        "--role",
+        "product_owner",
+        "--key",
+        "/tmp/aam-release-qo6whvsz/root.key.hex",
+        "--key-id",
+        "temporary-test-root",
+        "--out",
+        "/tmp/aam-release-qo6whvsz/review-a.json"
+      ],
+      "returncode": 0,
+      "passed": true,
+      "stdout": "wrote /tmp/aam-release-qo6whvsz/review-a.json; signature created, identity/role trust must be checked with verify-signoff\n",
+      "stderr": ""
+    },
+    {
+      "name": "CLI validates ReadbackSignoff structure",
+      "command": [
+        "/mnt/data/aam_python_v037/qa/isolated-env/bin/python",
+        "tools/aam.py",
+        "validate",
+        "/tmp/aam-release-qo6whvsz/review-a.json"
+      ],
+      "returncode": 0,
+      "passed": true,
+      "stdout": "VALID\n",
+      "stderr": ""
+    },
+    {
+      "name": "CLI verifies saved signoff against trusted principal role and part",
+      "command": [
+        "/mnt/data/aam_python_v037/qa/isolated-env/bin/python",
+        "tools/aam.py",
+        "verify-signoff",
+        "/tmp/aam-release-qo6whvsz/profile.json",
+        "/tmp/aam-release-qo6whvsz/review-a.json",
+        "--trust-roots",
+        "/tmp/aam-release-qo6whvsz/readback-trust.json"
+      ],
+      "returncode": 0,
+      "passed": true,
+      "stdout": "{\n  \"valid\": true,\n  \"reasons\": []\n}\n",
+      "stderr": ""
+    },
+    {
+      "name": "independent Ed25519 verifies exact saved signoff body",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "CLI rejects post-signing mutation",
+      "command": [
+        "/mnt/data/aam_python_v037/qa/isolated-env/bin/python",
+        "tools/aam.py",
+        "verify-signoff",
+        "/tmp/aam-release-qo6whvsz/profile.json",
+        "/tmp/aam-release-qo6whvsz/tampered-review.json",
+        "--trust-roots",
+        "/tmp/aam-release-qo6whvsz/readback-trust.json"
+      ],
+      "returncode": 1,
+      "passed": true,
+      "stdout": "{\n  \"valid\": false,\n  \"reasons\": [\n    \"invalid ReadbackSignoff schema\"\n  ]\n}\n",
+      "stderr": ""
+    },
+    {
+      "name": "CLI rejects unknown signoff principal key",
+      "command": [
+        "/mnt/data/aam_python_v037/qa/isolated-env/bin/python",
+        "tools/aam.py",
+        "verify-signoff",
+        "/tmp/aam-release-qo6whvsz/profile.json",
+        "/tmp/aam-release-qo6whvsz/review-a.json",
+        "--trust-roots",
+        "/tmp/aam-release-qo6whvsz/untrusted.json"
+      ],
+      "returncode": 1,
+      "passed": true,
+      "stdout": "{\n  \"valid\": false,\n  \"reasons\": [\n    \"no trusted Ed25519 principal binding for this key\"\n  ]\n}\n",
+      "stderr": ""
+    },
+    {
+      "name": "CLI signoff requires an explicit private key",
+      "command": [
+        "/mnt/data/aam_python_v037/qa/isolated-env/bin/python",
+        "tools/aam.py",
+        "signoff",
+        "/tmp/aam-release-qo6whvsz/profile.json",
+        "--part",
+        "A",
+        "--principal",
+        "user:test-product-owner",
+        "--role",
+        "product_owner",
+        "--key-id",
+        "test"
+      ],
+      "returncode": 2,
+      "passed": true,
+      "stdout": "",
+      "stderr": "usage: aam signoff [-h] --part {A,B,profile} --principal PRINCIPAL\n                   --role {product_owner,engineering} --key KEY\n                   --key-id KEY_ID [--out OUT]\n                   [--feedback-policy FEEDBACK_POLICY]\n                   profile\naam signoff: error: the following arguments are required: --key\n"
+    },
+    {
+      "name": "CLI rejects unknown designated id semantically",
+      "command": [
+        "/mnt/data/aam_python_v037/qa/isolated-env/bin/python",
+        "tools/aam.py",
+        "validate",
+        "/tmp/aam-release-qo6whvsz/invalid.json"
+      ],
+      "returncode": 1,
+      "passed": true,
+      "stdout": "INVALID\n- erp.ap.read_invoice: designated_test_ids must be unique, known, independent test IDs\n",
+      "stderr": ""
+    },
+    {
+      "name": "CLI rejects malformed date-time",
+      "command": [
+        "/mnt/data/aam_python_v037/qa/isolated-env/bin/python",
+        "tools/aam.py",
+        "validate",
+        "/tmp/aam-release-qo6whvsz/invalid-date.json"
+      ],
+      "returncode": 1,
+      "passed": true,
+      "stdout": "INVALID\n- 'not-a-timestamp' is not a 'date-time'\n",
+      "stderr": ""
+    },
+    {
+      "name": "CLI authoring-only proposal preview",
+      "command": [
+        "/mnt/data/aam_python_v037/qa/isolated-env/bin/python",
+        "tools/aam.py",
+        "propose",
+        "/mnt/data/aam_python_v037/qa/clean-extract/repo/appendix/examples/business-workflow-agent.invoice-triage/profile.json",
+        "/mnt/data/aam_python_v037/qa/clean-extract/repo/appendix/examples/business-workflow-agent.invoice-triage/request.json",
+        "--trust-pub",
+        "/mnt/data/aam_python_v037/qa/clean-extract/repo/appendix/examples/trust/demo-profile-signing.pub.hex",
+        "--now",
+        "2026-09-05T14:10:00Z",
+        "--out",
+        "/tmp/aam-release-qo6whvsz/preview.json"
+      ],
+      "returncode": 0,
+      "passed": true,
+      "stdout": "wrote /tmp/aam-release-qo6whvsz/preview.json\n{\n  \"decision\": \"INDETERMINATE\",\n  \"violations\": [],\n  \"unresolved_delegations\": [\n    \"C4.subject.selector:invoice_in_review\",\n    \"C4.effect_target.selector:address_on_vendor_file\",\n    \"C5.effect_target.class_membership\",\n    \"C6.rule:no_self_approval\",\n    \"C6.rule:recipient_domain_on_file\",\n    \"C12.live_state\"\n  ],\n  \"reasons\": null\n}\n",
+      "stderr": ""
+    },
+    {
+      "name": "CLI validates preview Manifest",
+      "command": [
+        "/mnt/data/aam_python_v037/qa/isolated-env/bin/python",
+        "tools/aam.py",
+        "validate",
+        "/tmp/aam-release-qo6whvsz/preview.json"
+      ],
+      "returncode": 0,
+      "passed": true,
+      "stdout": "VALID\n",
+      "stderr": ""
+    },
+    {
+      "name": "CLI renders complete Card",
+      "command": [
+        "/mnt/data/aam_python_v037/qa/isolated-env/bin/python",
+        "tools/render_card.py",
+        "/tmp/aam-release-qo6whvsz/preview.json"
+      ],
+      "returncode": 0,
+      "passed": true,
+      "stdout": "ACTION ASSURANCE CARD\n======================\nOperational restrictions (review snapshot) None\nWhat will happen               Draft (not send) an email to ap@northwind-supply.example (Northwind Supply, vendor on file) asking them to confirm the $312 unit-price variance on invoice 48211 against PO 77102. Will not release payment, change vendor details, or send without approval.\nTo / on                        ap@northwind-supply.example (Northwind Supply, vendor on file) [ap@northwind-supply.example]\nTarget kind                    email_address\nAbout                          Invoice 48211 from Northwind Supply ($4,812.00) [48211\nDetails                        Recipient: ap@northwind-supply.example; Invoice: 48211; Po: 77102; Variance usd: 312\nOperation                      email.draft_email\nWhy (evidence)                 \n                              - invoice:48211:image\n                              - po:77102\n                              - match:48211:77102:variance=312\n                              - draft:48211:v1\nUncertainty / open conflicts   \n                              - Invoice quantity matches PO; unit price differs by $312.\nUntrusted inputs consulted     \n                              - invoice_pdfs\n                              - ocr_output\nWorst case if wrong            One outbound draft to one vendor about one invoice. No money movement.\nSeverity                       low\nReversible                     True\nThis agent can never (enforced by the gate) \n                              - Release or schedule any payment\n                              - Edit vendor bank or remittance details\n                              - Create or delete vendor master records\n                              - Approve the agent's own drafts\n                              - Email any address not on the vendor domain allowlist\nStated in the Profile but NOT enforced by the gate (none)\nManifest built by              reference-gate/0.3.7\nAutonomy                       request_approval\nNeeds your approval            True\nApprover role(s)               \n                              - ap_manager\nTwo approvers required         False\nSuccess means                  \n                              - Draft exists in email system addressed to the vendor on file\n                              - Draft references invoice 48211 and PO 77102\n                              - Invoice status unchanged\nVerified by                    \n                              - postcondition-1: read_system_of_record via email: draft for invoice 48211 exists, unsent, single recipient ap@northwind-supply.example [postcondition index 0]\n                              - postcondition-2: read_system_of_record via erp.ap: invoice 48211 status == 'review' and payment_scheduled == false [postcondition index 2]\n                              - postcondition-3: read_system_of_record via email: draft for invoice 48211 references invoice 48211 and PO 77102 [postcondition index 1]\nIf verification fails          reopen\nWay back                       delete draft; if sent, send correction email\nWay back tested (evidenced)    True\nRecovery owner                 ap_platform_lead\nActing as                      svc:ap-agent\nCredential expires (min)       240\nData leaving boundary          (none)\nInference runs                 customer_boundary\nAgent / authority profile      invoice-triage 1.4 \u00b7 profile aap:acme:invoice-triage v1.4.0 (L2)\nReview window ends             2026-09-06T14:10:00Z\nManifest id                    aam:acme:invoice-triage:97ae640d9539\nAll parameters (as they will execute) invoice: 48211; max_recipients: 1; po: 77102; recipient: ap@northwind-supply.example; recipient_class: vendor_on_file; subject_line: Invoice 48211 \u2013 price variance vs PO 77102; variance_usd: 312\nScope claimed                  ACME \u00b7 prod \u00b7 systems email, erp.ap\nSubject kind                   invoice\nTarget class                   vendor_on_file\nEvidence provenance            \n                              - customer_supplied\n                              - customer_supplied\n                              - derived\n                              - derived\nImpact domains                 \n                              - external_communication\n                              - financial\nBounded by                     \n                              - invoice=48211\n                              - vendor=on file\nMax objects affected           1\nApproval valid for (min)       1440\nEvidence you must be shown     \n                              - invoice_image\n                              - po_match_evidence\n                              - variance\n                              - draft_text\nPrivileges used                \n                              - erp.ap:read\n                              - email:draft\nWill be recorded               \n                              - tool_calls\n                              - evidence_refs\n                              - gate_decision\n                              - approvals\n                              - denials\n                              - outcome\nCompletion rule                all_postconditions_verified\nDesignated required tests      (none)\nMaximum evidence age (s)       300\nRecovery test evidence         testrun:recovery:ap-agent:2026-08-30#7\nRecovery last tested           2026-08-30\nTime to recover (min)          5\nRequest digest (binding)       sha256:b122269dc15ea9a692bce2f744a74297ec4a8a50e572747615a0cbfeae437d45\nProfile digest                 sha256:ca79e7d75384874b3e2bb3f58c5f0868f74c0cd88159ea404db916572ec9c69d\nIssued at                      2026-09-05T14:10:00Z\nVersions                       manifest 1.0.0 \u00b7 model <provider> <model@2026-05> \u00b7 prompt v9 (sha256:5d0c...e7) \u00b7 policy v3 (sha256:3f0a...b1)\nParameters summary             recipient_class=vendor_on_file; max_recipients=1; recipient=ap@northwind-supply.example; invoice=48211; po=77102; variance_usd=312; subject_line=Invoice 48211 \u2013 price variance vs PO 77102\nAction id                      inv-48211-email\nRequested at                   2026-09-05T14:10:00Z\nSubject system                 erp.ap\nTarget system                  email\n\nApprove [ ]   Reject [ ]   Request more evidence [ ]\nGenerated from the exact Manifest the gate checked. Tool success is not outcome success. Transport failure is not proof that no action occurred.\n",
+      "stderr": ""
+    },
+    {
+      "name": "CLI unresolved historical check is non-executable",
+      "command": [
+        "/mnt/data/aam_python_v037/qa/isolated-env/bin/python",
+        "tools/aam.py",
+        "check",
+        "/mnt/data/aam_python_v037/qa/clean-extract/repo/appendix/examples/business-workflow-agent.invoice-triage/profile.json",
+        "/mnt/data/aam_python_v037/qa/clean-extract/repo/appendix/examples/business-workflow-agent.invoice-triage/manifest.json",
+        "--now",
+        "2026-09-05T14:10:00Z"
+      ],
+      "returncode": 3,
+      "passed": true,
+      "stdout": "{\n  \"decision\": \"INDETERMINATE\",\n  \"executable\": false,\n  \"profile_digest\": \"sha256:ca79e7d75384874b3e2bb3f58c5f0868f74c0cd88159ea404db916572ec9c69d\",\n  \"manifest_digest\": \"sha256:38236a6789b35930471164fab8406dc47a42d2144f679acc1676f4bf5d2f13a5\",\n  \"violations\": [],\n  \"delegated\": [\n    {\n      \"id\": \"C4.subject.selector:invoice_in_review\",\n      \"note\": \"evaluate '48211' against typed selector 'invoice_in_review'\"\n    },\n    {\n      \"id\": \"C4.effect_target.selector:address_on_vendor_file\",\n      \"note\": \"evaluate 'ap@northwind-supply.example' against typed selector 'address_on_vendor_file'\"\n    },\n    {\n      \"id\": \"C5.effect_target.class_membership\",\n      \"note\": \"verify that 'ap@northwind-supply.example' is actually a member of class 'vendor_on_file' at execution time\"\n    },\n    {\n      \"id\": \"C6.rule:no_self_approval\",\n      \"note\": \"evaluate typed rule 'no_self_approval' (Approve the agent's own drafts)\"\n    },\n    {\n      \"id\": \"C6.rule:recipient_domain_on_file\",\n      \"note\": \"evaluate typed rule 'recipient_domain_on_file' (Email any address not on the vendor domain allowlist)\"\n    },\n    {\n      \"id\": \"C12.live_state\",\n      \"note\": \"read live state from 'flags://acme/ap-agent.enabled'\"\n    }\n  ],\n  \"checks_passed\": [\n    \"C1 profile_id\",\n    \"C1 profile_version\",\n    \"C1 conformance_level\",\n    \"C1 profile_digest\",\n    \"C2 review_window\",\n    \"C2 max_review_window\",\n    \"C2 within_review_window\",\n    \"C2 profile_not_expired\",\n    \"C3 agent\",\n    \"C3 model\",\n    \"C3 prompt.version\",\n    \"C3 policy.version\",\n    \"C3 prompt.hash\",\n    \"C3 policy.hash\",\n    \"C4 tenant\",\n    \"C4 environment\",\n    \"C4 systems\",\n    \"C4 subject.system\",\n    \"C4 subject.type\",\n    \"C4 effect_target.system\",\n    \"C4 effect_target.type\",\n    \"C5 operation_allowed\",\n    \"C5 unknown_parameters\",\n    \"C5 constraint recipient_class\",\n    \"C5 constraint max_recipients\",\n    \"C5 operation_max_mode\",\n    \"C5 effect_target.type\",\n    \"C5 effect_target.class\",\n    \"C5 privileges_required\",\n    \"C5 material recipient\",\n    \"C5 material invoice\",\n    \"C5 material po\",\n    \"C5 material variance_usd\",\n    \"C5 material_known recipient\",\n    \"C5 material_known invoice\",\n    \"C5 material_known po\",\n    \"C5 material_known variance_usd\",\n    \"C6 prohibited[0]\",\n    \"C6 prohibited[1]\",\n    \"C6 prohibited[2]\",\n    \"C6 not_permitted_summary\",\n    \"C6 documented_not_enforced\",\n    \"C7 domains\",\n    \"C7 severity\",\n    \"C7 max_affected_objects_present\",\n    \"C7 max_affected_objects\",\n    \"C7 blast_radius_present\",\n    \"C7 irreversible\",\n    \"C8 mode_le_max\",\n    \"C8 approval_required\",\n    \"C8 approver_roles\",\n    \"C8 required_evidence\",\n    \"C9 identity\",\n    \"C9 privileges\",\n    \"C9 ttl\",\n    \"C10 model_hosting\",\n    \"C10 egress_none\",\n    \"C10 never_egress\",\n    \"C11 records\",\n    \"C12 snapshot_allowed\",\n    \"C13 tested_recovery_evidenced\",\n    \"C13 irreversible_consistent\",\n    \"C13 owner\",\n    \"C14 independent_verification\",\n    \"C14 verification_plan\",\n    \"C14 verification_binding\",\n    \"C15 untrusted_sources\",\n    \"C17 built_by\",\n    \"C16 request_digest\"\n  ]\n}\n",
+      "stderr": ""
+    },
+    {
+      "name": "CLI expired check denies",
+      "command": [
+        "/mnt/data/aam_python_v037/qa/isolated-env/bin/python",
+        "tools/aam.py",
+        "check",
+        "/mnt/data/aam_python_v037/qa/clean-extract/repo/appendix/examples/business-workflow-agent.invoice-triage/profile.json",
+        "/mnt/data/aam_python_v037/qa/clean-extract/repo/appendix/examples/business-workflow-agent.invoice-triage/manifest.json",
+        "--now",
+        "2026-09-07T00:00:00Z"
+      ],
+      "returncode": 1,
+      "passed": true,
+      "stdout": "{\n  \"decision\": \"DENY\",\n  \"executable\": false,\n  \"profile_digest\": \"sha256:ca79e7d75384874b3e2bb3f58c5f0868f74c0cd88159ea404db916572ec9c69d\",\n  \"manifest_digest\": \"sha256:38236a6789b35930471164fab8406dc47a42d2144f679acc1676f4bf5d2f13a5\",\n  \"violations\": [\n    \"C2 within_review_window: manifest is outside its review window at evaluation time\"\n  ],\n  \"delegated\": [\n    {\n      \"id\": \"C4.subject.selector:invoice_in_review\",\n      \"note\": \"evaluate '48211' against typed selector 'invoice_in_review'\"\n    },\n    {\n      \"id\": \"C4.effect_target.selector:address_on_vendor_file\",\n      \"note\": \"evaluate 'ap@northwind-supply.example' against typed selector 'address_on_vendor_file'\"\n    },\n    {\n      \"id\": \"C5.effect_target.class_membership\",\n      \"note\": \"verify that 'ap@northwind-supply.example' is actually a member of class 'vendor_on_file' at execution time\"\n    },\n    {\n      \"id\": \"C6.rule:no_self_approval\",\n      \"note\": \"evaluate typed rule 'no_self_approval' (Approve the agent's own drafts)\"\n    },\n    {\n      \"id\": \"C6.rule:recipient_domain_on_file\",\n      \"note\": \"evaluate typed rule 'recipient_domain_on_file' (Email any address not on the vendor domain allowlist)\"\n    },\n    {\n      \"id\": \"C12.live_state\",\n      \"note\": \"read live state from 'flags://acme/ap-agent.enabled'\"\n    }\n  ],\n  \"checks_passed\": [\n    \"C1 profile_id\",\n    \"C1 profile_version\",\n    \"C1 conformance_level\",\n    \"C1 profile_digest\",\n    \"C2 review_window\",\n    \"C2 max_review_window\",\n    \"C2 profile_not_expired\",\n    \"C3 agent\",\n    \"C3 model\",\n    \"C3 prompt.version\",\n    \"C3 policy.version\",\n    \"C3 prompt.hash\",\n    \"C3 policy.hash\",\n    \"C4 tenant\",\n    \"C4 environment\",\n    \"C4 systems\",\n    \"C4 subject.system\",\n    \"C4 subject.type\",\n    \"C4 effect_target.system\",\n    \"C4 effect_target.type\",\n    \"C5 operation_allowed\",\n    \"C5 unknown_parameters\",\n    \"C5 constraint recipient_class\",\n    \"C5 constraint max_recipients\",\n    \"C5 operation_max_mode\",\n    \"C5 effect_target.type\",\n    \"C5 effect_target.class\",\n    \"C5 privileges_required\",\n    \"C5 material recipient\",\n    \"C5 material invoice\",\n    \"C5 material po\",\n    \"C5 material variance_usd\",\n    \"C5 material_known recipient\",\n    \"C5 material_known invoice\",\n    \"C5 material_known po\",\n    \"C5 material_known variance_usd\",\n    \"C6 prohibited[0]\",\n    \"C6 prohibited[1]\",\n    \"C6 prohibited[2]\",\n    \"C6 not_permitted_summary\",\n    \"C6 documented_not_enforced\",\n    \"C7 domains\",\n    \"C7 severity\",\n    \"C7 max_affected_objects_present\",\n    \"C7 max_affected_objects\",\n    \"C7 blast_radius_present\",\n    \"C7 irreversible\",\n    \"C8 mode_le_max\",\n    \"C8 approval_required\",\n    \"C8 approver_roles\",\n    \"C8 required_evidence\",\n    \"C9 identity\",\n    \"C9 privileges\",\n    \"C9 ttl\",\n    \"C10 model_hosting\",\n    \"C10 egress_none\",\n    \"C10 never_egress\",\n    \"C11 records\",\n    \"C12 snapshot_allowed\",\n    \"C13 tested_recovery_evidenced\",\n    \"C13 irreversible_consistent\",\n    \"C13 owner\",\n    \"C14 independent_verification\",\n    \"C14 verification_plan\",\n    \"C14 verification_binding\",\n    \"C15 untrusted_sources\",\n    \"C17 built_by\",\n    \"C16 request_digest\"\n  ]\n}\n",
+      "stderr": ""
+    },
+    {
+      "name": "CLI validates feedback policy",
+      "command": [
+        "/mnt/data/aam_python_v037/qa/isolated-env/bin/python",
+        "tools/aam.py",
+        "validate",
+        "/mnt/data/aam_python_v037/qa/clean-extract/repo/appendix/examples/managed-runtime/feedback-policy.json"
+      ],
+      "returncode": 0,
+      "passed": true,
+      "stdout": "VALID\n",
+      "stderr": ""
+    },
+    {
+      "name": "CLI validates policy-bearing Profile",
+      "command": [
+        "/mnt/data/aam_python_v037/qa/isolated-env/bin/python",
+        "tools/aam.py",
+        "validate",
+        "/mnt/data/aam_python_v037/qa/clean-extract/repo/appendix/examples/managed-runtime/generated/managed-profile.json"
+      ],
+      "returncode": 0,
+      "passed": true,
+      "stdout": "VALID\n",
+      "stderr": ""
+    },
+    {
+      "name": "CLI validates managed Manifest",
+      "command": [
+        "/mnt/data/aam_python_v037/qa/isolated-env/bin/python",
+        "tools/aam.py",
+        "validate",
+        "/mnt/data/aam_python_v037/qa/clean-extract/repo/appendix/examples/managed-runtime/generated/managed-manifest.json"
+      ],
+      "returncode": 0,
+      "passed": true,
+      "stdout": "VALID\n",
+      "stderr": ""
+    },
+    {
+      "name": "CLI validates active runtime controls",
+      "command": [
+        "/mnt/data/aam_python_v037/qa/isolated-env/bin/python",
+        "tools/aam.py",
+        "validate",
+        "/mnt/data/aam_python_v037/qa/clean-extract/repo/appendix/examples/managed-runtime/generated/restricted-control-snapshot.json"
+      ],
+      "returncode": 0,
+      "passed": true,
+      "stdout": "VALID\n",
+      "stderr": ""
+    },
+    {
+      "name": "CLI resolves exact policy in readback",
+      "command": [
+        "/mnt/data/aam_python_v037/qa/isolated-env/bin/python",
+        "tools/aam.py",
+        "readback",
+        "/mnt/data/aam_python_v037/qa/clean-extract/repo/appendix/examples/managed-runtime/generated/managed-profile.json",
+        "--feedback-policy",
+        "/mnt/data/aam_python_v037/qa/clean-extract/repo/appendix/examples/managed-runtime/feedback-policy.json"
+      ],
+      "returncode": 0,
+      "passed": true,
+      "stdout": "# Read-back: invoice-triage v1.4  (profile aap:acme:invoice-triage v1.0.7)\nOwner: AP Platform Lead \u00b7 Tenant ACME \u00b7 prod \u00b7 Model <model@2026-05> \u00b7 prompt v9 \u00b7 policy v3\nConformance claimed: L2\n\nReview digests alone are not authenticated approvals. Use signoff to sign the exact Part A/B content and verify-signoff to verify the saved signature against trusted principal/role keys. Whole-Profile integrity is a separate check.\n\n## 1. What it may read\nSystems: erp.ap, ticketing, email\nRecords: invoice: invoice.status == 'review'; email_address: address on vendor file; ticket: AP queue\nInputs treated as untrusted: invoice_pdfs, vendor_emails, ocr_output\n\n## 2. What it may do\n- erp.ap.read_invoice \u2192 affects invoice; up to: execute_allowlisted\n- erp.ap.match_po \u2192 affects invoice; up to: execute_allowlisted\n- email.draft_email \u2192 affects email_address (vendor_on_file); approver sees: recipient, invoice, po, variance_usd; up to: execute_allowlisted\n- ticketing.create_ticket \u2192 affects ticket; approver sees: invoice, reason; up to: execute_allowlisted\n- erp.ap.set_status \u2192 affects invoice; approver sees: invoice, transition; up to: execute_allowlisted\nDefault when unsure: request_approval \u00b7 Never more than: execute_allowlisted\nMay run at a higher autonomy when: variance <= $2,000 and a PO exists -> ticket and status may run without approval -> execute_allowlisted [ENFORCED typed check small_variance_with_po]; vendor is new -> recommend only -> recommend [documentation only, NOT enforced]\n\n## 3. What it must never do\n- Release or schedule any payment  [erp.ap.release_payment]\n- Edit vendor bank or remittance details  [erp.ap.update_vendor_bank_details]\n- Create or delete vendor master records  [erp.ap.modify_vendor_master]\n- Approve the agent's own drafts\n- Email any address not on the vendor domain allowlist\n\n## 4. Biggest thing one action may affect\nKinds: financial, external_communication, operational \u00b7 max severity moderate \u00b7 at most 2 object(s) \u00b7 irreversible allowed: no\nWorst case: -\n\n## 5. Approval\nRoles: ap_manager, finance_controller \u00b7 must be shown: invoice_image, po_match_evidence, variance, draft_text \u00b7 two approvers for: none \u00b7 approval may wait 1440 min \u00b7 requests expire after 1440 min of review\n\n## 6. Data\nModel runs: customer_boundary \u00b7 may leave: none \u00b7 never leaves: bank_details, personal_data \u00b7 logs kept 30 days\n\n## 7. Credentials\nActs as svc:ap-agent \u00b7 may: erp.ap:read, erp.ap:status_write, ticketing:write, email:draft \u00b7 credential lasts 240 min and stops the agent when it expires\n\n## 8. Logging\nRecorded: tool_calls, evidence_refs, gate_decision, approvals, denials, outcome \u00b7 readable by: ap_platform_lead, finance_controller, security \u00b7 alerts on: release_payment_attempt, bank_detail_edit_attempt, email_to_unlisted_domain\n\n## 9. Emergency stop\nfeature flag ap-agent.enabled \u00b7 live state at flags://acme/ap-agent.enabled \u00b7 operated by: ap_platform_lead, finance_controller \u00b7 stops pending actions: yes\n\n## 10. Recovery\nOwner: ap_platform_lead \u00b7 executing operations need an exercised way back with evidence, no older than 90 days\nAfter the gate says yes, an action must run within 300 seconds or be re-checked.\n\n## 11. Audit and governed response\nReviewed feedback policy: feedback:ap-demo v1 (sha256:36e7f620ba14994e2e63ad96b4c8125001f2291216fd71213284efdb5a69ff8b)\nResolve this exact policy with --feedback-policy before approving it. ManagedGate applies its typed rules; ordinary Gate refuses this policy-bearing Profile.\nRuntime feedback can require review or suspend new dispatches, never expand standing authority. Restoration is authenticated, separately recorded, and never retries an action.\n\n# PART A \u2014 Product decisions (product owner reviews; approve the exact digest with aam signoff)\nEvery product-owned setting, exactly as it will be enforced. Rules, selectors, or thresholds marked documentation_only are shown to you but are NOT enforced by the gate.\n- identity.agent_name = invoice-triage\n- identity.agent_version = 1.4\n- identity.owner = AP Platform Lead\n- authority_scope.tenant = ACME\n- authority_scope.environment = prod\n- authority_scope.systems[0] = erp.ap\n- authority_scope.systems[1] = ticketing\n- authority_scope.systems[2] = email\n- authority_scope.targets[0].type = invoice\n- authority_scope.targets[0].selector = invoice.status == 'review'\n- authority_scope.targets[1].type = email_address\n- authority_scope.targets[1].selector = address on vendor file\n- authority_scope.targets[2].type = ticket\n- authority_scope.targets[2].selector = AP queue\n- authority_scope.max_review_window_minutes = 1440\n- permissions.default_deny = true\n- permissions.allowed[0].tool = erp.ap\n- permissions.allowed[0].operation = read_invoice\n- permissions.allowed[0].effect_target.type = invoice\n- permissions.allowed[0].impact.domains[0] = operational\n- permissions.allowed[0].impact.severity = low\n- permissions.allowed[0].impact.blast_radius = Read-only; changes nothing.\n- permissions.allowed[0].impact.reversible = true\n- permissions.allowed[0].impact.max_affected_objects = 0\n- permissions.allowed[0].default_mode = execute_allowlisted\n- permissions.allowed[0].max_mode = execute_allowlisted\n- permissions.allowed[0].summary_template = Read {effect_target}. No changes.\n- permissions.allowed[1].tool = erp.ap\n- permissions.allowed[1].operation = match_po\n- permissions.allowed[1].effect_target.type = invoice\n- permissions.allowed[1].impact.domains[0] = operational\n- permissions.allowed[1].impact.severity = low\n- permissions.allowed[1].impact.blast_radius = Read-only; changes nothing.\n- permissions.allowed[1].impact.reversible = true\n- permissions.allowed[1].impact.max_affected_objects = 0\n- permissions.allowed[1].default_mode = execute_allowlisted\n- permissions.allowed[1].max_mode = execute_allowlisted\n- permissions.allowed[1].summary_template = Match invoice {subject} to its purchase order. Changes nothing.\n- permissions.allowed[2].tool = email\n- permissions.allowed[2].operation = draft_email\n- permissions.allowed[2].max_mode = execute_allowlisted\n- permissions.allowed[2].reversible = true\n- permissions.allowed[2].material_parameters[0] = recipient\n- permissions.allowed[2].material_parameters[1] = invoice\n- permissions.allowed[2].material_parameters[2] = po\n- permissions.allowed[2].material_parameters[3] = variance_usd\n- permissions.allowed[2].effect_target.type = email_address\n- permissions.allowed[2].effect_target.classes[0] = vendor_on_file\n- permissions.allowed[2].impact.domains[0] = external_communication\n- permissions.allowed[2].impact.domains[1] = financial\n- permissions.allowed[2].impact.severity = low\n- permissions.allowed[2].impact.blast_radius = One outbound draft to one vendor about one invoice. No money movement.\n- permissions.allowed[2].impact.bounded_by[0] = invoice={invoice}\n- permissions.allowed[2].impact.bounded_by[1] = vendor=on file\n- permissions.allowed[2].impact.reversible = true\n- permissions.allowed[2].impact.max_affected_objects = 1\n- permissions.allowed[2].default_mode = execute_allowlisted\n- permissions.allowed[2].summary_template = Draft (not send) an email to {effect_target} asking them to confirm the ${variance_usd} unit-price variance on invoice {invoice} against PO {po}. Will not release payment, change vendor details, or send without approval.\n- permissions.allowed[2].approver_roles[0] = ap_manager\n- permissions.allowed[3].tool = ticketing\n- permissions.allowed[3].operation = create_ticket\n- permissions.allowed[3].max_mode = execute_allowlisted\n- permissions.allowed[3].reversible = true\n- permissions.allowed[3].material_parameters[0] = invoice\n- permissions.allowed[3].material_parameters[1] = reason\n- permissions.allowed[3].effect_target.type = ticket\n- permissions.allowed[3].impact.domains[0] = operational\n- permissions.allowed[3].impact.severity = low\n- permissions.allowed[3].impact.blast_radius = One ticket in the AP queue.\n- permissions.allowed[3].impact.reversible = true\n- permissions.allowed[3].impact.max_affected_objects = 1\n- permissions.allowed[3].default_mode = execute_allowlisted\n- permissions.allowed[3].summary_template = Open an AP exception ticket for invoice {invoice}: {reason}.\n- permissions.allowed[4].tool = erp.ap\n- permissions.allowed[4].operation = set_status\n- permissions.allowed[4].max_mode = execute_allowlisted\n- permissions.allowed[4].reversible = true\n- permissions.allowed[4].material_parameters[0] = invoice\n- permissions.allowed[4].material_parameters[1] = transition\n- permissions.allowed[4].effect_target.type = invoice\n- permissions.allowed[4].impact.domains[0] = operational\n- permissions.allowed[4].impact.domains[1] = financial\n- permissions.allowed[4].impact.severity = moderate\n- permissions.allowed[4].impact.blast_radius = Status of one invoice.\n- permissions.allowed[4].impact.reversible = true\n- permissions.allowed[4].impact.max_affected_objects = 1\n- permissions.allowed[4].default_mode = execute_allowlisted\n- permissions.allowed[4].summary_template = Set status of invoice {invoice}: {transition}.\n- permissions.prohibited[0].description = Release or schedule any payment\n- permissions.prohibited[1].description = Edit vendor bank or remittance details\n- permissions.prohibited[2].description = Create or delete vendor master records\n- permissions.prohibited[3].description = Approve the agent's own drafts\n- permissions.prohibited[3].enforcement = typed\n- permissions.prohibited[4].description = Email any address not on the vendor domain allowlist\n- permissions.prohibited[4].enforcement = typed\n- impact_envelope.allowed_domains[0] = financial\n- impact_envelope.allowed_domains[1] = external_communication\n- impact_envelope.allowed_domains[2] = operational\n- impact_envelope.max_severity = moderate\n- impact_envelope.max_affected_objects = 2\n- impact_envelope.irreversible_allowed = false\n- autonomy_policy.default_mode = request_approval\n- autonomy_policy.max_mode = execute_allowlisted\n- autonomy_policy.thresholds[0].description = variance <= $2,000 and a PO exists -> ticket and status may run without approval\n- autonomy_policy.thresholds[0].enforcement = typed\n- autonomy_policy.thresholds[0].mode = execute_allowlisted\n- autonomy_policy.thresholds[0].operations[0] = ticketing.create_ticket\n- autonomy_policy.thresholds[0].operations[1] = erp.ap.set_status\n- autonomy_policy.thresholds[1].description = vendor is new -> recommend only\n- autonomy_policy.thresholds[1].enforcement = documentation_only\n- autonomy_policy.thresholds[1].mode = recommend\n- approval_policy.approver_roles[0] = ap_manager\n- approval_policy.approver_roles[1] = finance_controller\n- approval_policy.required_evidence[0] = invoice_image\n- approval_policy.required_evidence[1] = po_match_evidence\n- approval_policy.required_evidence[2] = variance\n- approval_policy.required_evidence[3] = draft_text\n- approval_policy.one_approval_one_action = true\n- approval_policy.approval_timeout_minutes = 1440\n- approval_policy.distinct_principals_required = true\n- approval_policy.principal_authentication_required = true\n- input_trust.untrusted_sources[0] = invoice_pdfs\n- input_trust.untrusted_sources[1] = vendor_emails\n- input_trust.untrusted_sources[2] = ocr_output\n- data_boundary.egress_policy = none\n- data_boundary.never_egress[0] = bank_details\n- data_boundary.never_egress[1] = personal_data\n- data_boundary.log_retention_days = 30\n- audit_policy.readers[0] = ap_platform_lead\n- audit_policy.readers[1] = finance_controller\n- audit_policy.readers[2] = security\n- audit_policy.alert_on[0] = release_payment_attempt\n- audit_policy.alert_on[1] = bank_detail_edit_attempt\n- audit_policy.alert_on[2] = email_to_unlisted_domain\n- recovery_policy.owner = ap_platform_lead\n- emergency_disable.operators[0] = ap_platform_lead\n- emergency_disable.operators[1] = finance_controller\n- emergency_disable.halts_pending = true\n- conformance.level = L2\n- monitoring_policy_ref.policy_id = feedback:ap-demo\n- monitoring_policy_ref.policy_version = 1\n- monitoring_policy_ref.policy_digest = sha256:36e7f620ba14994e2e63ad96b4c8125001f2291216fd71213284efdb5a69ff8b\n\nPart A review digest (identity-bound sign-off supported): sha256:a3b911b4113544c5311a7c24b4bf4fee92d45643f80455045e802316d0ac21a2\n\n# PART B \u2014 Engineering binding (engineering reviews; approve the exact digest with aam signoff)\nModel/prompt/policy pins, credentials, selectors and rule ids, constraints, parameters, verification templates, recovery evidence, kill-switch mechanism, execution authority.\n- profile_id = aap:acme:invoice-triage\n- profile_version = 1.0.7\n- issued_at = 2026-08-15T00:00:00Z\n- identity.model.provider = <provider>\n- identity.model.identifier = <model@2026-05>\n- identity.prompt.version = 9\n- identity.prompt.hash = sha256:5d0c...e7\n- identity.policy.version = 3\n- identity.policy.hash = sha256:3f0a...b1\n- authority_scope.selector = invoices.status == 'review'\n- authority_scope.targets[0].enforcement = typed\n- authority_scope.targets[0].selector_id = invoice_in_review\n- authority_scope.targets[1].enforcement = typed\n- authority_scope.targets[1].selector_id = address_on_vendor_file\n- authority_scope.targets[2].enforcement = typed\n- authority_scope.targets[2].selector_id = ap_ticket_queue\n- authority_scope.max_execution_authority_seconds = 300\n- permissions.allowed[0].verification.expected_postconditions[0] = Read completed without any write\n- permissions.allowed[0].verification.tests[0].method = read_system_of_record\n- permissions.allowed[0].verification.tests[0].source = audit_store\n- permissions.allowed[0].verification.tests[0].assertion = no write recorded for this manifest\n- permissions.allowed[0].verification.tests[0].test_id = postcondition-1\n- permissions.allowed[0].verification.tests[0].postcondition_index = 0\n- permissions.allowed[0].verification.on_failure = escalate\n- permissions.allowed[0].verification.completion_rule = all_postconditions_verified\n- permissions.allowed[0].verification.max_observation_age_seconds = 300\n- permissions.allowed[0].privileges_required[0] = erp.ap:read\n- permissions.allowed[0].allowed_parameters[0] = invoice\n- permissions.allowed[1].verification.expected_postconditions[0] = Read completed without any write\n- permissions.allowed[1].verification.tests[0].method = read_system_of_record\n- permissions.allowed[1].verification.tests[0].source = audit_store\n- permissions.allowed[1].verification.tests[0].assertion = no write recorded for this manifest\n- permissions.allowed[1].verification.tests[0].test_id = postcondition-1\n- permissions.allowed[1].verification.tests[0].postcondition_index = 0\n- permissions.allowed[1].verification.on_failure = escalate\n- permissions.allowed[1].verification.completion_rule = all_postconditions_verified\n- permissions.allowed[1].verification.max_observation_age_seconds = 300\n- permissions.allowed[1].privileges_required[0] = erp.ap:read\n- permissions.allowed[1].allowed_parameters[0] = invoice\n- permissions.allowed[2].constraints.recipient_class = vendor_on_file\n- permissions.allowed[2].constraints.max_recipients = 1\n- permissions.allowed[2].allowed_parameters[0] = recipient\n- permissions.allowed[2].allowed_parameters[1] = invoice\n- permissions.allowed[2].allowed_parameters[2] = po\n- permissions.allowed[2].allowed_parameters[3] = variance_usd\n- permissions.allowed[2].allowed_parameters[4] = subject_line\n- permissions.allowed[2].privileges_required[0] = erp.ap:read\n- permissions.allowed[2].privileges_required[1] = email:draft\n- permissions.allowed[2].systems[0] = erp.ap\n- permissions.allowed[2].systems[1] = email\n- permissions.allowed[2].verification.expected_postconditions[0] = Draft exists in email system addressed to the vendor on file\n- permissions.allowed[2].verification.expected_postconditions[1] = Draft references invoice {invoice} and PO {po}\n- permissions.allowed[2].verification.expected_postconditions[2] = Invoice status unchanged\n- permissions.allowed[2].verification.tests[0].method = read_system_of_record\n- permissions.allowed[2].verification.tests[0].source = email\n- permissions.allowed[2].verification.tests[0].assertion = draft for invoice {invoice} exists, unsent, single recipient {recipient}\n- permissions.allowed[2].verification.tests[0].timeout_minutes = 5\n- permissions.allowed[2].verification.tests[0].test_id = postcondition-1\n- permissions.allowed[2].verification.tests[0].postcondition_index = 0\n- permissions.allowed[2].verification.tests[1].method = read_system_of_record\n- permissions.allowed[2].verification.tests[1].source = erp.ap\n- permissions.allowed[2].verification.tests[1].assertion = invoice {invoice} status == 'review' and payment_scheduled == false\n- permissions.allowed[2].verification.tests[1].timeout_minutes = 5\n- permissions.allowed[2].verification.tests[1].test_id = postcondition-2\n- permissions.allowed[2].verification.tests[1].postcondition_index = 2\n- permissions.allowed[2].verification.tests[2].test_id = postcondition-3\n- permissions.allowed[2].verification.tests[2].postcondition_index = 1\n- permissions.allowed[2].verification.tests[2].method = read_system_of_record\n- permissions.allowed[2].verification.tests[2].source = email\n- permissions.allowed[2].verification.tests[2].assertion = draft for invoice {invoice} references invoice {invoice} and PO {po}\n- permissions.allowed[2].verification.tests[2].timeout_minutes = 5\n- permissions.allowed[2].verification.on_failure = reopen\n- permissions.allowed[2].verification.completion_rule = all_postconditions_verified\n- permissions.allowed[2].verification.max_observation_age_seconds = 300\n- permissions.allowed[3].allowed_parameters[0] = invoice\n- permissions.allowed[3].allowed_parameters[1] = reason\n- permissions.allowed[3].privileges_required[0] = ticketing:write\n- permissions.allowed[3].verification.expected_postconditions[0] = Ticket exists for invoice {invoice}\n- permissions.allowed[3].verification.tests[0].method = read_system_of_record\n- permissions.allowed[3].verification.tests[0].source = ticketing\n- permissions.allowed[3].verification.tests[0].assertion = ticket exists for invoice {invoice} with reason {reason}\n- permissions.allowed[3].verification.tests[0].test_id = postcondition-1\n- permissions.allowed[3].verification.tests[0].postcondition_index = 0\n- permissions.allowed[3].verification.on_failure = reopen\n- permissions.allowed[3].verification.completion_rule = all_postconditions_verified\n- permissions.allowed[3].verification.max_observation_age_seconds = 300\n- permissions.allowed[4].constraints.transition[0] = review->matched\n- permissions.allowed[4].constraints.transition[1] = review->exception\n- permissions.allowed[4].allowed_parameters[0] = invoice\n- permissions.allowed[4].allowed_parameters[1] = transition\n- permissions.allowed[4].privileges_required[0] = erp.ap:status_write\n- permissions.allowed[4].verification.expected_postconditions[0] = Invoice {invoice} status updated\n- permissions.allowed[4].verification.tests[0].method = read_system_of_record\n- permissions.allowed[4].verification.tests[0].source = erp.ap\n- permissions.allowed[4].verification.tests[0].assertion = invoice {invoice} status transition {transition} recorded with manifest id\n- permissions.allowed[4].verification.tests[0].test_id = postcondition-1\n- permissions.allowed[4].verification.tests[0].postcondition_index = 0\n- permissions.allowed[4].verification.on_failure = rollback\n- permissions.allowed[4].verification.completion_rule = all_postconditions_verified\n- permissions.allowed[4].verification.max_observation_age_seconds = 300\n- permissions.prohibited[0].tool = erp.ap\n- permissions.prohibited[0].operation = release_payment\n- permissions.prohibited[1].tool = erp.ap\n- permissions.prohibited[1].operation = update_vendor_bank_details\n- permissions.prohibited[2].tool = erp.ap\n- permissions.prohibited[2].operation = modify_vendor_master\n- permissions.prohibited[3].rule = approver.principal != agent.identity\n- permissions.prohibited[3].rule_id = no_self_approval\n- permissions.prohibited[4].rule = recipient.domain in vendor_domains_on_file\n- permissions.prohibited[4].rule_id = recipient_domain_on_file\n- autonomy_policy.thresholds[0].threshold_id = small_variance_with_po\n- autonomy_policy.downgrade_on[0] = evaluation_regression\n- autonomy_policy.downgrade_on[1] = anomaly_alert\n- input_trust.content_is_data_not_instructions = true\n- input_trust.mitigations[0] = retrieved text rendered as data blocks\n- input_trust.mitigations[1] = bank-detail edits denied at gate regardless of content\n- input_trust.injection_test_set.identifier = inj-ap-v2\n- input_trust.injection_test_set.last_passed_versions = model@2026-05/prompt9/policy3\n- input_trust.injection_test_set.last_run = 2026-08-30T00:00:00Z\n- credentials_policy.identity = svc:ap-agent\n- credentials_policy.privileges[0] = erp.ap:read\n- credentials_policy.privileges[1] = erp.ap:status_write\n- credentials_policy.privileges[2] = ticketing:write\n- credentials_policy.privileges[3] = email:draft\n- credentials_policy.max_ttl_minutes = 240\n- credentials_policy.fail_closed_on_expiry = true\n- data_boundary.model_hosting = customer_boundary\n- data_boundary.log_location = in-tenant audit store\n- data_boundary.tenant_isolation_tested = true\n- audit_policy.records[0] = tool_calls\n- audit_policy.records[1] = evidence_refs\n- audit_policy.records[2] = gate_decision\n- audit_policy.records[3] = approvals\n- audit_policy.records[4] = denials\n- audit_policy.records[5] = outcome\n- audit_policy.append_only = true\n- audit_policy.log_store = in-tenant audit store\n- recovery_policy.requires_tested_recovery_for_execution = true\n- recovery_policy.templates[0].tool = email\n- recovery_policy.templates[0].operation = draft_email\n- recovery_policy.templates[0].method = delete draft; if sent, send correction email\n- recovery_policy.templates[0].tested = true\n- recovery_policy.templates[0].last_tested = 2026-08-30\n- recovery_policy.templates[0].time_to_recover_minutes = 5\n- recovery_policy.templates[0].tested_evidence_ref = testrun:recovery:ap-agent:2026-08-30#7\n- recovery_policy.templates[0].owner = ap_platform_lead\n- recovery_policy.templates[0].irreversible = false\n- recovery_policy.templates[1].tool = erp.ap\n- recovery_policy.templates[1].operation = set_status\n- recovery_policy.templates[1].method = revert to review\n- recovery_policy.templates[1].tested = true\n- recovery_policy.templates[1].last_tested = 2026-08-30\n- recovery_policy.templates[1].time_to_recover_minutes = 1\n- recovery_policy.templates[1].tested_evidence_ref = testrun:recovery:ap-agent:2026-08-30#8\n- recovery_policy.templates[1].owner = ap_platform_lead\n- recovery_policy.templates[1].irreversible = false\n- recovery_policy.templates[2].tool = ticketing\n- recovery_policy.templates[2].operation = create_ticket\n- recovery_policy.templates[2].method = close ticket with reason\n- recovery_policy.templates[2].tested = true\n- recovery_policy.templates[2].last_tested = 2026-08-30\n- recovery_policy.templates[2].time_to_recover_minutes = 1\n- recovery_policy.templates[2].tested_evidence_ref = testrun:recovery:ap-agent:2026-08-30#9\n- recovery_policy.templates[2].owner = ap_platform_lead\n- recovery_policy.templates[2].irreversible = false\n- recovery_policy.templates[3].tool = erp.ap\n- recovery_policy.templates[3].operation = read_invoice\n- recovery_policy.templates[3].method = none needed (read-only)\n- recovery_policy.templates[3].tested = true\n- recovery_policy.templates[3].last_tested = 2026-08-30\n- recovery_policy.templates[3].time_to_recover_minutes = 0\n- recovery_policy.templates[3].tested_evidence_ref = testrun:recovery:ap-agent:2026-08-30#10\n- recovery_policy.templates[3].owner = ap_platform_lead\n- recovery_policy.templates[3].irreversible = false\n- recovery_policy.templates[4].tool = erp.ap\n- recovery_policy.templates[4].operation = match_po\n- recovery_policy.templates[4].method = none needed (computes only)\n- recovery_policy.templates[4].tested = true\n- recovery_policy.templates[4].last_tested = 2026-08-30\n- recovery_policy.templates[4].time_to_recover_minutes = 0\n- recovery_policy.templates[4].tested_evidence_ref = testrun:recovery:ap-agent:2026-08-30#11\n- recovery_policy.templates[4].owner = ap_platform_lead\n- recovery_policy.templates[4].irreversible = false\n- recovery_policy.test_evidence_required = true\n- recovery_policy.test_max_age_days = 90\n- emergency_disable.mechanism = feature flag ap-agent.enabled\n- emergency_disable.execution_state = allowed\n- emergency_disable.state_source = flags://acme/ap-agent.enabled\n- emergency_disable.checked_at_gate = true\n- emergency_disable.halts_in_flight_where_possible = true\n- conformance.assessed_at = 2026-08-30\n- conformance.assessor = AP Platform Lead\n- conformance.enforcement.gate_id = policy-gate:finance-agents-v1\n- conformance.enforcement.outside_model = true\n- conformance.enforcement.checks_action_target = true\n- conformance.enforcement.checks_manifest_within_profile = true\n- conformance.enforcement.checks_scope_permissions_credentials_stop = true\n- conformance.enforcement.containment_check_implementation = aam-check-containment/0.3.0\n- conformance.evaluation.golden_set = golden-ap-v3\n- conformance.evaluation.includes_abstention_cases = true\n- conformance.evaluation.injection_set = inj-ap-v2\n- conformance.evaluation.prohibited_action_set = deny-ap-v1\n- conformance.evaluation.ci_or_release_gated = false\n\nPart B review digest (identity-bound sign-off supported): sha256:248b8f667fc2db18ae95a7fcfc53edb9733cb682e5a27d5cfaab7121595ea201\n\nProfile digest (binds Part A and Part B; this is what the gate enforces): sha256:79cdd3622f6348fd38ed01c7e9a2558f3652d7d4d55aebb6f3e3137703532c63\nThe Profile digest is what the gate enforces. It covers both parts; neither part can change without the digest changing.\n\n# Resolved policy (content bound by the Profile policy digest)\nThis view does not grant authority and never executes an operation.\n- unknown-action: 1 distinct EXECUTION_UNKNOWN incident(s) within 3600 seconds -> SUSPENDED at action scope.\n- conflicting-evidence: 1 distinct EVIDENCE_CONFLICT incident(s) within 3600 seconds -> SUSPENDED at operation scope.\n- failed-verification: 2 distinct VERIFICATION_FAILED incident(s) within 3600 seconds -> REQUIRE_APPROVAL at operation scope.\n- evaluation-regression: 1 distinct EVALUATION_REGRESSION incident(s) within 3600 seconds -> REQUIRE_APPROVAL at operation scope.\n- wrong-adapter-effect: 1 distinct ADAPTER_MISMATCH incident(s) within 3600 seconds -> SUSPENDED at operation scope.\n- overdue-dispatch: 1 distinct OVERDUE_EXECUTION incident(s) within 3600 seconds -> SUSPENDED at operation scope.\n- missing-verification: 1 distinct OVERDUE_VERIFICATION incident(s) within 3600 seconds -> REQUIRE_APPROVAL at operation scope.\nSignal maximum age: 300 seconds.\nOverdue execution / verification: 300 / 600 seconds.\nExport backlog admission limit: 10000 events; consumer primary-audit.\nOnly authenticated manual restoration is implemented. Principal/role bindings are separately trusted deployment configuration.\nExact resolved JSON (engineering review):\n{\n  \"schema_version\": \"0.3.7\",\n  \"policy_id\": \"feedback:ap-demo\",\n  \"policy_version\": \"1\",\n  \"description\": \"Synthetic AP policy: predefined restrictions only; authenticated manual restoration. Not customer calibration.\",\n  \"rules\": [\n    {\n      \"rule_id\": \"unknown-action\",\n      \"signal\": \"EXECUTION_UNKNOWN\",\n      \"mode\": \"SUSPENDED\",\n      \"scope\": \"action\",\n      \"threshold\": 1,\n      \"window_seconds\": 3600\n    },\n    {\n      \"rule_id\": \"conflicting-evidence\",\n      \"signal\": \"EVIDENCE_CONFLICT\",\n      \"mode\": \"SUSPENDED\",\n      \"scope\": \"operation\",\n      \"threshold\": 1,\n      \"window_seconds\": 3600\n    },\n    {\n      \"rule_id\": \"failed-verification\",\n      \"signal\": \"VERIFICATION_FAILED\",\n      \"mode\": \"REQUIRE_APPROVAL\",\n      \"scope\": \"operation\",\n      \"threshold\": 2,\n      \"window_seconds\": 3600\n    },\n    {\n      \"rule_id\": \"evaluation-regression\",\n      \"signal\": \"EVALUATION_REGRESSION\",\n      \"mode\": \"REQUIRE_APPROVAL\",\n      \"scope\": \"operation\",\n      \"threshold\": 1,\n      \"window_seconds\": 3600\n    },\n    {\n      \"rule_id\": \"wrong-adapter-effect\",\n      \"signal\": \"ADAPTER_MISMATCH\",\n      \"mode\": \"SUSPENDED\",\n      \"scope\": \"operation\",\n      \"threshold\": 1,\n      \"window_seconds\": 3600\n    },\n    {\n      \"rule_id\": \"overdue-dispatch\",\n      \"signal\": \"OVERDUE_EXECUTION\",\n      \"mode\": \"SUSPENDED\",\n      \"scope\": \"operation\",\n      \"threshold\": 1,\n      \"window_seconds\": 3600\n    },\n    {\n      \"rule_id\": \"missing-verification\",\n      \"signal\": \"OVERDUE_VERIFICATION\",\n      \"mode\": \"REQUIRE_APPROVAL\",\n      \"scope\": \"operation\",\n      \"threshold\": 1,\n      \"window_seconds\": 3600\n    }\n  ],\n  \"signal_max_age_seconds\": 300,\n  \"overdue_execution_seconds\": 300,\n  \"overdue_verification_seconds\": 600,\n  \"max_export_backlog\": 10000,\n  \"audit_consumer\": \"primary-audit\"\n}\n",
+      "stderr": ""
+    },
+    {
+      "name": "CLI refuses managed readback without policy",
+      "command": [
+        "/mnt/data/aam_python_v037/qa/isolated-env/bin/python",
+        "tools/aam.py",
+        "readback",
+        "/mnt/data/aam_python_v037/qa/clean-extract/repo/appendix/examples/managed-runtime/generated/managed-profile.json"
+      ],
+      "returncode": 2,
+      "passed": true,
+      "stdout": "",
+      "stderr": "ERROR: ValueError: Policy-bearing Profile requires --feedback-policy for review/signoff\n"
+    },
+    {
+      "name": "bundled audit chain and offline review cases",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "managed Profile pins exact feedback policy",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "managed Card preserves mode and complete parity",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "bundled audit includes recorded control transitions",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "synthetic managed end-to-end scenario",
+      "command": [
+        "/mnt/data/aam_python_v037/qa/isolated-env/bin/python",
+        "tests/run_managed_demo.py",
+        "--out",
+        "/tmp/aam-managed-release-dla4prxs"
+      ],
+      "returncode": 0,
+      "passed": true,
+      "stdout": "{\n  \"passed\": true,\n  \"synthetic_adapter_calls\": 2,\n  \"audit_events\": 21,\n  \"output\": \"/tmp/aam-managed-release-dla4prxs\"\n}\n",
+      "stderr": ""
+    },
+    {
+      "name": "offline audit review CLI never executes",
+      "command": [
+        "/mnt/data/aam_python_v037/qa/isolated-env/bin/python",
+        "tools/audit_review.py",
+        "/mnt/data/aam_python_v037/qa/clean-extract/repo/appendix/examples/managed-runtime/generated/audit-events.json",
+        "--out",
+        "/tmp/aam-managed-release-dla4prxs/review.json"
+      ],
+      "returncode": 0,
+      "passed": true,
+      "stdout": "Wrote 10 UNREVIEWED cases; nothing executed or changed.\n",
+      "stderr": ""
+    }
+  ],
+  "passed": true,
+  "summary": {
+    "suites_passed": 5,
+    "suites_total": 5,
+    "integration_checks_passed": 53,
+    "integration_checks_total": 53,
+    "containment_vectors": 59
+  }
+}

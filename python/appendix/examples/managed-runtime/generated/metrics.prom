@@ -1,0 +1,47 @@
+# TYPE aam_events_total counter
+aam_events_total{event_type="ADAPTER_REGISTERED",result="NONE"} 1
+aam_events_total{event_type="APPROVAL_CONSUMED",result="CONSUMED"} 1
+aam_events_total{event_type="APPROVAL_RECORDED",result="APPROVED"} 1
+aam_events_total{event_type="CONTROL_SIGNAL",result="NONE"} 1
+aam_events_total{event_type="EXECUTION_TRANSITION",result="ACKNOWLEDGED"} 2
+aam_events_total{event_type="EXECUTION_TRANSITION",result="DISPATCHED"} 2
+aam_events_total{event_type="EXECUTION_TRANSITION",result="NOT_DISPATCHED"} 1
+aam_events_total{event_type="GATE_DECISION",result="ALLOW"} 5
+aam_events_total{event_type="MANIFEST_BUILT",result="NONE"} 2
+aam_events_total{event_type="OUTCOME_VERIFIED",result="VERIFIED"} 2
+aam_events_total{event_type="PROFILE_PUBLISHED",result="NONE"} 1
+aam_events_total{event_type="RESTRICTION_ACTIVATED",result="REQUIRE_APPROVAL"} 1
+aam_events_total{event_type="RESTRICTION_RESTORED",result="REQUIRE_APPROVAL"} 1
+# TYPE aam_execution_unknown_current gauge
+aam_execution_unknown_current 0
+# TYPE aam_execution_unknown_oldest_age_seconds gauge
+aam_execution_unknown_oldest_age_seconds 0
+# TYPE aam_active_restrictions gauge
+aam_active_restrictions 0
+# TYPE aam_audit_export_backlog gauge
+aam_audit_export_backlog 0
+# TYPE aam_runtime_degraded gauge
+aam_runtime_degraded 0
+# TYPE aam_audit_append_failures_total counter
+aam_audit_append_failures_total 0
+# TYPE aam_telemetry_failures_total counter
+aam_telemetry_failures_total 0
+# TYPE aam_audit_export_failures_total counter
+aam_audit_export_failures_total 0
+# TYPE aam_gate_method_seconds summary
+aam_gate_method_seconds_count{method="execute"} 3
+aam_gate_method_seconds_sum{method="execute"} 0.08057349999990038
+aam_gate_method_seconds_count{method="ingest_signal"} 1
+aam_gate_method_seconds_sum{method="ingest_signal"} 0.003969041999880574
+aam_gate_method_seconds_count{method="propose"} 2
+aam_gate_method_seconds_sum{method="propose"} 0.039799369999855116
+aam_gate_method_seconds_count{method="publish_profile"} 1
+aam_gate_method_seconds_sum{method="publish_profile"} 0.007813639000232797
+aam_gate_method_seconds_count{method="record_approval"} 1
+aam_gate_method_seconds_sum{method="record_approval"} 0.006595285000003059
+aam_gate_method_seconds_count{method="register_executor"} 1
+aam_gate_method_seconds_sum{method="register_executor"} 0.0020893099999739206
+aam_gate_method_seconds_count{method="restore_restriction"} 1
+aam_gate_method_seconds_sum{method="restore_restriction"} 0.005407159000242245
+aam_gate_method_seconds_count{method="verify_outcome"} 2
+aam_gate_method_seconds_sum{method="verify_outcome"} 0.046010647999992216

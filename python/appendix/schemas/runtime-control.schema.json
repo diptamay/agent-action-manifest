@@ -1,0 +1,220 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "AAM runtime outputs v0.4.0",
+  "description": "Structural validation only; does not establish source identity, execution truth or storage durability.",
+  "oneOf": [
+    {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "record_type",
+        "operation",
+        "decision",
+        "reason_code",
+        "audit_persisted",
+        "restart_and_reconcile_required",
+        "message"
+      ],
+      "properties": {
+        "record_type": {
+          "const": "RuntimeFailure"
+        },
+        "operation": {
+          "type": "string",
+          "minLength": 1
+        },
+        "decision": {
+          "const": "INDETERMINATE"
+        },
+        "reason_code": {
+          "const": "AUDIT_OR_RUNTIME_UNAVAILABLE"
+        },
+        "audit_persisted": {
+          "const": false
+        },
+        "restart_and_reconcile_required": {
+          "const": true
+        },
+        "message": {
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    },
+    {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "record_type": {
+          "const": "RuntimeControlSnapshot"
+        },
+        "schema_version": {"enum": ["0.3.7", "0.4.0"]},
+        "policy_ref": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "policy_id",
+            "policy_version",
+            "policy_digest"
+          ],
+          "properties": {
+            "policy_id": {
+              "type": "string",
+              "minLength": 1
+            },
+            "policy_version": {
+              "type": "string",
+              "minLength": 1
+            },
+            "policy_digest": {
+              "type": "string",
+              "pattern": "^sha256:[0-9a-f]{64}$"
+            }
+          }
+        },
+        "tenant": {
+          "type": "string",
+          "minLength": 1
+        },
+        "environment": {
+          "type": "string",
+          "minLength": 1
+        },
+        "observed_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "restrictions": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "restriction_id": {
+                "type": "string",
+                "minLength": 1
+              },
+              "revision": {
+                "type": "integer",
+                "minimum": 1
+              },
+              "active": {
+                "type": "boolean"
+              },
+              "scope_key": {
+                "type": "string",
+                "minLength": 1
+              },
+              "profile_id": {
+                "type": "string",
+                "minLength": 1
+              },
+              "rule_id": {
+                "type": "string",
+                "minLength": 1
+              },
+              "policy_ref": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                  "policy_id",
+                  "policy_version",
+                  "policy_digest"
+                ],
+                "properties": {
+                  "policy_id": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "policy_version": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "policy_digest": {
+                    "type": "string",
+                    "pattern": "^sha256:[0-9a-f]{64}$"
+                  }
+                }
+              },
+              "signal_code": {
+                "enum": [
+                  "EXECUTION_UNKNOWN",
+                  "EVIDENCE_CONFLICT",
+                  "VERIFICATION_FAILED",
+                  "EVALUATION_REGRESSION",
+                  "ADAPTER_MISMATCH",
+                  "OVERDUE_EXECUTION",
+                  "OVERDUE_VERIFICATION"
+                ]
+              },
+              "mode": {
+                "enum": [
+                  "REQUIRE_APPROVAL",
+                  "SUSPENDED"
+                ]
+              },
+              "created_at": {
+                "type": "string",
+                "format": "date-time"
+              },
+              "trigger_event_ids": {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "minItems": 1
+              },
+              "execution_ids": {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "minLength": 1
+                }
+              },
+              "restoration": {
+                "const": "authenticated_manual"
+              },
+              "restored_at": {
+                "anyOf": [
+                  {
+                    "type": "string",
+                    "format": "date-time"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              }
+            },
+            "required": [
+              "restriction_id",
+              "revision",
+              "active",
+              "scope_key",
+              "profile_id",
+              "rule_id",
+              "policy_ref",
+              "signal_code",
+              "mode",
+              "created_at",
+              "trigger_event_ids",
+              "execution_ids",
+              "restoration",
+              "restored_at"
+            ]
+          }
+        }
+      },
+      "required": [
+        "record_type",
+        "schema_version",
+        "policy_ref",
+        "tenant",
+        "environment",
+        "observed_at",
+        "restrictions"
+      ]
+    }
+  ]
+}

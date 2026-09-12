@@ -1,0 +1,21 @@
+{
+  "record_type": "ReadbackSignoff",
+  "schema_version": "0.3.6",
+  "signoff_id": "5faea641-b27a-4477-a648-57b4d7cecaed",
+  "profile_id": "aap:acme:invoice-triage",
+  "profile_version": "1.4.0",
+  "profile_digest": "sha256:ca79e7d75384874b3e2bb3f58c5f0868f74c0cd88159ea404db916572ec9c69d",
+  "part": "B",
+  "review_digest": "sha256:7259fbfb7d5a9d3a50ea82308289135431dc2912f025b7eac1d3367351a06a18",
+  "readback_digest": "sha256:5ff733f5b72e334b63a9ab4b1a8c030d405c054e21cc9614fe8521398142b445",
+  "readback_version": "aam-readback/0.3.6",
+  "principal": "user:demo-engineering",
+  "role": "engineering",
+  "signed_at": "2026-09-05T14:13:00Z",
+  "binding": "identity_bound",
+  "key_id": "demo-review-B",
+  "signature": {
+    "method": "ed25519",
+    "value": "130466c2ddbb878a7422f39329ce798371a60e3d0b1beca2ebead3c614661e8ea2b79fc0efbcdb47986679ddb7a478f742ce985dd9bf29bd9c76b4906bd76f01"
+  }
+}

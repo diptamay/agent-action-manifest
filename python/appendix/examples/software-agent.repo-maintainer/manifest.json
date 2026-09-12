@@ -1,0 +1,218 @@
+{
+  "schema_version": "0.3.7",
+  "manifest_id": "aam:acme-eng:repo-maintainer:pr-4127",
+  "manifest_version": "1.0.0",
+  "issued_at": "2026-09-05T16:00:00Z",
+  "review_expires_at": "2026-09-05T17:00:00Z",
+  "built_by": "reference-gate/0.3.7",
+  "profile_ref": {
+    "profile_id": "aap:acme-eng:repo-maintainer",
+    "profile_version": "2.1.0",
+    "profile_digest": "sha256:16df56a1ae2aa53314d8e133cfd029f0d4f114b3660fe229b9590d3171fbf52f",
+    "conformance_level": "L2"
+  },
+  "identity": {
+    "agent_name": "repo-maintainer",
+    "agent_version": "2.1",
+    "model": {
+      "provider": "<provider>",
+      "identifier": "<model@2026-06>"
+    },
+    "prompt": {
+      "version": "14",
+      "hash": "sha256:a91f...c2"
+    },
+    "policy": {
+      "version": "5",
+      "hash": "sha256:9c1e...77"
+    }
+  },
+  "action_target": {
+    "action_id": "pr-4127",
+    "requested_at": "2026-09-05T16:00:00Z",
+    "summary": "Open a pull request bumping libfoo from 2.3.1 to 2.3.4 in acme-api on branch agent/libfoo-2.3.4. Will not merge.",
+    "tool": "github",
+    "operation": "open_pull_request",
+    "subject": {
+      "type": "repository",
+      "identifier": "acme-api",
+      "system": "github",
+      "display": "acme-api"
+    },
+    "effect_target": {
+      "type": "branch",
+      "identifier": "agent/libfoo-2.3.4",
+      "system": "github",
+      "display": "branch agent/libfoo-2.3.4 in acme-api (non-default)"
+    },
+    "parameters": {
+      "branch": "agent/libfoo-2.3.4",
+      "dependency": "libfoo",
+      "from": "2.3.1",
+      "to": "2.3.4",
+      "title": "Bump libfoo 2.3.1 -> 2.3.4"
+    },
+    "material_parameters": [
+      {
+        "name": "branch",
+        "value": "agent/libfoo-2.3.4",
+        "label": "Branch"
+      },
+      {
+        "name": "dependency",
+        "value": "libfoo",
+        "label": "Dependency"
+      },
+      {
+        "name": "from",
+        "value": "2.3.1",
+        "label": "From"
+      },
+      {
+        "name": "to",
+        "value": "2.3.4",
+        "label": "To"
+      }
+    ],
+    "parameters_summary": "branch=agent/libfoo-2.3.4; dependency=libfoo; from=2.3.1; to=2.3.4; title=Bump libfoo 2.3.1 -> 2.3.4"
+  },
+  "scope_claim": {
+    "tenant": "acme-eng",
+    "environment": "prod",
+    "systems": [
+      "ci",
+      "github"
+    ]
+  },
+  "impact": {
+    "domains": [
+      "code_or_data_integrity",
+      "security"
+    ],
+    "severity": "moderate",
+    "blast_radius": "One repository and one agent branch. No merge or deployment authority.",
+    "bounded_by": [
+      "repo=acme-api",
+      "branch=agent/libfoo-2.3.4"
+    ],
+    "reversible": true,
+    "max_affected_objects": 1
+  },
+  "autonomy_approval": {
+    "mode": "execute_allowlisted",
+    "approval_required": false,
+    "one_approval_one_action": true
+  },
+  "evidence": {
+    "evidence_refs": [
+      "advisory:libfoo:2026-0912",
+      "ci:run:88213:passed",
+      "diff:agent/libfoo-2.3.4"
+    ],
+    "provenance": [
+      "live",
+      "live",
+      "derived"
+    ],
+    "unresolved_conflicts": [],
+    "untrusted_sources_present": [
+      "dependency_changelogs",
+      "ci_output"
+    ],
+    "content_is_data_not_instructions": true
+  },
+  "credentials": {
+    "identity": "github-app:repo-maintainer",
+    "privileges": [
+      "contents:read",
+      "pull_requests:write",
+      "checks:read"
+    ],
+    "ttl_minutes": 60,
+    "fail_closed_on_expiry": true
+  },
+  "data_boundary_claim": {
+    "model_hosting": "regional",
+    "egress_fields": [
+      "diff_hunks",
+      "test_output",
+      "dependency_advisory"
+    ]
+  },
+  "audit": {
+    "records": [
+      "tool_calls",
+      "arguments",
+      "evidence_refs",
+      "gate_decision",
+      "approvals",
+      "denials",
+      "outcome"
+    ]
+  },
+  "outcome_verification": {
+    "expected_postconditions": [
+      "PR exists on non-default branch agent/libfoo-2.3.4",
+      "CI status attached to PR",
+      "Audit event written with manifest id"
+    ],
+    "completion_rule": "all_postconditions_verified",
+    "max_observation_age_seconds": 300,
+    "verification_tests": [
+      {
+        "method": "read_system_of_record",
+        "source": "github",
+        "assertion": "PR exists on branch agent/libfoo-2.3.4 with base != default and state == open",
+        "timeout_minutes": 5,
+        "test_id": "postcondition-1",
+        "postcondition_index": 0
+      },
+      {
+        "method": "read_system_of_record",
+        "source": "audit_store",
+        "assertion": "audit event exists for this manifest",
+        "timeout_minutes": 5,
+        "test_id": "postcondition-2",
+        "postcondition_index": 2
+      },
+      {
+        "method": "tool_return_code",
+        "source": "github",
+        "assertion": "HTTP 201",
+        "test_id": "postcondition-3"
+      },
+      {
+        "test_id": "postcondition-4",
+        "postcondition_index": 1,
+        "method": "read_system_of_record",
+        "source": "github",
+        "assertion": "CI status is attached to the PR on branch agent/libfoo-2.3.4",
+        "timeout_minutes": 5
+      }
+    ],
+    "on_failure": "reopen"
+  },
+  "recovery": {
+    "method": "close PR and delete agent branch",
+    "tested": true,
+    "last_tested": "2026-08-28",
+    "time_to_recover_minutes": 2,
+    "irreversible": false,
+    "owner": "platform_oncall",
+    "tested_evidence_ref": "testrun:recovery:repo-maintainer:2026-08-28#41"
+  },
+  "not_permitted_summary": [
+    "Merge to main or release branches",
+    "Delete any branch or repository",
+    "Modify CI secrets or workflow definitions",
+    "Force-push",
+    "Change branch protection rules"
+  ],
+  "documented_not_enforced": [],
+  "request_digest": "sha256:79cad9c9fdc2493efe712dad0e3e49a88a8cb75821574a10f4d12ecb71aa3276",
+  "integrity": {
+    "method": "gate-hmac-sha256",
+    "key_id": "reference-gate/0.3.7",
+    "value": "3fd6e8d26263003985d491b9bd47ad375d88da1a1cb2cbd50e877610ce17517b"
+  }
+}

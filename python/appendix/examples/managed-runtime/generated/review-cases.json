@@ -1,0 +1,257 @@
+{
+  "schema_version": "0.3.7",
+  "purpose": "Offline human review; never an authorization or execution plan",
+  "stream_event_count": 21,
+  "chain_head": "339a5c8f6ca0745f8b2584d2821490c5fd1b306d14c4361e538311e147e45cec",
+  "cases": [
+    {
+      "case_ref": "aap:acme:invoice-triage",
+      "events": [
+        {
+          "event_id": "event:7f96ef5a15f4417085e790233e2592ef",
+          "event_type": "PROFILE_PUBLISHED",
+          "result": "NONE",
+          "record_ref": "aap:acme:invoice-triage",
+          "record_digest": "sha256:2264e1be4611333a2afade736c1359f73f0321f26d183f645ce671f253fd5d93"
+        }
+      ],
+      "signals": [],
+      "review_status": "UNREVIEWED",
+      "proposed_change": null,
+      "regression_test_ref": null,
+      "owner_approval_ref": null
+    },
+    {
+      "case_ref": "[\"*\",\"email\",\"draft_email\",\"*\"]",
+      "events": [
+        {
+          "event_id": "event:583d111a0e9b407ba869aedafcc2149b",
+          "event_type": "ADAPTER_REGISTERED",
+          "result": "NONE",
+          "record_ref": "[\"*\",\"email\",\"draft_email\",\"*\"]",
+          "record_digest": "sha256:6e912c8728c843dadb43033e91f1619c2b3467a4f4fd19918162597cc8d2e6c8"
+        }
+      ],
+      "signals": [],
+      "review_status": "UNREVIEWED",
+      "proposed_change": null,
+      "regression_test_ref": null,
+      "owner_approval_ref": null
+    },
+    {
+      "case_ref": "aam:acme:invoice-triage:3f1e878e4be0",
+      "events": [
+        {
+          "event_id": "event:39aadc5d925d4887b3cfd9e86f36667f",
+          "event_type": "MANIFEST_BUILT",
+          "result": "NONE",
+          "record_ref": "aam:acme:invoice-triage:3f1e878e4be0",
+          "record_digest": "sha256:30deccc375b8e8fb0d28e424eedc6e435cc1bd8cb2f1ef4fb6aade2d56b46946"
+        },
+        {
+          "event_id": "event:cb389fc828d345258697d61c7ebf7121",
+          "event_type": "GATE_DECISION",
+          "result": "ALLOW",
+          "record_ref": "f2fe0f3b-1266-462c-b96e-57d1f7c5a163",
+          "record_digest": "sha256:3f4dadc7f570c23caae25ca9c63f80a7dd56d208c64e1e53ace17c3931b014f9"
+        },
+        {
+          "event_id": "event:e91f38cb885d414eb702cddf4a32e91e",
+          "event_type": "GATE_DECISION",
+          "result": "ALLOW",
+          "record_ref": "585197c6-8e02-483a-80b5-6cd232565465",
+          "record_digest": "sha256:28816e4c9a5ab91a998064614c967101095ab9d87ac4becb49efe118df6de641"
+        }
+      ],
+      "signals": [],
+      "review_status": "UNREVIEWED",
+      "proposed_change": null,
+      "regression_test_ref": null,
+      "owner_approval_ref": null
+    },
+    {
+      "case_ref": "32e15af4-6c33-4b6c-8705-d2d2059b857d",
+      "events": [
+        {
+          "event_id": "event:e568a84763114f7381214bd1f8016253",
+          "event_type": "EXECUTION_TRANSITION",
+          "result": "DISPATCHED",
+          "record_ref": "32e15af4-6c33-4b6c-8705-d2d2059b857d",
+          "record_digest": "sha256:754ecdf18bb3beee1cb3341e3b4ae4c54897110e7a8e8ff25971478edfcf81d9"
+        },
+        {
+          "event_id": "event:89acd4fe353a476188f54345c4a393c0",
+          "event_type": "EXECUTION_TRANSITION",
+          "result": "ACKNOWLEDGED",
+          "record_ref": "32e15af4-6c33-4b6c-8705-d2d2059b857d",
+          "record_digest": "sha256:c9c4c5933cc4a1b984aa2a001e10a8e991925ccdd04ff48fd9b9cc9723d1b682"
+        },
+        {
+          "event_id": "event:a1f27e6752374d07aef421ef1be00070",
+          "event_type": "OUTCOME_VERIFIED",
+          "result": "VERIFIED",
+          "record_ref": "1178ba36-d2d7-4b77-888b-37a284725b78",
+          "record_digest": "sha256:163ab35c55076c1a39061887b062f1ec964c241bf475c63916e7979ffdcb40c8"
+        }
+      ],
+      "signals": [],
+      "review_status": "UNREVIEWED",
+      "proposed_change": null,
+      "regression_test_ref": null,
+      "owner_approval_ref": null
+    },
+    {
+      "case_ref": "sha256:8ab2b84649a78f091ae8500ef042780d7bdd07b05f6773bf449e019995d3c1d2",
+      "events": [
+        {
+          "event_id": "event:168858d2e50b4c57bd378b26086269f7",
+          "event_type": "CONTROL_SIGNAL",
+          "result": "NONE",
+          "record_ref": "sha256:8ab2b84649a78f091ae8500ef042780d7bdd07b05f6773bf449e019995d3c1d2",
+          "record_digest": "sha256:89a02bbd67ee53c6855437db7bf62e0b3902be7d0f5d591b8dda6ea94a387e08"
+        }
+      ],
+      "signals": [
+        "EVALUATION_REGRESSION"
+      ],
+      "review_status": "UNREVIEWED",
+      "proposed_change": null,
+      "regression_test_ref": null,
+      "owner_approval_ref": null
+    },
+    {
+      "case_ref": "control:317820182d7348a6a816e44b89fc6638",
+      "events": [
+        {
+          "event_id": "event:ed175b66d86242e0bd5abd5e2c8b2dd0",
+          "event_type": "RESTRICTION_ACTIVATED",
+          "result": "REQUIRE_APPROVAL",
+          "record_ref": "control:317820182d7348a6a816e44b89fc6638",
+          "record_digest": "sha256:ecfd4b260e9c724fbd0d83f22320d594beb4412176e00ccfea052295cfa635b1"
+        }
+      ],
+      "signals": [],
+      "review_status": "UNREVIEWED",
+      "proposed_change": null,
+      "regression_test_ref": null,
+      "owner_approval_ref": null
+    },
+    {
+      "case_ref": "aam:acme:invoice-triage:10918ae91c63",
+      "events": [
+        {
+          "event_id": "event:95cc09b6e3864ad8b27af14b5199bee6",
+          "event_type": "MANIFEST_BUILT",
+          "result": "NONE",
+          "record_ref": "aam:acme:invoice-triage:10918ae91c63",
+          "record_digest": "sha256:6c8f9e9885c4a8bfc107266e44ad1942feb39cc65a46044590481d3b7966a992"
+        },
+        {
+          "event_id": "event:1e0b7441dcf0472592b3a397df7ef9f0",
+          "event_type": "GATE_DECISION",
+          "result": "ALLOW",
+          "record_ref": "d76b2bae-52db-440d-9484-c3aa5186bc9a",
+          "record_digest": "sha256:113126f14e558175a1a4827122f7a59f12796bc429c2ebd5581c1be04775b8d5"
+        },
+        {
+          "event_id": "event:e8e6f47128494d6f8923b24661df4d8b",
+          "event_type": "GATE_DECISION",
+          "result": "ALLOW",
+          "record_ref": "6cdeac98-87bb-4e03-9632-bc509d999c2e",
+          "record_digest": "sha256:05d51fe3fea5a166103bd1f5bfc8cbd492daa3396c1b878010250266730a843b"
+        },
+        {
+          "event_id": "event:00ebc2bf9d3846d497cd6d4935e83a82",
+          "event_type": "APPROVAL_RECORDED",
+          "result": "APPROVED",
+          "record_ref": "e314c040-1963-4684-aa49-82717c15e4d6",
+          "record_digest": "sha256:aecada27948c6e1476a1e80e1cd3c911d2f0f0fc454c911f0bb7eae62ceaf0c2"
+        },
+        {
+          "event_id": "event:ac072e9ab9654f48a7fc2229ad2ea76e",
+          "event_type": "GATE_DECISION",
+          "result": "ALLOW",
+          "record_ref": "e397c50c-98e2-46ae-84c7-1be7d4b6db28",
+          "record_digest": "sha256:c3acadd671199976b2a46b71ff00b6377b4ff2848a0bc2eebad2cb6ab9d94b4a"
+        }
+      ],
+      "signals": [],
+      "review_status": "UNREVIEWED",
+      "proposed_change": null,
+      "regression_test_ref": null,
+      "owner_approval_ref": null
+    },
+    {
+      "case_ref": "4dc4bfce-1db7-4a25-a188-42df709b3c39",
+      "events": [
+        {
+          "event_id": "event:fd445acc2d7f45fdb6bf9adc1ba77518",
+          "event_type": "EXECUTION_TRANSITION",
+          "result": "NOT_DISPATCHED",
+          "record_ref": "4dc4bfce-1db7-4a25-a188-42df709b3c39",
+          "record_digest": "sha256:f8c1d0bcc8d1f96e0c3555299c537566750a692d7e91d44a6d41ef2f9b91cf8f"
+        }
+      ],
+      "signals": [],
+      "review_status": "UNREVIEWED",
+      "proposed_change": null,
+      "regression_test_ref": null,
+      "owner_approval_ref": null
+    },
+    {
+      "case_ref": "348672d5-9379-405e-841f-4707e2df1f95",
+      "events": [
+        {
+          "event_id": "event:a655aa4464f444ccbdb36032cd0aebe7",
+          "event_type": "APPROVAL_CONSUMED",
+          "result": "CONSUMED",
+          "record_ref": "e314c040-1963-4684-aa49-82717c15e4d6",
+          "record_digest": "sha256:ff68da6032718666b149957f9cc9e9df5b05295147299f17b6dbae3aeeafbcba"
+        },
+        {
+          "event_id": "event:c6256575ae754289b506ced7c1b607e9",
+          "event_type": "EXECUTION_TRANSITION",
+          "result": "DISPATCHED",
+          "record_ref": "348672d5-9379-405e-841f-4707e2df1f95",
+          "record_digest": "sha256:7c84a19f242533f8feb496fcdb0efd57f4b602b54873472918dee192825c4712"
+        },
+        {
+          "event_id": "event:df0d7c5efcf94cd58537705046738a3e",
+          "event_type": "EXECUTION_TRANSITION",
+          "result": "ACKNOWLEDGED",
+          "record_ref": "348672d5-9379-405e-841f-4707e2df1f95",
+          "record_digest": "sha256:b0517f088f3d1e0eb636e0ad55a4f103cbea5c619abb86d4f4e945cc26b3d34e"
+        },
+        {
+          "event_id": "event:3d36d06cbb6e4f0e97c572ce5585a5e2",
+          "event_type": "OUTCOME_VERIFIED",
+          "result": "VERIFIED",
+          "record_ref": "e537d550-a806-49cc-85ba-14456f3a55b5",
+          "record_digest": "sha256:a572a78cc2f386ee4dc45f2ab1ee3ab225434480a1549d713d03ddd047980d7e"
+        }
+      ],
+      "signals": [],
+      "review_status": "UNREVIEWED",
+      "proposed_change": null,
+      "regression_test_ref": null,
+      "owner_approval_ref": null
+    },
+    {
+      "case_ref": "control:65c9169f2b3f482b9d8b474410006d4f",
+      "events": [
+        {
+          "event_id": "event:1aadb7c1fc2d489abea132ac90fff721",
+          "event_type": "RESTRICTION_RESTORED",
+          "result": "REQUIRE_APPROVAL",
+          "record_ref": "control:65c9169f2b3f482b9d8b474410006d4f",
+          "record_digest": "sha256:21e9584d3e37ce4a212a5b432cb35d85445e403a645fba763393fc25114fe98e"
+        }
+      ],
+      "signals": [],
+      "review_status": "UNREVIEWED",
+      "proposed_change": null,
+      "regression_test_ref": null,
+      "owner_approval_ref": null
+    }
+  ]
+}

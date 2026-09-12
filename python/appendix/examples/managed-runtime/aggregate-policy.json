@@ -1,0 +1,44 @@
+{
+  "schema_version": "0.4.0",
+  "policy_id": "aggregate:ap-demo",
+  "policy_version": "1",
+  "budgets": [
+    {
+      "budget_id": "program-hourly-admissions",
+      "selector": {"tool": "email", "operation": "draft_email"},
+      "measure": "admissions",
+      "window": {"kind": "rolling", "seconds": 3600},
+      "limit": 2,
+      "group_by": ["program", "accountable_actor", "operation"],
+      "on_exhaustion": "DENY"
+    },
+    {
+      "budget_id": "delegation-in-flight",
+      "selector": {"tool": "email", "operation": "draft_email"},
+      "measure": "in_flight",
+      "window": {"kind": "lifetime"},
+      "limit": 2,
+      "group_by": ["program", "delegation_root"],
+      "on_exhaustion": "SUSPENDED"
+    },
+    {
+      "budget_id": "program-distinct-targets",
+      "selector": {"tool": "email", "operation": "draft_email"},
+      "measure": "distinct_targets",
+      "window": {"kind": "rolling", "seconds": 86400},
+      "limit": 1,
+      "group_by": ["program", "accountable_actor"],
+      "on_exhaustion": "REQUIRE_APPROVAL"
+    }
+  ],
+  "campaign_rules": [
+    {
+      "rule_id": "program-velocity-review",
+      "indicator": "VELOCITY_ANOMALY",
+      "threshold": 2,
+      "window_seconds": 3600,
+      "scope": "program",
+      "mode": "SUSPENDED"
+    }
+  ]
+}

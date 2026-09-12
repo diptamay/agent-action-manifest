@@ -1,0 +1,16 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.org/schemas/agent-action-manifest/0.4.0/execution-context-attestation.schema.json",
+  "title": "Execution Context Attestation",
+  "description": "Trusted-host attestation of the behaviorally material execution context. It is not an agent authority claim.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["context_id", "context_version", "context_digest", "principal", "auth_ref"],
+  "properties": {
+    "context_id": {"type": "string", "minLength": 1},
+    "context_version": {"type": "string", "minLength": 1},
+    "context_digest": {"type": "string", "pattern": "^sha256:[0-9a-f]{64}$"},
+    "principal": {"type": "string", "minLength": 1},
+    "auth_ref": {"type": "string", "minLength": 1}
+  }
+}

@@ -1,0 +1,108 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.org/schemas/agent-action-manifest/0.3.6/action-request.schema.json",
+  "title": "Action request",
+  "description": "What a caller (agent runtime or tool proxy) may submit to the gate. Contains NO authority claims: no mode, approval, credentials, impact, scope, aggregate budget, execution context, delegation, or campaign state. The gate derives authority and trusted context outside the request. Compatible v0.3.7/v0.4.0 contract.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "tool",
+    "operation",
+    "effect_target",
+    "evidence_refs"
+  ],
+  "properties": {
+    "action_id": {
+      "type": "string",
+      "description": "Stable business-action ID for retries. The gate admits at most one dispatch per (profile_id, action_id) in its in-memory ledger, including across rebuilt Manifests. Reusing the ID for a different request is denied. Omission creates a new ID; new IDs are not deduplicated by intent."
+    },
+    "tool": {
+      "type": "string",
+      "minLength": 1
+    },
+    "operation": {
+      "type": "string",
+      "minLength": 1
+    },
+    "subject": {
+      "type": "object",
+      "required": [
+        "type",
+        "identifier"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "type": {
+          "type": "string"
+        },
+        "identifier": {
+          "type": "string"
+        },
+        "system": {
+          "type": "string"
+        },
+        "display": {
+          "type": "string"
+        }
+      }
+    },
+    "effect_target": {
+      "type": "object",
+      "required": [
+        "type",
+        "identifier"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "type": {
+          "type": "string"
+        },
+        "identifier": {
+          "type": "string"
+        },
+        "system": {
+          "type": "string"
+        },
+        "class": {
+          "type": "string"
+        },
+        "display": {
+          "type": "string"
+        }
+      }
+    },
+    "parameters": {
+      "type": "object",
+      "additionalProperties": true
+    },
+    "evidence_refs": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "string"
+      }
+    },
+    "provenance": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "unresolved_conflicts": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "untrusted_sources_present": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "summary": {
+      "type": "string",
+      "description": "Optional caller-proposed summary; the builder prefers the operation's summary_template and records the caller text as 'agent_narrative' (not authority)."
+    }
+  }
+}

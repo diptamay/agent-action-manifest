@@ -1,0 +1,1490 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.org/schemas/agent-action-manifest/0.4.0/agent-authority-profile.schema.json",
+  "title": "Agent Authority Profile",
+  "description": "Standing, pre-ship declaration of what an agent version may ever do. Product decisions (Part A) are answered by the product owner in plain English; engineering bindings (Part B) are supplied by engineering. The final Profile digest binds both. The gate builds every Action Manifest from this Profile; callers never author authority claims. At L2+ the Profile must carry a signature the gate verifies against a configured trust root. Compatible v0.3.7 base with opt-in v0.4.0 fields.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "profile_id",
+    "profile_version",
+    "issued_at",
+    "identity",
+    "authority_scope",
+    "permissions",
+    "impact_envelope",
+    "autonomy_policy",
+    "approval_policy",
+    "input_trust",
+    "credentials_policy",
+    "data_boundary",
+    "audit_policy",
+    "recovery_policy",
+    "emergency_disable",
+    "conformance"
+  ],
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "enum": [
+        "0.3.6",
+        "0.3.7",
+        "0.4.0"
+      ]
+    },
+    "profile_id": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Stable identifier for this agent's profile lineage."
+    },
+    "profile_version": {
+      "type": "string",
+      "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$",
+      "description": "Changes on any authority-relevant edit. Any change to identity versions requires a new profile version."
+    },
+    "issued_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "expires_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "Optional hard expiry of the standing authority; manifests may not be issued after it."
+    },
+    "integrity": {
+      "type": "object",
+      "description": "Signature over the canonical Profile body (all fields except integrity). Required at L2+. ed25519: value is the hex signature verified against a trust-root public key identified by key_id. hmac-sha256: value is an HMAC with a shared trust-root secret (reference/testing only).",
+      "required": [
+        "method",
+        "key_id",
+        "value"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "method": {
+          "type": "string",
+          "enum": [
+            "ed25519",
+            "hmac-sha256"
+          ]
+        },
+        "key_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "value": {
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    },
+    "identity": {
+      "type": "object",
+      "description": "Decision 1. Which agent and which exact model, prompt, and policy versions this authority applies to.",
+      "required": [
+        "agent_name",
+        "agent_version",
+        "model",
+        "prompt",
+        "policy",
+        "owner"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "agent_name": {
+          "type": "string",
+          "minLength": 1
+        },
+        "agent_version": {
+          "type": "string",
+          "minLength": 1
+        },
+        "model": {
+          "type": "object",
+          "required": [
+            "provider",
+            "identifier"
+          ],
+          "additionalProperties": false,
+          "properties": {
+            "provider": {
+              "type": "string"
+            },
+            "identifier": {
+              "type": "string",
+              "minLength": 1,
+              "description": "Pinned identifier. Floating aliases such as 'latest' are not acceptable at L2+."
+            }
+          }
+        },
+        "prompt": {
+          "type": "object",
+          "required": [
+            "version"
+          ],
+          "additionalProperties": false,
+          "properties": {
+            "version": {
+              "type": "string"
+            },
+            "hash": {
+              "type": "string"
+            }
+          }
+        },
+        "policy": {
+          "type": "object",
+          "required": [
+            "version"
+          ],
+          "additionalProperties": false,
+          "properties": {
+            "version": {
+              "type": "string"
+            },
+            "hash": {
+              "type": "string"
+            }
+          }
+        },
+        "owner": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Accountable product owner for this profile."
+        }
+      }
+    },
+    "authority_scope": {
+      "type": "object",
+      "description": "Decision 3. The standing boundary within which any action may occur.",
+      "required": [
+        "environment",
+        "systems",
+        "targets",
+        "max_review_window_minutes",
+        "max_execution_authority_seconds"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "tenant": {
+          "type": "string"
+        },
+        "environment": {
+          "type": "string"
+        },
+        "systems": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "type": "string"
+          }
+        },
+        "assets": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "Enumerated assets, if enumerable."
+        },
+        "selector": {
+          "type": "string",
+          "description": "Selector expression resolved by the gate per call when assets are not enumerable. Evaluation is delegated to the gate."
+        },
+        "operating_window": {
+          "type": "string"
+        },
+        "notes": {
+          "type": "string"
+        },
+        "targets": {
+          "type": "array",
+          "minItems": 1,
+          "description": "Resources the agent may act on or about, by type. Each entry enumerates identifiers or gives a selector the gate evaluates.",
+          "items": {
+            "type": "object",
+            "required": [
+              "type"
+            ],
+            "additionalProperties": false,
+            "properties": {
+              "type": {
+                "type": "string",
+                "minLength": 1
+              },
+              "identifiers": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
+              "selector": {
+                "type": "string"
+              },
+              "enforcement": {
+                "type": "string",
+                "enum": [
+                  "typed",
+                  "documentation_only"
+                ],
+                "description": "Required at L1+ when a selector is used. typed: the gate evaluates selector_id. documentation_only: not enforced (targets should then be enumerated)."
+              },
+              "selector_id": {
+                "type": "string",
+                "description": "Identifier of the typed selector the deployment's StateProvider implements."
+              }
+            }
+          }
+        },
+        "max_review_window_minutes": {
+          "type": "integer",
+          "minimum": 1,
+          "description": "Longest a Manifest may wait for human review."
+        },
+        "max_execution_authority_seconds": {
+          "type": "integer",
+          "minimum": 1,
+          "description": "Longest an ALLOW from the gate remains executable. Short by design (minutes, not hours)."
+        }
+      }
+    },
+    "permissions": {
+      "type": "object",
+      "description": "Decision 4. Allowed tool/operation classes with argument constraints, plus independently enforced prohibitions. Default deny.",
+      "required": [
+        "default_deny",
+        "allowed",
+        "prohibited"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "default_deny": {
+          "type": "boolean",
+          "const": true
+        },
+        "allowed": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "object",
+            "required": [
+              "tool",
+              "operation",
+              "effect_target",
+              "impact",
+              "default_mode",
+              "max_mode",
+              "privileges_required",
+              "verification"
+            ],
+            "additionalProperties": false,
+            "properties": {
+              "tool": {
+                "type": "string",
+                "minLength": 1
+              },
+              "operation": {
+                "type": "string",
+                "minLength": 1
+              },
+              "constraints": {
+                "type": "object",
+                "additionalProperties": true,
+                "description": "Argument constraints evaluated by the containment check: a list value means the manifest parameter must be a member (or a subset if the parameter is a list); a scalar means equality; a numeric value under a key beginning 'max_' means the manifest parameter must not exceed it. Any other shape is delegated to the gate."
+              },
+              "max_mode": {
+                "type": "string",
+                "enum": [
+                  "recommend",
+                  "request_approval",
+                  "execute_allowlisted",
+                  "conditional_autonomy"
+                ],
+                "description": "Highest autonomy mode permitted for this operation."
+              },
+              "reversible": {
+                "type": "boolean"
+              },
+              "allowed_parameters": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                },
+                "description": "Parameter names this operation accepts. Any other parameter is denied by default. Constraint keys are implicitly allowed."
+              },
+              "material_parameters": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                },
+                "description": "Parameters the approver must see on the Card (recipient, amount, branch, asset, ...)."
+              },
+              "effect_target": {
+                "type": "object",
+                "required": [
+                  "type"
+                ],
+                "additionalProperties": false,
+                "description": "What this operation actually affects (the recipient, the branch, the work order), as distinct from the subject it is about.",
+                "properties": {
+                  "type": {
+                    "type": "string"
+                  },
+                  "classes": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  },
+                  "identifiers": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  }
+                }
+              },
+              "default_mode": {
+                "type": "string",
+                "enum": [
+                  "recommend",
+                  "request_approval",
+                  "execute_allowlisted",
+                  "conditional_autonomy"
+                ],
+                "description": "Mode the gate assigns unless a typed threshold elevates it (never above max_mode)."
+              },
+              "impact": {
+                "type": "object",
+                "required": [
+                  "domains",
+                  "severity",
+                  "blast_radius",
+                  "reversible",
+                  "max_affected_objects"
+                ],
+                "additionalProperties": false,
+                "description": "Engineering binding: the consequence of one execution of this operation. Copied into every Manifest by the builder.",
+                "properties": {
+                  "domains": {
+                    "type": "array",
+                    "minItems": 1,
+                    "uniqueItems": true,
+                    "items": {
+                      "type": "string",
+                      "enum": [
+                        "operational",
+                        "physical",
+                        "safety",
+                        "financial",
+                        "legal",
+                        "privacy",
+                        "security",
+                        "external_communication",
+                        "code_or_data_integrity",
+                        "other"
+                      ]
+                    }
+                  },
+                  "severity": {
+                    "type": "string",
+                    "enum": [
+                      "low",
+                      "moderate",
+                      "high",
+                      "critical"
+                    ]
+                  },
+                  "blast_radius": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "reversible": {
+                    "type": "boolean"
+                  },
+                  "max_affected_objects": {
+                    "type": "integer",
+                    "minimum": 0
+                  },
+                  "bounded_by": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  },
+                  "irreversibility_notes": {
+                    "type": "string"
+                  }
+                }
+              },
+              "privileges_required": {
+                "type": "array",
+                "minItems": 1,
+                "items": {
+                  "type": "string"
+                },
+                "description": "Least-privilege subset of credentials_policy.privileges this operation needs."
+              },
+              "egress_fields": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                },
+                "description": "Fields that leave the boundary when this operation runs."
+              },
+              "systems": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                },
+                "description": "Systems touched by this operation (subset of authority_scope.systems)."
+              },
+              "verification": {
+                "type": "object",
+                "required": [
+                  "expected_postconditions",
+                  "tests",
+                  "on_failure",
+                  "completion_rule",
+                  "max_observation_age_seconds"
+                ],
+                "additionalProperties": false,
+                "description": "Templates for outcome verification; {parameter} placeholders are filled by the builder from the request.",
+                "properties": {
+                  "expected_postconditions": {
+                    "type": "array",
+                    "minItems": 1,
+                    "items": {
+                      "type": "string"
+                    }
+                  },
+                  "completion_rule": {
+                    "type": "string",
+                    "enum": [
+                      "all_postconditions_verified",
+                      "designated_postconditions_verified"
+                    ]
+                  },
+                  "tests": {
+                    "type": "array",
+                    "minItems": 1,
+                    "items": {
+                      "type": "object",
+                      "required": [
+                        "method",
+                        "assertion",
+                        "test_id",
+                        "source"
+                      ],
+                      "additionalProperties": false,
+                      "properties": {
+                        "method": {
+                          "type": "string",
+                          "enum": [
+                            "read_system_of_record",
+                            "independent_observation",
+                            "human_confirmation",
+                            "tool_return_code"
+                          ]
+                        },
+                        "source": {
+                          "type": "string",
+                          "minLength": 1
+                        },
+                        "assertion": {
+                          "type": "string",
+                          "minLength": 1
+                        },
+                        "timeout_minutes": {
+                          "type": "integer",
+                          "minimum": 0
+                        },
+                        "test_id": {
+                          "type": "string",
+                          "minLength": 1,
+                          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]*$",
+                          "description": "Stable ID unique within this operation."
+                        },
+                        "postcondition_index": {
+                          "type": "integer",
+                          "minimum": 0,
+                          "description": "Zero-based reference to expected_postconditions. Required for independent tests; validated at publication and containment."
+                        }
+                      },
+                      "allOf": [
+                        {
+                          "if": {
+                            "properties": {
+                              "method": {
+                                "enum": [
+                                  "read_system_of_record",
+                                  "independent_observation",
+                                  "human_confirmation"
+                                ]
+                              }
+                            },
+                            "required": [
+                              "method"
+                            ]
+                          },
+                          "then": {
+                            "required": [
+                              "postcondition_index"
+                            ]
+                          }
+                        }
+                      ]
+                    }
+                  },
+                  "on_failure": {
+                    "type": "string",
+                    "enum": [
+                      "reopen",
+                      "escalate",
+                      "recover",
+                      "rollback"
+                    ]
+                  },
+                  "max_observation_age_seconds": {
+                    "type": "integer",
+                    "minimum": 1,
+                    "description": "Maximum age at verification; observed_at must also be at or after the dispatch attempt ended and never in the future (zero clock-skew tolerance)."
+                  },
+                  "designated_test_ids": {
+                    "type": "array",
+                    "minItems": 1,
+                    "uniqueItems": true,
+                    "items": {
+                      "type": "string",
+                      "minLength": 1
+                    },
+                    "description": "Required only for designated_postconditions_verified. IDs must identify independent tests in this plan; non-designated results remain visible."
+                  }
+                },
+                "allOf": [
+                  {
+                    "if": {
+                      "properties": {
+                        "completion_rule": {
+                          "const": "designated_postconditions_verified"
+                        }
+                      },
+                      "required": [
+                        "completion_rule"
+                      ]
+                    },
+                    "then": {
+                      "required": [
+                        "designated_test_ids"
+                      ]
+                    },
+                    "else": {
+                      "not": {
+                        "required": [
+                          "designated_test_ids"
+                        ]
+                      }
+                    }
+                  }
+                ]
+              },
+              "summary_template": {
+                "type": "string",
+                "description": "Plain-English template for the Card's 'what will happen'; {parameter} placeholders."
+              },
+              "approver_roles": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                },
+                "description": "Optional narrowing of approval_policy.approver_roles for this operation."
+              },
+              "review_window_minutes": {
+                "type": "integer",
+                "minimum": 1
+              },
+              "ttl_minutes": {
+                "type": "integer",
+                "minimum": 1
+              }
+            }
+          }
+        },
+        "prohibited": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "object",
+            "required": [
+              "description"
+            ],
+            "additionalProperties": false,
+            "properties": {
+              "description": {
+                "type": "string",
+                "minLength": 1
+              },
+              "tool": {
+                "type": "string",
+                "description": "Tool name or '*' for any tool."
+              },
+              "operation": {
+                "type": "string",
+                "description": "Operation name or '*' for any operation of the tool."
+              },
+              "rule": {
+                "type": "string",
+                "description": "Optional machine-evaluable rule. Rules are evaluated by the gate; the containment check matches tool/operation only."
+              },
+              "enforcement": {
+                "type": "string",
+                "enum": [
+                  "typed",
+                  "documentation_only"
+                ],
+                "description": "Required at L1+ when a rule is used. typed rules are evaluated by the gate via rule_id; documentation_only rules are shown but NOT enforced."
+              },
+              "rule_id": {
+                "type": "string"
+              }
+            }
+          }
+        }
+      }
+    },
+    "impact_envelope": {
+      "type": "object",
+      "description": "Decision 5 (envelope). The maximum credible consequence any single action under this profile may carry.",
+      "required": [
+        "allowed_domains",
+        "max_severity",
+        "irreversible_allowed",
+        "max_affected_objects"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "allowed_domains": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "enum": [
+              "operational",
+              "physical",
+              "safety",
+              "financial",
+              "legal",
+              "privacy",
+              "security",
+              "external_communication",
+              "code_or_data_integrity",
+              "other"
+            ]
+          }
+        },
+        "max_severity": {
+          "type": "string",
+          "enum": [
+            "low",
+            "moderate",
+            "high",
+            "critical"
+          ]
+        },
+        "max_affected_objects": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "irreversible_allowed": {
+          "type": "boolean"
+        },
+        "notes": {
+          "type": "string"
+        }
+      }
+    },
+    "autonomy_policy": {
+      "type": "object",
+      "description": "Decision 6 (policy). Default and maximum autonomy modes and automatic downgrade triggers.",
+      "required": [
+        "default_mode",
+        "max_mode"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "default_mode": {
+          "type": "string",
+          "enum": [
+            "recommend",
+            "request_approval",
+            "execute_allowlisted",
+            "conditional_autonomy"
+          ]
+        },
+        "max_mode": {
+          "type": "string",
+          "enum": [
+            "recommend",
+            "request_approval",
+            "execute_allowlisted",
+            "conditional_autonomy"
+          ]
+        },
+        "thresholds": {
+          "type": "array",
+          "description": "Conditions under which an operation may run at a higher mode than its default. At L1+ only typed thresholds (threshold_id the deployment implements) can elevate autonomy; documentation_only thresholds are shown but never elevate.",
+          "items": {
+            "type": "object",
+            "required": [
+              "description",
+              "enforcement",
+              "mode"
+            ],
+            "additionalProperties": false,
+            "properties": {
+              "description": {
+                "type": "string",
+                "minLength": 1
+              },
+              "enforcement": {
+                "type": "string",
+                "enum": [
+                  "typed",
+                  "documentation_only"
+                ]
+              },
+              "threshold_id": {
+                "type": "string"
+              },
+              "mode": {
+                "type": "string",
+                "enum": [
+                  "recommend",
+                  "request_approval",
+                  "execute_allowlisted",
+                  "conditional_autonomy"
+                ]
+              },
+              "operations": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                },
+                "description": "tool.operation names this threshold applies to; empty = all."
+              }
+            }
+          }
+        },
+        "downgrade_on": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "approval_policy": {
+      "type": "object",
+      "description": "Decision 6 (policy). Who may approve, what they must be shown, and which operations require two approvers.",
+      "required": [
+        "approver_roles",
+        "required_evidence",
+        "one_approval_one_action"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "approver_roles": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "type": "string"
+          }
+        },
+        "required_evidence": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "Evidence classes the approver must be shown, distinct from the agent's own summary."
+        },
+        "one_approval_one_action": {
+          "type": "boolean",
+          "const": true
+        },
+        "dual_approval_for": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "Operations (tool.operation) requiring two approvers."
+        },
+        "approval_timeout_minutes": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "distinct_principals_required": {
+          "type": "boolean",
+          "description": "When dual approval is required, the approvers must be distinct authenticated principals (default true). Set false only deliberately, to require distinct roles instead."
+        },
+        "principal_authentication_required": {
+          "type": "boolean",
+          "description": "Approvers must present an authentication assertion (auth_ref) the gate can verify (default true)."
+        }
+      }
+    },
+    "input_trust": {
+      "type": "object",
+      "description": "Decision 7 (policy). Which input sources are untrusted and how injection is mitigated and tested.",
+      "required": [
+        "untrusted_sources",
+        "content_is_data_not_instructions"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "untrusted_sources": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "type": "string"
+          }
+        },
+        "content_is_data_not_instructions": {
+          "type": "boolean",
+          "const": true
+        },
+        "mitigations": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "injection_test_set": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "identifier": {
+              "type": "string"
+            },
+            "last_passed_versions": {
+              "type": "string"
+            },
+            "last_run": {
+              "type": "string",
+              "format": "date-time"
+            }
+          }
+        }
+      }
+    },
+    "credentials_policy": {
+      "type": "object",
+      "description": "Decision 8 (policy). The dedicated execution identity, its maximum privileges, and expiry behaviour.",
+      "required": [
+        "identity",
+        "privileges",
+        "max_ttl_minutes",
+        "fail_closed_on_expiry"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "identity": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Dedicated service identity. Never a human session token."
+        },
+        "privileges": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "type": "string"
+          }
+        },
+        "max_ttl_minutes": {
+          "type": "integer",
+          "exclusiveMinimum": 0
+        },
+        "fail_closed_on_expiry": {
+          "type": "boolean",
+          "const": true
+        },
+        "rotation": {
+          "type": "string"
+        }
+      }
+    },
+    "data_boundary": {
+      "type": "object",
+      "description": "Decision 9. Inference location, egress policy, retention, and tenancy.",
+      "required": [
+        "model_hosting",
+        "egress_policy",
+        "log_retention_days"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "model_hosting": {
+          "type": "string",
+          "enum": [
+            "customer_boundary",
+            "regional",
+            "hosted",
+            "other"
+          ]
+        },
+        "egress_policy": {
+          "type": "string",
+          "enum": [
+            "none",
+            "allowlisted_fields",
+            "signed_summary",
+            "unrestricted"
+          ]
+        },
+        "egress_allowlist": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "never_egress": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "log_retention_days": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "log_location": {
+          "type": "string"
+        },
+        "tenant_isolation_tested": {
+          "type": "boolean"
+        }
+      }
+    },
+    "audit_policy": {
+      "type": "object",
+      "description": "Decision 10 (policy). Minimum records every action must produce, and alert triggers.",
+      "required": [
+        "records",
+        "alert_on"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "records": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "type": "string"
+          }
+        },
+        "append_only": {
+          "type": "boolean"
+        },
+        "log_store": {
+          "type": "string"
+        },
+        "readers": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "alert_on": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "recovery_policy": {
+      "type": "object",
+      "description": "Decision 12 (recovery policy). Who owns recovery and whether executing modes require a tested recovery path.",
+      "required": [
+        "owner",
+        "requires_tested_recovery_for_execution"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "owner": {
+          "type": "string",
+          "minLength": 1
+        },
+        "requires_tested_recovery_for_execution": {
+          "type": "boolean"
+        },
+        "templates": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": [
+              "tool",
+              "operation",
+              "method",
+              "tested_evidence_ref",
+              "owner"
+            ],
+            "additionalProperties": false,
+            "properties": {
+              "tool": {
+                "type": "string"
+              },
+              "operation": {
+                "type": "string"
+              },
+              "method": {
+                "type": "string"
+              },
+              "tested": {
+                "type": "boolean"
+              },
+              "last_tested": {
+                "type": "string",
+                "format": "date"
+              },
+              "time_to_recover_minutes": {
+                "type": "integer",
+                "minimum": 0
+              },
+              "tested_evidence_ref": {
+                "type": "string"
+              },
+              "owner": {
+                "type": "string"
+              },
+              "irreversible": {
+                "type": "boolean"
+              }
+            }
+          }
+        },
+        "test_max_age_days": {
+          "type": "integer",
+          "minimum": 1,
+          "description": "A recovery test older than this does not count."
+        },
+        "test_evidence_required": {
+          "type": "boolean",
+          "description": "When true, recovery.tested must be backed by tested_evidence_ref; self-attestation is not accepted."
+        }
+      }
+    },
+    "emergency_disable": {
+      "type": "object",
+      "description": "Decision 12 (emergency stop). Agent-level kill switch. The value recorded here is the mechanism and last-known state; the gate must read live state at each call.",
+      "required": [
+        "mechanism",
+        "execution_state",
+        "operators",
+        "checked_at_gate",
+        "halts_pending"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "mechanism": {
+          "type": "string",
+          "minLength": 1
+        },
+        "execution_state": {
+          "type": "string",
+          "enum": [
+            "allowed",
+            "blocked"
+          ]
+        },
+        "state_source": {
+          "type": "string",
+          "description": "Where the gate reads live state (flag service, config path, etc.)."
+        },
+        "operators": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "string"
+          }
+        },
+        "checked_at_gate": {
+          "type": "boolean",
+          "const": true
+        },
+        "halts_pending": {
+          "type": "boolean"
+        },
+        "halts_in_flight_where_possible": {
+          "type": "boolean"
+        }
+      }
+    },
+    "conformance": {
+      "type": "object",
+      "description": "Self-declared control-maturity level with enforcement and evaluation evidence. Conformance measures control maturity; it is not a safety certification.",
+      "required": [
+        "level"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "level": {
+          "type": "string",
+          "enum": [
+            "L0",
+            "L1",
+            "L2",
+            "L3"
+          ]
+        },
+        "assessed_at": {
+          "type": "string",
+          "format": "date"
+        },
+        "assessor": {
+          "type": "string"
+        },
+        "enforcement": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "gate_id": {
+              "type": "string"
+            },
+            "outside_model": {
+              "type": "boolean"
+            },
+            "checks_action_target": {
+              "type": "boolean"
+            },
+            "checks_manifest_within_profile": {
+              "type": "boolean"
+            },
+            "checks_scope_permissions_credentials_stop": {
+              "type": "boolean"
+            },
+            "containment_check_implementation": {
+              "type": "string",
+              "description": "Identifier of the deterministic containment check in use."
+            }
+          }
+        },
+        "evaluation": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "golden_set": {
+              "type": "string"
+            },
+            "includes_abstention_cases": {
+              "type": "boolean"
+            },
+            "injection_set": {
+              "type": "string"
+            },
+            "prohibited_action_set": {
+              "type": "string"
+            },
+            "blast_radius_set": {
+              "type": "string"
+            },
+            "containment_regression_set": {
+              "type": "string",
+              "description": "Manifests that must be rejected by the containment check."
+            },
+            "ci_or_release_gated": {
+              "type": "boolean"
+            },
+            "last_passed_versions": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    },
+    "aggregate_execution_policy_ref": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["policy_id", "policy_version", "policy_digest"],
+      "properties": {
+        "policy_id": {"type": "string", "minLength": 1},
+        "policy_version": {"type": "string", "minLength": 1},
+        "policy_digest": {"type": "string", "pattern": "^sha256:[0-9a-f]{64}$"}
+      },
+      "description": "Reviewed aggregate admission policy. It limits otherwise permitted actions and never grants authority."
+    },
+    "execution_context_ref": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["context_id", "context_version", "context_digest"],
+      "properties": {
+        "context_id": {"type": "string", "minLength": 1},
+        "context_version": {"type": "string", "minLength": 1},
+        "context_digest": {"type": "string", "pattern": "^sha256:[0-9a-f]{64}$"}
+      },
+      "description": "Digest of provider/model routes and fallbacks, instructions, skills, persistent-memory policy, orchestration/subagent configuration and adapter set."
+    },
+    "program_context": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["program_id", "accountable_organization", "declared_purpose", "owner_principal"],
+      "properties": {
+        "program_id": {"type": "string", "minLength": 1},
+        "accountable_organization": {"type": "string", "minLength": 1},
+        "declared_purpose": {"type": "string", "minLength": 1, "maxLength": 2000},
+        "owner_principal": {"type": "string", "minLength": 1}
+      },
+      "description": "Reviewed accountability context. Declared purpose is a restriction/review input, not a source of authority."
+    },
+    "delegation_policy": {
+      "oneOf": [
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["mode"],
+          "properties": {"mode": {"const": "forbidden"}}
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["mode", "max_depth", "allowed_child_profile_ids"],
+          "properties": {
+            "mode": {"const": "attenuated"},
+            "max_depth": {"type": "integer", "minimum": 1, "maximum": 16},
+            "allowed_child_profile_ids": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"type": "string", "minLength": 1}}
+          }
+        }
+      ],
+      "description": "Whether an admitted parent may invoke an explicitly approved, attenuated child Profile."
+    },
+    "monitoring_policy_ref": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "policy_id",
+        "policy_version",
+        "policy_digest"
+      ],
+      "properties": {
+        "policy_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "policy_version": {
+          "type": "string",
+          "minLength": 1
+        },
+        "policy_digest": {
+          "type": "string",
+          "pattern": "^sha256:[0-9a-f]{64}$"
+        }
+      }
+    }
+  },
+  "allOf": [
+    {
+      "if": {"properties": {"schema_version": {"const": "0.4.0"}}, "required": ["schema_version"]},
+      "then": {"required": ["monitoring_policy_ref", "aggregate_execution_policy_ref", "execution_context_ref", "program_context", "delegation_policy"]}
+    },
+    {
+      "if": {
+        "properties": {
+          "conformance": {
+            "properties": {
+              "level": {
+                "enum": [
+                  "L1",
+                  "L2",
+                  "L3"
+                ]
+              }
+            }
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "conformance": {
+            "required": [
+              "enforcement"
+            ],
+            "properties": {
+              "enforcement": {
+                "required": [
+                  "gate_id",
+                  "outside_model",
+                  "checks_action_target",
+                  "checks_manifest_within_profile",
+                  "checks_scope_permissions_credentials_stop"
+                ],
+                "properties": {
+                  "outside_model": {
+                    "const": true
+                  },
+                  "checks_action_target": {
+                    "const": true
+                  },
+                  "checks_manifest_within_profile": {
+                    "const": true
+                  },
+                  "checks_scope_permissions_credentials_stop": {
+                    "const": true
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "conformance": {
+            "properties": {
+              "level": {
+                "enum": [
+                  "L2",
+                  "L3"
+                ]
+              }
+            }
+          }
+        }
+      },
+      "then": {
+        "required": [
+          "integrity"
+        ],
+        "properties": {
+          "audit_policy": {
+            "required": [
+              "append_only"
+            ],
+            "properties": {
+              "append_only": {
+                "const": true
+              }
+            }
+          },
+          "data_boundary": {
+            "required": [
+              "tenant_isolation_tested"
+            ],
+            "properties": {
+              "tenant_isolation_tested": {
+                "const": true
+              }
+            }
+          },
+          "recovery_policy": {
+            "required": [
+              "test_evidence_required"
+            ],
+            "properties": {
+              "requires_tested_recovery_for_execution": {
+                "const": true
+              },
+              "test_evidence_required": {
+                "const": true
+              }
+            }
+          },
+          "identity": {
+            "properties": {
+              "prompt": {
+                "required": [
+                  "hash"
+                ]
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "conformance": {
+            "properties": {
+              "level": {
+                "const": "L3"
+              }
+            }
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "conformance": {
+            "required": [
+              "evaluation"
+            ],
+            "properties": {
+              "evaluation": {
+                "required": [
+                  "golden_set",
+                  "includes_abstention_cases",
+                  "injection_set",
+                  "prohibited_action_set",
+                  "blast_radius_set",
+                  "containment_regression_set",
+                  "ci_or_release_gated"
+                ],
+                "properties": {
+                  "includes_abstention_cases": {
+                    "const": true
+                  },
+                  "ci_or_release_gated": {
+                    "const": true
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "conformance": {
+            "properties": {
+              "level": {
+                "enum": [
+                  "L2",
+                  "L3"
+                ]
+              }
+            },
+            "required": [
+              "level"
+            ]
+          }
+        },
+        "required": [
+          "conformance"
+        ]
+      },
+      "then": {
+        "required": [
+          "integrity"
+        ],
+        "properties": {
+          "integrity": {
+            "properties": {
+              "method": {
+                "const": "ed25519"
+              }
+            }
+          }
+        }
+      }
+    }
+  ]
+}

@@ -1,0 +1,36 @@
+{
+  "record_type": "RuntimeControlSnapshot",
+  "schema_version": "0.3.7",
+  "policy_ref": {
+    "policy_id": "feedback:ap-demo",
+    "policy_version": "1",
+    "policy_digest": "sha256:36e7f620ba14994e2e63ad96b4c8125001f2291216fd71213284efdb5a69ff8b"
+  },
+  "tenant": "ACME",
+  "environment": "prod",
+  "observed_at": "2026-09-07T14:13:30Z",
+  "restrictions": [
+    {
+      "restriction_id": "hold:dfc2e08b085044878348dd64e28b38df",
+      "revision": 2,
+      "active": false,
+      "scope_key": "[\"aap:acme:invoice-triage\",\"email\",\"draft_email\",\"*\"]",
+      "profile_id": "aap:acme:invoice-triage",
+      "rule_id": "evaluation-regression",
+      "policy_ref": {
+        "policy_id": "feedback:ap-demo",
+        "policy_version": "1",
+        "policy_digest": "sha256:36e7f620ba14994e2e63ad96b4c8125001f2291216fd71213284efdb5a69ff8b"
+      },
+      "signal_code": "EVALUATION_REGRESSION",
+      "mode": "REQUIRE_APPROVAL",
+      "created_at": "2026-09-07T14:13:00Z",
+      "trigger_event_ids": [
+        "event:168858d2e50b4c57bd378b26086269f7"
+      ],
+      "execution_ids": [],
+      "restoration": "authenticated_manual",
+      "restored_at": "2026-09-07T14:13:30Z"
+    }
+  ]
+}

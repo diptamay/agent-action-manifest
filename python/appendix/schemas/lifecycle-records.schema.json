@@ -1,0 +1,1508 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.org/schemas/agent-action-manifest/0.3.6/lifecycle-records.schema.json",
+  "title": "Lifecycle records",
+  "description": "Draft 0.3.6: gate-owned lifecycle records plus bound observation evidence. Denial/unresolved paths use nullable bindings where no Manifest exists. Authorization, dispatch status, and verified outcome are separate. HMAC record seals are gate-local authentication, not transferable signatures. Reconciliation, explicit no-attempt, authenticated review and bounded observation skew are introduced in v0.3.6.",
+  "oneOf": [
+    {
+      "$ref": "#/$defs/GateDecision"
+    },
+    {
+      "$ref": "#/$defs/ApprovalRecord"
+    },
+    {
+      "$ref": "#/$defs/ExecutionRecord"
+    },
+    {
+      "$ref": "#/$defs/OutcomeVerificationRecord"
+    },
+    {
+      "$ref": "#/$defs/ObservationRecord"
+    },
+    {
+      "$ref": "#/$defs/VerifierAttestation"
+    },
+    {
+      "$ref": "#/$defs/ReconciliationEvidence"
+    },
+    {
+      "$ref": "#/$defs/ReconciliationRecord"
+    },
+    {
+      "$ref": "#/$defs/ReadbackSignoff"
+    }
+  ],
+  "$defs": {
+    "GateDecision": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "record_type",
+        "decision_id",
+        "gate_id",
+        "manifest_id",
+        "manifest_digest",
+        "decision",
+        "decided_at",
+        "seal"
+      ],
+      "properties": {
+        "record_type": {
+          "const": "GateDecision"
+        },
+        "decision_id": {
+          "type": "string"
+        },
+        "gate_id": {
+          "type": "string"
+        },
+        "manifest_id": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "manifest_digest": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "pattern": "^sha256:[0-9a-f]{64}$"
+        },
+        "decision": {
+          "enum": [
+            "ALLOW",
+            "DENY",
+            "INDETERMINATE"
+          ]
+        },
+        "decided_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "execution_valid_until": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Present only on ALLOW. Short execution authority window."
+        },
+        "checks_passed": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "violations": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "unresolved_delegations": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "reasons": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "seal": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$",
+          "description": "Symmetric HMAC authentication, not a transferable digital signature."
+        },
+        "profile_id": {
+          "type": "string"
+        },
+        "profile_version": {
+          "type": "string"
+        },
+        "profile_digest": {
+          "type": "string",
+          "pattern": "^sha256:[0-9a-f]{64}$"
+        },
+        "dependency_errors": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "decision": {
+                "enum": [
+                  "DENY",
+                  "INDETERMINATE"
+                ]
+              }
+            }
+          },
+          "then": {
+            "not": {
+              "required": [
+                "execution_valid_until"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    "ApprovalRecord": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "record_type",
+        "approval_id",
+        "manifest_id",
+        "manifest_digest",
+        "action_id",
+        "approved_by",
+        "approved_at",
+        "decision",
+        "seal"
+      ],
+      "properties": {
+        "record_type": {
+          "const": "ApprovalRecord"
+        },
+        "approval_id": {
+          "type": "string"
+        },
+        "manifest_id": {
+          "type": "string"
+        },
+        "manifest_digest": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "pattern": "^sha256:[0-9a-f]{64}$"
+        },
+        "action_id": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "approved_by": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": [
+              "role"
+            ],
+            "additionalProperties": false,
+            "properties": {
+              "role": {
+                "type": "string"
+              },
+              "principal": {
+                "type": "string"
+              },
+              "auth_ref": {
+                "type": "string",
+                "description": "Authentication assertion the gate verifies for this principal."
+              }
+            }
+          }
+        },
+        "approved_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "decision": {
+          "enum": [
+            "approved",
+            "rejected",
+            "more_evidence"
+          ]
+        },
+        "seal": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$",
+          "description": "Symmetric HMAC authentication, not a transferable digital signature."
+        },
+        "profile_digest": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "pattern": "^sha256:[0-9a-f]{64}$"
+        },
+        "consumed_by_execution_id": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "description": "Informational only. Consumption is tracked inside the gate's ledger, atomically; this field is never trusted."
+        },
+        "reasons": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "decision": {
+                "const": "approved"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "approved_by": {
+                "minItems": 1
+              },
+              "manifest_digest": {
+                "type": "string",
+                "pattern": "^sha256:[0-9a-f]{64}$"
+              },
+              "action_id": {
+                "type": "string",
+                "minLength": 1
+              }
+            }
+          }
+        }
+      ]
+    },
+    "ExecutionRecord": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "record_type",
+        "execution_id",
+        "manifest_id",
+        "manifest_digest",
+        "gate_decision_id",
+        "request_digest",
+        "decision",
+        "authorization_decision",
+        "execution_state",
+        "requested_at",
+        "authorized_at",
+        "reconciliation_required",
+        "record_sequence",
+        "previous_record_seal",
+        "seal",
+        "reasons"
+      ],
+      "properties": {
+        "record_type": {
+          "const": "ExecutionRecord"
+        },
+        "execution_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "manifest_id": {
+          "type": "string"
+        },
+        "manifest_digest": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "pattern": "^sha256:[0-9a-f]{64}$"
+        },
+        "gate_decision_id": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "approval_id": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "request_digest": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "pattern": "^sha256:[0-9a-f]{64}$"
+        },
+        "executed_request_digest": {
+          "type": "string",
+          "pattern": "^sha256:[0-9a-f]{64}$"
+        },
+        "decision": {
+          "enum": [
+            "ALLOW",
+            "DENY",
+            "INDETERMINATE"
+          ],
+          "description": "Compatibility alias, exactly equal to authorization_decision. Never an outcome/success flag."
+        },
+        "authorization_decision": {
+          "enum": [
+            "ALLOW",
+            "DENY",
+            "INDETERMINATE"
+          ]
+        },
+        "execution_state": {
+          "enum": [
+            "NOT_DISPATCHED",
+            "DISPATCHED",
+            "ACKNOWLEDGED",
+            "EXECUTION_UNKNOWN",
+            "NOT_ATTEMPTED",
+            "COMMITTED",
+            "NOT_COMMITTED"
+          ]
+        },
+        "requested_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "authorized_at": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "format": "date-time"
+        },
+        "dispatched_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "acknowledged_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "execution_unknown_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "idempotency_key": {
+          "type": "string",
+          "pattern": "^sha256:[0-9a-f]{64}$"
+        },
+        "duplicate_of_execution_id": {
+          "type": "string"
+        },
+        "reconciliation_required": {
+          "type": "boolean"
+        },
+        "receipt": {},
+        "reasons": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "record_sequence": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "previous_record_seal": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "seal": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$",
+          "description": "Symmetric HMAC authentication, not a transferable digital signature."
+        },
+        "not_attempted_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "reconciled_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "last_reconciliation_id": {
+          "type": "string",
+          "minLength": 1
+        }
+      },
+      "description": "Authorization and dispatch status are distinct. ALLOW means authorization only; ACKNOWLEDGED is an adapter receipt, not verified success. A post-dispatch exception is EXECUTION_UNKNOWN. Sequence-linked snapshots are kept in an in-memory append-only event list in the reference, not a durable transaction log. v0.3.6: NOT_ATTEMPTED is a trusted adapter preflight assertion after gate dispatch but before any downstream attempt. COMMITTED/NOT_COMMITTED require terminal reconciliation evidence; neither authorizes retry. A negative settlement never rewrites attempted history as unattempted.",
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "decision": {
+                "const": "ALLOW"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "authorization_decision": {
+                "const": "ALLOW"
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "decision": {
+                "const": "DENY"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "authorization_decision": {
+                "const": "DENY"
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "decision": {
+                "const": "INDETERMINATE"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "authorization_decision": {
+                "const": "INDETERMINATE"
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "authorization_decision": {
+                "enum": [
+                  "DENY",
+                  "INDETERMINATE"
+                ]
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "execution_state": {
+                "const": "NOT_DISPATCHED"
+              },
+              "authorized_at": {
+                "type": "null"
+              },
+              "reconciliation_required": {
+                "const": false
+              }
+            },
+            "not": {
+              "required": [
+                "dispatched_at"
+              ]
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "authorization_decision": {
+                "const": "ALLOW"
+              }
+            }
+          },
+          "then": {
+            "required": [
+              "dispatched_at",
+              "executed_request_digest",
+              "idempotency_key"
+            ],
+            "properties": {
+              "execution_state": {
+                "enum": [
+                  "DISPATCHED",
+                  "ACKNOWLEDGED",
+                  "EXECUTION_UNKNOWN",
+                  "NOT_ATTEMPTED",
+                  "COMMITTED",
+                  "NOT_COMMITTED"
+                ]
+              },
+              "authorized_at": {
+                "type": "string",
+                "format": "date-time"
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "execution_state": {
+                "const": "ACKNOWLEDGED"
+              }
+            }
+          },
+          "then": {
+            "required": [
+              "acknowledged_at"
+            ],
+            "properties": {
+              "reconciliation_required": {
+                "const": false
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "execution_state": {
+                "const": "EXECUTION_UNKNOWN"
+              }
+            }
+          },
+          "then": {
+            "required": [
+              "execution_unknown_at"
+            ],
+            "properties": {
+              "reconciliation_required": {
+                "const": true
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "execution_state": {
+                "const": "DISPATCHED"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "reconciliation_required": {
+                "const": true
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "execution_state": {
+                "const": "COMMITTED"
+              }
+            }
+          },
+          "then": {
+            "required": [
+              "reconciled_at",
+              "last_reconciliation_id",
+              "execution_unknown_at"
+            ],
+            "properties": {
+              "reconciliation_required": {
+                "const": false
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "execution_state": {
+                "const": "NOT_COMMITTED"
+              }
+            }
+          },
+          "then": {
+            "required": [
+              "reconciled_at",
+              "last_reconciliation_id",
+              "execution_unknown_at"
+            ],
+            "properties": {
+              "reconciliation_required": {
+                "const": false
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "execution_state": {
+                "const": "NOT_ATTEMPTED"
+              }
+            }
+          },
+          "then": {
+            "required": [
+              "not_attempted_at"
+            ],
+            "properties": {
+              "reconciliation_required": {
+                "const": false
+              }
+            }
+          }
+        }
+      ]
+    },
+    "OutcomeVerificationRecord": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "record_type",
+        "verification_id",
+        "execution_id",
+        "manifest_id",
+        "results",
+        "verified",
+        "completion",
+        "verified_at",
+        "manifest_digest",
+        "postconditions_verified",
+        "reconciliation_required",
+        "seal",
+        "reasons"
+      ],
+      "properties": {
+        "record_type": {
+          "const": "OutcomeVerificationRecord"
+        },
+        "verification_id": {
+          "type": "string"
+        },
+        "execution_id": {
+          "type": "string"
+        },
+        "manifest_id": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "results": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "test_id",
+              "assertion",
+              "method",
+              "source",
+              "observed",
+              "observed_via",
+              "required_for_completion",
+              "evidence_errors"
+            ],
+            "properties": {
+              "test_id": {
+                "type": "string",
+                "minLength": 1
+              },
+              "assertion": {
+                "type": "string"
+              },
+              "method": {
+                "type": "string"
+              },
+              "source": {
+                "type": "string"
+              },
+              "postcondition_index": {
+                "type": "integer",
+                "minimum": 0
+              },
+              "observed": {
+                "type": [
+                  "boolean",
+                  "null"
+                ]
+              },
+              "observed_via": {
+                "enum": [
+                  "system_of_record_read",
+                  "verifier_attestation",
+                  "human_attestation",
+                  "unobserved"
+                ]
+              },
+              "attested_by": {
+                "type": "string"
+              },
+              "observed_at": {
+                "type": "string",
+                "format": "date-time"
+              },
+              "source_version": {
+                "type": "string",
+                "minLength": 1
+              },
+              "evidence_ref": {
+                "type": "string",
+                "minLength": 1
+              },
+              "required_for_completion": {
+                "type": "boolean"
+              },
+              "evidence_errors": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
+              "admissible_evidence": {
+                "type": "array",
+                "items": {
+                  "oneOf": [
+                    {
+                      "$ref": "#/$defs/ObservationRecord"
+                    },
+                    {
+                      "$ref": "#/$defs/VerifierAttestation"
+                    }
+                  ]
+                }
+              },
+              "evidence_conflict": {
+                "type": "boolean",
+                "description": "True means admissible live and/or attested observations disagree; never silently resolved by source priority."
+              }
+            }
+          }
+        },
+        "verified": {
+          "type": "boolean"
+        },
+        "completion": {
+          "enum": [
+            "complete",
+            "reopen",
+            "escalate",
+            "recover",
+            "rollback"
+          ]
+        },
+        "verified_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "seal": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$",
+          "description": "Symmetric HMAC authentication, not a transferable digital signature."
+        },
+        "reasons": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "manifest_digest": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "pattern": "^sha256:[0-9a-f]{64}$"
+        },
+        "postconditions_verified": {
+          "type": "boolean"
+        },
+        "reconciliation_required": {
+          "type": "boolean"
+        },
+        "observation_clock_skew_seconds": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 60
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "verified": {
+                "const": true
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "completion": {
+                "const": "complete"
+              },
+              "reconciliation_required": {
+                "const": false
+              },
+              "postconditions_verified": {
+                "const": true
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "verified": {
+                "const": false
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "completion": {
+                "enum": [
+                  "reopen",
+                  "escalate",
+                  "recover",
+                  "rollback"
+                ]
+              }
+            }
+          }
+        }
+      ]
+    },
+    "ObservationRecord": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "record_type",
+        "execution_id",
+        "manifest_digest",
+        "request_digest",
+        "test_id",
+        "assertion_digest",
+        "postcondition_digest",
+        "effect_target_digest",
+        "method",
+        "source",
+        "observed",
+        "observed_at",
+        "source_version",
+        "evidence_ref"
+      ],
+      "properties": {
+        "record_type": {
+          "const": "ObservationRecord"
+        },
+        "execution_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "manifest_digest": {
+          "type": "string",
+          "pattern": "^sha256:[0-9a-f]{64}$"
+        },
+        "request_digest": {
+          "type": "string",
+          "pattern": "^sha256:[0-9a-f]{64}$"
+        },
+        "test_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "assertion_digest": {
+          "type": "string",
+          "pattern": "^sha256:[0-9a-f]{64}$"
+        },
+        "postcondition_digest": {
+          "type": "string",
+          "pattern": "^sha256:[0-9a-f]{64}$"
+        },
+        "effect_target_digest": {
+          "type": "string",
+          "pattern": "^sha256:[0-9a-f]{64}$"
+        },
+        "method": {
+          "enum": [
+            "read_system_of_record",
+            "independent_observation",
+            "human_confirmation"
+          ]
+        },
+        "source": {
+          "type": "string",
+          "minLength": 1
+        },
+        "observed": {
+          "type": "boolean"
+        },
+        "observed_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "source_version": {
+          "type": "string",
+          "minLength": 1
+        },
+        "evidence_ref": {
+          "type": "string",
+          "minLength": 1
+        }
+      },
+      "description": "Structured observation returned directly by a trusted StateProvider. Binding and freshness are validated; the gate cannot independently establish source truth."
+    },
+    "VerifierAttestation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "record_type",
+        "execution_id",
+        "manifest_digest",
+        "request_digest",
+        "test_id",
+        "assertion_digest",
+        "postcondition_digest",
+        "effect_target_digest",
+        "method",
+        "source",
+        "observed",
+        "observed_at",
+        "source_version",
+        "evidence_ref",
+        "verifier_id",
+        "seal"
+      ],
+      "properties": {
+        "record_type": {
+          "const": "VerifierAttestation"
+        },
+        "execution_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "manifest_digest": {
+          "type": "string",
+          "pattern": "^sha256:[0-9a-f]{64}$"
+        },
+        "request_digest": {
+          "type": "string",
+          "pattern": "^sha256:[0-9a-f]{64}$"
+        },
+        "test_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "assertion_digest": {
+          "type": "string",
+          "pattern": "^sha256:[0-9a-f]{64}$"
+        },
+        "postcondition_digest": {
+          "type": "string",
+          "pattern": "^sha256:[0-9a-f]{64}$"
+        },
+        "effect_target_digest": {
+          "type": "string",
+          "pattern": "^sha256:[0-9a-f]{64}$"
+        },
+        "method": {
+          "enum": [
+            "read_system_of_record",
+            "independent_observation",
+            "human_confirmation"
+          ]
+        },
+        "source": {
+          "type": "string",
+          "minLength": 1
+        },
+        "observed": {
+          "type": "boolean"
+        },
+        "observed_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "source_version": {
+          "type": "string",
+          "minLength": 1
+        },
+        "evidence_ref": {
+          "type": "string",
+          "minLength": 1
+        },
+        "verifier_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "seal": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$",
+          "description": "Symmetric HMAC authentication, not a transferable digital signature."
+        }
+      },
+      "description": "HMAC-authenticated independent-verifier observation. Exact execution/Manifest/request/test/postcondition/target/source/method binding; configured verifier source/method scope; strict observation freshness."
+    },
+    "ReconciliationEvidence": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "record_type": {
+          "const": "ReconciliationEvidence"
+        },
+        "manifest_digest": {
+          "type": "string",
+          "pattern": "^sha256:[0-9a-f]{64}$"
+        },
+        "request_digest": {
+          "type": "string",
+          "pattern": "^sha256:[0-9a-f]{64}$"
+        },
+        "idempotency_key": {
+          "type": "string",
+          "pattern": "^sha256:[0-9a-f]{64}$"
+        },
+        "profile_digest": {
+          "type": "string",
+          "pattern": "^sha256:[0-9a-f]{64}$"
+        },
+        "effect_target_digest": {
+          "type": "string",
+          "pattern": "^sha256:[0-9a-f]{64}$"
+        },
+        "execution_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "manifest_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "action_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "source": {
+          "type": "string",
+          "minLength": 1
+        },
+        "source_version": {
+          "type": "string",
+          "minLength": 1
+        },
+        "evidence_ref": {
+          "type": "string",
+          "minLength": 1
+        },
+        "transaction_ref": {
+          "type": "string",
+          "minLength": 1
+        },
+        "disposition": {
+          "enum": [
+            "COMMITTED",
+            "NOT_COMMITTED",
+            "UNKNOWN"
+          ]
+        },
+        "final": {
+          "type": "boolean"
+        },
+        "observed_at": {
+          "type": "string",
+          "format": "date-time"
+        }
+      },
+      "required": [
+        "record_type",
+        "manifest_digest",
+        "request_digest",
+        "idempotency_key",
+        "profile_digest",
+        "effect_target_digest",
+        "execution_id",
+        "manifest_id",
+        "action_id",
+        "source",
+        "source_version",
+        "evidence_ref",
+        "transaction_ref",
+        "disposition",
+        "final",
+        "observed_at"
+      ],
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "disposition": {
+                "const": "UNKNOWN"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "final": {
+                "const": false
+              }
+            }
+          },
+          "else": {
+            "properties": {
+              "final": {
+                "const": true
+              }
+            }
+          }
+        }
+      ],
+      "description": "Trusted adapter result for exact execution and idempotency key. NOT_COMMITTED is final only when this attempt cannot commit later. Not-found/pending is UNKNOWN, not a definitive negative. Adapter truth/transaction semantics remain a deployment responsibility."
+    },
+    "ReconciliationRecord": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "record_type": {
+          "const": "ReconciliationRecord"
+        },
+        "reconciliation_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "execution_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "manifest_id": {
+          "anyOf": [
+            {
+              "type": "string",
+              "minLength": 1
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "manifest_digest": {
+          "anyOf": [
+            {
+              "type": "string",
+              "pattern": "^sha256:[0-9a-f]{64}$"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "idempotency_key": {
+          "anyOf": [
+            {
+              "type": "string",
+              "pattern": "^sha256:[0-9a-f]{64}$"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "requested_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "reconciled_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "expected_record_sequence": {
+          "anyOf": [
+            {
+              "type": "integer",
+              "minimum": 0
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "examined_execution_seal": {
+          "anyOf": [
+            {
+              "type": "string",
+              "pattern": "^[0-9a-f]{64}$"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "state_before": {
+          "enum": [
+            "NOT_DISPATCHED",
+            "DISPATCHED",
+            "ACKNOWLEDGED",
+            "EXECUTION_UNKNOWN",
+            "NOT_ATTEMPTED",
+            "COMMITTED",
+            "NOT_COMMITTED",
+            null
+          ]
+        },
+        "state_after": {
+          "enum": [
+            "NOT_DISPATCHED",
+            "DISPATCHED",
+            "ACKNOWLEDGED",
+            "EXECUTION_UNKNOWN",
+            "NOT_ATTEMPTED",
+            "COMMITTED",
+            "NOT_COMMITTED",
+            null
+          ]
+        },
+        "applied": {
+          "type": "boolean"
+        },
+        "disposition": {
+          "enum": [
+            "COMMITTED",
+            "NOT_COMMITTED",
+            "UNKNOWN"
+          ]
+        },
+        "evidence": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/ReconciliationEvidence"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "reasons": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "observation_clock_skew_seconds": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 60
+        },
+        "max_evidence_age_seconds": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 86400
+        },
+        "seal": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        }
+      },
+      "required": [
+        "record_type",
+        "reconciliation_id",
+        "execution_id",
+        "manifest_id",
+        "manifest_digest",
+        "idempotency_key",
+        "requested_at",
+        "reconciled_at",
+        "expected_record_sequence",
+        "examined_execution_seal",
+        "state_before",
+        "state_after",
+        "applied",
+        "disposition",
+        "evidence",
+        "reasons",
+        "observation_clock_skew_seconds",
+        "max_evidence_age_seconds",
+        "seal"
+      ],
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "applied": {
+                "const": true
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "state_before": {
+                "const": "EXECUTION_UNKNOWN"
+              },
+              "state_after": {
+                "enum": [
+                  "COMMITTED",
+                  "NOT_COMMITTED"
+                ]
+              },
+              "disposition": {
+                "enum": [
+                  "COMMITTED",
+                  "NOT_COMMITTED"
+                ]
+              },
+              "evidence": {
+                "$ref": "#/$defs/ReconciliationEvidence"
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "applied": {
+                "const": true
+              },
+              "disposition": {
+                "const": "COMMITTED"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "state_after": {
+                "const": "COMMITTED"
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "applied": {
+                "const": true
+              },
+              "disposition": {
+                "const": "NOT_COMMITTED"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "state_after": {
+                "const": "NOT_COMMITTED"
+              }
+            }
+          }
+        }
+      ]
+    },
+    "ReadbackSignoff": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "record_type": {
+          "const": "ReadbackSignoff"
+        },
+        "schema_version": {
+          "const": "0.3.6"
+        },
+        "signoff_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "profile_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "profile_version": {
+          "type": "string",
+          "minLength": 1
+        },
+        "profile_digest": {
+          "type": "string",
+          "pattern": "^sha256:[0-9a-f]{64}$"
+        },
+        "review_digest": {
+          "type": "string",
+          "pattern": "^sha256:[0-9a-f]{64}$"
+        },
+        "readback_digest": {
+          "type": "string",
+          "pattern": "^sha256:[0-9a-f]{64}$"
+        },
+        "readback_version": {
+          "const": "aam-readback/0.3.6"
+        },
+        "part": {
+          "enum": [
+            "A",
+            "B",
+            "profile"
+          ]
+        },
+        "principal": {
+          "type": "string",
+          "minLength": 1
+        },
+        "role": {
+          "enum": [
+            "product_owner",
+            "engineering"
+          ]
+        },
+        "signed_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "binding": {
+          "const": "identity_bound"
+        },
+        "key_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "signature": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "method": {
+              "const": "ed25519"
+            },
+            "value": {
+              "type": "string",
+              "pattern": "^[0-9a-f]{128}$"
+            }
+          },
+          "required": [
+            "method",
+            "value"
+          ]
+        }
+      },
+      "required": [
+        "record_type",
+        "schema_version",
+        "signoff_id",
+        "profile_id",
+        "profile_version",
+        "profile_digest",
+        "review_digest",
+        "readback_digest",
+        "readback_version",
+        "part",
+        "principal",
+        "role",
+        "signed_at",
+        "binding",
+        "key_id",
+        "signature"
+      ],
+      "description": "Signature covers every field except signature, after finalizing binding. Valid identity-bound approval additionally requires a trusted key-to-principal/role/part mapping and exact Profile/read-back digest match; schema validation alone does not verify this."
+    }
+  }
+}

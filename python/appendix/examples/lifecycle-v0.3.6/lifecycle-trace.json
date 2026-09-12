@@ -1,0 +1,898 @@
+{
+  "warning": "Synthetic fixtures, not a live transaction or trusted identity assertion.",
+  "evaluation_time": "2026-09-05T14:15:00Z",
+  "manifests": [
+    {
+      "schema_version": "0.3.7",
+      "manifest_id": "aam:demo:v036:reconciliation",
+      "manifest_version": "1.0.0",
+      "issued_at": "2026-09-05T14:10:00Z",
+      "review_expires_at": "2026-09-06T14:10:00Z",
+      "built_by": "reference-gate/0.3.7",
+      "profile_ref": {
+        "profile_id": "aap:acme:invoice-triage",
+        "profile_version": "1.4.0",
+        "profile_digest": "sha256:ca79e7d75384874b3e2bb3f58c5f0868f74c0cd88159ea404db916572ec9c69d",
+        "conformance_level": "L2"
+      },
+      "identity": {
+        "agent_name": "invoice-triage",
+        "agent_version": "1.4",
+        "model": {
+          "provider": "<provider>",
+          "identifier": "<model@2026-05>"
+        },
+        "prompt": {
+          "version": "9",
+          "hash": "sha256:5d0c...e7"
+        },
+        "policy": {
+          "version": "3",
+          "hash": "sha256:3f0a...b1"
+        }
+      },
+      "action_target": {
+        "action_id": "inv-48211-email",
+        "requested_at": "2026-09-05T14:10:00Z",
+        "summary": "Draft (not send) an email to ap@northwind-supply.example (Northwind Supply, vendor on file) asking them to confirm the $312 unit-price variance on invoice 48211 against PO 77102. Will not release payment, change vendor details, or send without approval.",
+        "tool": "email",
+        "operation": "draft_email",
+        "subject": {
+          "type": "invoice",
+          "identifier": "48211",
+          "system": "erp.ap",
+          "display": "Invoice 48211 from Northwind Supply ($4,812.00)"
+        },
+        "effect_target": {
+          "type": "email_address",
+          "identifier": "ap@northwind-supply.example",
+          "system": "email",
+          "class": "vendor_on_file",
+          "display": "ap@northwind-supply.example (Northwind Supply, vendor on file)"
+        },
+        "parameters": {
+          "recipient_class": "vendor_on_file",
+          "max_recipients": 1,
+          "recipient": "ap@northwind-supply.example",
+          "invoice": "48211",
+          "po": "77102",
+          "variance_usd": 312,
+          "subject_line": "Invoice 48211 \u2013 price variance vs PO 77102"
+        },
+        "material_parameters": [
+          {
+            "name": "recipient",
+            "value": "ap@northwind-supply.example",
+            "label": "Recipient"
+          },
+          {
+            "name": "invoice",
+            "value": "48211",
+            "label": "Invoice"
+          },
+          {
+            "name": "po",
+            "value": "77102",
+            "label": "Po"
+          },
+          {
+            "name": "variance_usd",
+            "value": 312,
+            "label": "Variance usd"
+          }
+        ],
+        "parameters_summary": "recipient_class=vendor_on_file; max_recipients=1; recipient=ap@northwind-supply.example; invoice=48211; po=77102; variance_usd=312; subject_line=Invoice 48211 \u2013 price variance vs PO 77102"
+      },
+      "scope_claim": {
+        "tenant": "ACME",
+        "environment": "prod",
+        "systems": [
+          "email",
+          "erp.ap"
+        ]
+      },
+      "impact": {
+        "domains": [
+          "external_communication",
+          "financial"
+        ],
+        "severity": "low",
+        "blast_radius": "One outbound draft to one vendor about one invoice. No money movement.",
+        "bounded_by": [
+          "invoice=48211",
+          "vendor=on file"
+        ],
+        "reversible": true,
+        "max_affected_objects": 1
+      },
+      "autonomy_approval": {
+        "mode": "request_approval",
+        "approval_required": true,
+        "one_approval_one_action": true,
+        "approver_roles": [
+          "ap_manager"
+        ],
+        "required_evidence": [
+          "invoice_image",
+          "po_match_evidence",
+          "variance",
+          "draft_text"
+        ],
+        "dual_approval_required": false,
+        "approval_timeout_minutes": 1440
+      },
+      "evidence": {
+        "evidence_refs": [
+          "invoice:48211:image",
+          "po:77102",
+          "match:48211:77102:variance=312",
+          "draft:48211:v1"
+        ],
+        "provenance": [
+          "customer_supplied",
+          "customer_supplied",
+          "derived",
+          "derived"
+        ],
+        "unresolved_conflicts": [
+          "Invoice quantity matches PO; unit price differs by $312."
+        ],
+        "untrusted_sources_present": [
+          "invoice_pdfs",
+          "ocr_output"
+        ],
+        "content_is_data_not_instructions": true
+      },
+      "credentials": {
+        "identity": "svc:ap-agent",
+        "privileges": [
+          "erp.ap:read",
+          "email:draft"
+        ],
+        "ttl_minutes": 240,
+        "fail_closed_on_expiry": true
+      },
+      "data_boundary_claim": {
+        "model_hosting": "customer_boundary",
+        "egress_fields": []
+      },
+      "audit": {
+        "records": [
+          "tool_calls",
+          "evidence_refs",
+          "gate_decision",
+          "approvals",
+          "denials",
+          "outcome"
+        ]
+      },
+      "outcome_verification": {
+        "expected_postconditions": [
+          "Draft exists in email system addressed to the vendor on file",
+          "Draft references invoice 48211 and PO 77102",
+          "Invoice status unchanged"
+        ],
+        "completion_rule": "all_postconditions_verified",
+        "max_observation_age_seconds": 300,
+        "verification_tests": [
+          {
+            "method": "read_system_of_record",
+            "source": "email",
+            "assertion": "draft for invoice 48211 exists, unsent, single recipient ap@northwind-supply.example",
+            "timeout_minutes": 5,
+            "test_id": "postcondition-1",
+            "postcondition_index": 0
+          },
+          {
+            "method": "read_system_of_record",
+            "source": "erp.ap",
+            "assertion": "invoice 48211 status == 'review' and payment_scheduled == false",
+            "timeout_minutes": 5,
+            "test_id": "postcondition-2",
+            "postcondition_index": 2
+          },
+          {
+            "test_id": "postcondition-3",
+            "postcondition_index": 1,
+            "method": "read_system_of_record",
+            "source": "email",
+            "assertion": "draft for invoice 48211 references invoice 48211 and PO 77102",
+            "timeout_minutes": 5
+          }
+        ],
+        "on_failure": "reopen"
+      },
+      "recovery": {
+        "method": "delete draft; if sent, send correction email",
+        "tested": true,
+        "last_tested": "2026-08-30",
+        "time_to_recover_minutes": 5,
+        "irreversible": false,
+        "owner": "ap_platform_lead",
+        "tested_evidence_ref": "testrun:recovery:ap-agent:2026-08-30#7"
+      },
+      "not_permitted_summary": [
+        "Release or schedule any payment",
+        "Edit vendor bank or remittance details",
+        "Create or delete vendor master records",
+        "Approve the agent's own drafts",
+        "Email any address not on the vendor domain allowlist"
+      ],
+      "documented_not_enforced": [],
+      "request_digest": "sha256:b122269dc15ea9a692bce2f744a74297ec4a8a50e572747615a0cbfeae437d45",
+      "integrity": {
+        "method": "gate-hmac-sha256",
+        "key_id": "reference-gate/0.3.7",
+        "value": "c3a9f3e05ec0b986570cc89f4175d6b456318fdf1500a405922cd5e649a3ac0e"
+      }
+    },
+    {
+      "schema_version": "0.3.7",
+      "manifest_id": "aam:demo:v036:preflight",
+      "manifest_version": "1.0.0",
+      "issued_at": "2026-09-05T14:10:00Z",
+      "review_expires_at": "2026-09-06T14:10:00Z",
+      "built_by": "reference-gate/0.3.7",
+      "profile_ref": {
+        "profile_id": "aap:acme:invoice-triage",
+        "profile_version": "1.4.0",
+        "profile_digest": "sha256:ca79e7d75384874b3e2bb3f58c5f0868f74c0cd88159ea404db916572ec9c69d",
+        "conformance_level": "L2"
+      },
+      "identity": {
+        "agent_name": "invoice-triage",
+        "agent_version": "1.4",
+        "model": {
+          "provider": "<provider>",
+          "identifier": "<model@2026-05>"
+        },
+        "prompt": {
+          "version": "9",
+          "hash": "sha256:5d0c...e7"
+        },
+        "policy": {
+          "version": "3",
+          "hash": "sha256:3f0a...b1"
+        }
+      },
+      "action_target": {
+        "action_id": "demo-new-action-preflight",
+        "requested_at": "2026-09-05T14:10:00Z",
+        "summary": "Draft (not send) an email to ap@northwind-supply.example (Northwind Supply, vendor on file) asking them to confirm the $312 unit-price variance on invoice 48211 against PO 77102. Will not release payment, change vendor details, or send without approval.",
+        "tool": "email",
+        "operation": "draft_email",
+        "subject": {
+          "type": "invoice",
+          "identifier": "48211",
+          "system": "erp.ap",
+          "display": "Invoice 48211 from Northwind Supply ($4,812.00)"
+        },
+        "effect_target": {
+          "type": "email_address",
+          "identifier": "ap@northwind-supply.example",
+          "system": "email",
+          "class": "vendor_on_file",
+          "display": "ap@northwind-supply.example (Northwind Supply, vendor on file)"
+        },
+        "parameters": {
+          "recipient_class": "vendor_on_file",
+          "max_recipients": 1,
+          "recipient": "ap@northwind-supply.example",
+          "invoice": "48211",
+          "po": "77102",
+          "variance_usd": 312,
+          "subject_line": "Invoice 48211 \u2013 price variance vs PO 77102"
+        },
+        "material_parameters": [
+          {
+            "name": "recipient",
+            "value": "ap@northwind-supply.example",
+            "label": "Recipient"
+          },
+          {
+            "name": "invoice",
+            "value": "48211",
+            "label": "Invoice"
+          },
+          {
+            "name": "po",
+            "value": "77102",
+            "label": "Po"
+          },
+          {
+            "name": "variance_usd",
+            "value": 312,
+            "label": "Variance usd"
+          }
+        ],
+        "parameters_summary": "recipient_class=vendor_on_file; max_recipients=1; recipient=ap@northwind-supply.example; invoice=48211; po=77102; variance_usd=312; subject_line=Invoice 48211 \u2013 price variance vs PO 77102"
+      },
+      "scope_claim": {
+        "tenant": "ACME",
+        "environment": "prod",
+        "systems": [
+          "email",
+          "erp.ap"
+        ]
+      },
+      "impact": {
+        "domains": [
+          "external_communication",
+          "financial"
+        ],
+        "severity": "low",
+        "blast_radius": "One outbound draft to one vendor about one invoice. No money movement.",
+        "bounded_by": [
+          "invoice=48211",
+          "vendor=on file"
+        ],
+        "reversible": true,
+        "max_affected_objects": 1
+      },
+      "autonomy_approval": {
+        "mode": "request_approval",
+        "approval_required": true,
+        "one_approval_one_action": true,
+        "approver_roles": [
+          "ap_manager"
+        ],
+        "required_evidence": [
+          "invoice_image",
+          "po_match_evidence",
+          "variance",
+          "draft_text"
+        ],
+        "dual_approval_required": false,
+        "approval_timeout_minutes": 1440
+      },
+      "evidence": {
+        "evidence_refs": [
+          "invoice:48211:image",
+          "po:77102",
+          "match:48211:77102:variance=312",
+          "draft:48211:v1"
+        ],
+        "provenance": [
+          "customer_supplied",
+          "customer_supplied",
+          "derived",
+          "derived"
+        ],
+        "unresolved_conflicts": [
+          "Invoice quantity matches PO; unit price differs by $312."
+        ],
+        "untrusted_sources_present": [
+          "invoice_pdfs",
+          "ocr_output"
+        ],
+        "content_is_data_not_instructions": true
+      },
+      "credentials": {
+        "identity": "svc:ap-agent",
+        "privileges": [
+          "erp.ap:read",
+          "email:draft"
+        ],
+        "ttl_minutes": 240,
+        "fail_closed_on_expiry": true
+      },
+      "data_boundary_claim": {
+        "model_hosting": "customer_boundary",
+        "egress_fields": []
+      },
+      "audit": {
+        "records": [
+          "tool_calls",
+          "evidence_refs",
+          "gate_decision",
+          "approvals",
+          "denials",
+          "outcome"
+        ]
+      },
+      "outcome_verification": {
+        "expected_postconditions": [
+          "Draft exists in email system addressed to the vendor on file",
+          "Draft references invoice 48211 and PO 77102",
+          "Invoice status unchanged"
+        ],
+        "completion_rule": "all_postconditions_verified",
+        "max_observation_age_seconds": 300,
+        "verification_tests": [
+          {
+            "method": "read_system_of_record",
+            "source": "email",
+            "assertion": "draft for invoice 48211 exists, unsent, single recipient ap@northwind-supply.example",
+            "timeout_minutes": 5,
+            "test_id": "postcondition-1",
+            "postcondition_index": 0
+          },
+          {
+            "method": "read_system_of_record",
+            "source": "erp.ap",
+            "assertion": "invoice 48211 status == 'review' and payment_scheduled == false",
+            "timeout_minutes": 5,
+            "test_id": "postcondition-2",
+            "postcondition_index": 2
+          },
+          {
+            "test_id": "postcondition-3",
+            "postcondition_index": 1,
+            "method": "read_system_of_record",
+            "source": "email",
+            "assertion": "draft for invoice 48211 references invoice 48211 and PO 77102",
+            "timeout_minutes": 5
+          }
+        ],
+        "on_failure": "reopen"
+      },
+      "recovery": {
+        "method": "delete draft; if sent, send correction email",
+        "tested": true,
+        "last_tested": "2026-08-30",
+        "time_to_recover_minutes": 5,
+        "irreversible": false,
+        "owner": "ap_platform_lead",
+        "tested_evidence_ref": "testrun:recovery:ap-agent:2026-08-30#7"
+      },
+      "not_permitted_summary": [
+        "Release or schedule any payment",
+        "Edit vendor bank or remittance details",
+        "Create or delete vendor master records",
+        "Approve the agent's own drafts",
+        "Email any address not on the vendor domain allowlist"
+      ],
+      "documented_not_enforced": [],
+      "request_digest": "sha256:b122269dc15ea9a692bce2f744a74297ec4a8a50e572747615a0cbfeae437d45",
+      "integrity": {
+        "method": "gate-hmac-sha256",
+        "key_id": "reference-gate/0.3.7",
+        "value": "bcaa99352a83fe8b319a0e75cd54587d264a41b5b2af8ed853d30fbb9e2f7203"
+      }
+    }
+  ],
+  "records": [
+    {
+      "record_type": "ApprovalRecord",
+      "approval_id": "3dd5e76e-3437-4ecd-994c-f0a46df647fc",
+      "manifest_id": "aam:demo:v036:reconciliation",
+      "manifest_digest": "sha256:4f07ba10c1176d878b4cb0055c6e11ff554b81449ec862ff6b3c864ba7e12184",
+      "action_id": "inv-48211-email",
+      "profile_digest": "sha256:ca79e7d75384874b3e2bb3f58c5f0868f74c0cd88159ea404db916572ec9c69d",
+      "approved_by": [
+        {
+          "role": "ap_manager",
+          "principal": "user:jane",
+          "auth_ref": "demo:sso:jane"
+        }
+      ],
+      "approved_at": "2026-09-05T14:13:00Z",
+      "decision": "approved",
+      "reasons": [],
+      "seal": "dcf9de1862dcc7f632e0b898ce688940415c4a004fd549b13ed8a0fa475917d4"
+    },
+    {
+      "record_type": "ExecutionRecord",
+      "execution_id": "c0bcbeaf-274a-4d99-9176-1898355c2712",
+      "manifest_id": "aam:demo:v036:reconciliation",
+      "manifest_digest": "sha256:4f07ba10c1176d878b4cb0055c6e11ff554b81449ec862ff6b3c864ba7e12184",
+      "gate_decision_id": "fa89d1e3-3d89-4c78-80b0-73e58f4de39a",
+      "approval_id": "3dd5e76e-3437-4ecd-994c-f0a46df647fc",
+      "request_digest": "sha256:b122269dc15ea9a692bce2f744a74297ec4a8a50e572747615a0cbfeae437d45",
+      "requested_at": "2026-09-05T14:14:00Z",
+      "authorized_at": "2026-09-05T14:14:00Z",
+      "execution_state": "DISPATCHED",
+      "reconciliation_required": true,
+      "idempotency_key": "sha256:8db943e12eb726e64e44fb33f696f3d5fd5a173dd46182234bd19726e032c0ac",
+      "dispatched_at": "2026-09-05T14:14:00Z",
+      "executed_request_digest": "sha256:b122269dc15ea9a692bce2f744a74297ec4a8a50e572747615a0cbfeae437d45",
+      "decision": "ALLOW",
+      "authorization_decision": "ALLOW",
+      "reasons": [],
+      "receipt": null,
+      "record_sequence": 0,
+      "previous_record_seal": null,
+      "seal": "088968825ca544ddb63ba6baa8cd5194185f56816572c12cf374ffa0f1889377"
+    },
+    {
+      "record_type": "ExecutionRecord",
+      "execution_id": "c0bcbeaf-274a-4d99-9176-1898355c2712",
+      "manifest_id": "aam:demo:v036:reconciliation",
+      "manifest_digest": "sha256:4f07ba10c1176d878b4cb0055c6e11ff554b81449ec862ff6b3c864ba7e12184",
+      "gate_decision_id": "fa89d1e3-3d89-4c78-80b0-73e58f4de39a",
+      "approval_id": "3dd5e76e-3437-4ecd-994c-f0a46df647fc",
+      "request_digest": "sha256:b122269dc15ea9a692bce2f744a74297ec4a8a50e572747615a0cbfeae437d45",
+      "requested_at": "2026-09-05T14:14:00Z",
+      "authorized_at": "2026-09-05T14:14:00Z",
+      "execution_state": "EXECUTION_UNKNOWN",
+      "reconciliation_required": true,
+      "idempotency_key": "sha256:8db943e12eb726e64e44fb33f696f3d5fd5a173dd46182234bd19726e032c0ac",
+      "dispatched_at": "2026-09-05T14:14:00Z",
+      "executed_request_digest": "sha256:b122269dc15ea9a692bce2f744a74297ec4a8a50e572747615a0cbfeae437d45",
+      "decision": "ALLOW",
+      "authorization_decision": "ALLOW",
+      "reasons": [
+        "executor/receipt failure after dispatch (TimeoutError); effect may have committed; reconciliation required; no automatic retry"
+      ],
+      "receipt": {
+        "error_type": "TimeoutError"
+      },
+      "record_sequence": 1,
+      "previous_record_seal": "088968825ca544ddb63ba6baa8cd5194185f56816572c12cf374ffa0f1889377",
+      "seal": "24a8f12eb70d0d4655ae87e2413651256f0565c05f98a96f14b193ba2b863af9",
+      "execution_unknown_at": "2026-09-05T14:14:00Z"
+    },
+    {
+      "record_type": "ExecutionRecord",
+      "execution_id": "c0bcbeaf-274a-4d99-9176-1898355c2712",
+      "manifest_id": "aam:demo:v036:reconciliation",
+      "manifest_digest": "sha256:4f07ba10c1176d878b4cb0055c6e11ff554b81449ec862ff6b3c864ba7e12184",
+      "gate_decision_id": "fa89d1e3-3d89-4c78-80b0-73e58f4de39a",
+      "approval_id": "3dd5e76e-3437-4ecd-994c-f0a46df647fc",
+      "request_digest": "sha256:b122269dc15ea9a692bce2f744a74297ec4a8a50e572747615a0cbfeae437d45",
+      "requested_at": "2026-09-05T14:14:00Z",
+      "authorized_at": "2026-09-05T14:14:00Z",
+      "execution_state": "COMMITTED",
+      "reconciliation_required": false,
+      "idempotency_key": "sha256:8db943e12eb726e64e44fb33f696f3d5fd5a173dd46182234bd19726e032c0ac",
+      "dispatched_at": "2026-09-05T14:14:00Z",
+      "executed_request_digest": "sha256:b122269dc15ea9a692bce2f744a74297ec4a8a50e572747615a0cbfeae437d45",
+      "decision": "ALLOW",
+      "authorization_decision": "ALLOW",
+      "reasons": [
+        "execution reconciled from terminal transaction evidence; outcome verification remains separate; no retry authorized"
+      ],
+      "receipt": {
+        "error_type": "TimeoutError"
+      },
+      "record_sequence": 2,
+      "previous_record_seal": "24a8f12eb70d0d4655ae87e2413651256f0565c05f98a96f14b193ba2b863af9",
+      "seal": "24e8276e1ba94cb54d35c49bfd4f907d8bce4b7c3062e80dfdb50026955d2802",
+      "execution_unknown_at": "2026-09-05T14:14:00Z",
+      "reconciled_at": "2026-09-05T14:15:00Z",
+      "last_reconciliation_id": "4e0792f3-a021-4707-a8be-9907308cef56"
+    },
+    {
+      "record_type": "OutcomeVerificationRecord",
+      "verification_id": "04b9d4d8-04c2-4f30-9b80-2597b50e7292",
+      "execution_id": "c0bcbeaf-274a-4d99-9176-1898355c2712",
+      "verified_at": "2026-09-05T14:15:00Z",
+      "manifest_id": "aam:demo:v036:reconciliation",
+      "manifest_digest": "sha256:4f07ba10c1176d878b4cb0055c6e11ff554b81449ec862ff6b3c864ba7e12184",
+      "results": [
+        {
+          "test_id": "postcondition-1",
+          "assertion": "draft for invoice 48211 exists, unsent, single recipient ap@northwind-supply.example",
+          "method": "read_system_of_record",
+          "source": "email",
+          "observed": true,
+          "observed_via": "system_of_record_read",
+          "required_for_completion": true,
+          "evidence_errors": [],
+          "postcondition_index": 0,
+          "admissible_evidence": [
+            {
+              "record_type": "ObservationRecord",
+              "execution_id": "c0bcbeaf-274a-4d99-9176-1898355c2712",
+              "manifest_digest": "sha256:4f07ba10c1176d878b4cb0055c6e11ff554b81449ec862ff6b3c864ba7e12184",
+              "request_digest": "sha256:b122269dc15ea9a692bce2f744a74297ec4a8a50e572747615a0cbfeae437d45",
+              "test_id": "postcondition-1",
+              "assertion_digest": "sha256:dda326458ecddb4a778c82b88edf64b93597255eaf86ffc0d169c4afed4298c3",
+              "postcondition_digest": "sha256:42f84f6e82608a1e2c817977eaf5aa9f0d51dd2e344af3aa944ef66555b028ab",
+              "effect_target_digest": "sha256:75edeccb9821305ffd2e6182d28370f309a900d6131f605c11afeeadff7c55da",
+              "method": "read_system_of_record",
+              "source": "email",
+              "observed": true,
+              "observed_at": "2026-09-05T14:15:00Z",
+              "source_version": "demo-revision-1",
+              "evidence_ref": "demo:read:1"
+            }
+          ],
+          "evidence_conflict": false,
+          "observed_at": "2026-09-05T14:15:00Z",
+          "source_version": "demo-revision-1",
+          "evidence_ref": "demo:read:1"
+        },
+        {
+          "test_id": "postcondition-2",
+          "assertion": "invoice 48211 status == 'review' and payment_scheduled == false",
+          "method": "read_system_of_record",
+          "source": "erp.ap",
+          "observed": true,
+          "observed_via": "system_of_record_read",
+          "required_for_completion": true,
+          "evidence_errors": [],
+          "postcondition_index": 2,
+          "admissible_evidence": [
+            {
+              "record_type": "ObservationRecord",
+              "execution_id": "c0bcbeaf-274a-4d99-9176-1898355c2712",
+              "manifest_digest": "sha256:4f07ba10c1176d878b4cb0055c6e11ff554b81449ec862ff6b3c864ba7e12184",
+              "request_digest": "sha256:b122269dc15ea9a692bce2f744a74297ec4a8a50e572747615a0cbfeae437d45",
+              "test_id": "postcondition-2",
+              "assertion_digest": "sha256:1bfd4e0df17c3f1033157fbac86818256ab00d2302fe9687f3fedc010cfb0b8d",
+              "postcondition_digest": "sha256:eab0db30ec84b5bd2a0e90801b8b555ea0cbf76982dd8f96d0e2b703bc6590c4",
+              "effect_target_digest": "sha256:75edeccb9821305ffd2e6182d28370f309a900d6131f605c11afeeadff7c55da",
+              "method": "read_system_of_record",
+              "source": "erp.ap",
+              "observed": true,
+              "observed_at": "2026-09-05T14:15:00Z",
+              "source_version": "demo-revision-1",
+              "evidence_ref": "demo:read:1"
+            }
+          ],
+          "evidence_conflict": false,
+          "observed_at": "2026-09-05T14:15:00Z",
+          "source_version": "demo-revision-1",
+          "evidence_ref": "demo:read:1"
+        },
+        {
+          "test_id": "postcondition-3",
+          "assertion": "draft for invoice 48211 references invoice 48211 and PO 77102",
+          "method": "read_system_of_record",
+          "source": "email",
+          "observed": true,
+          "observed_via": "system_of_record_read",
+          "required_for_completion": true,
+          "evidence_errors": [],
+          "postcondition_index": 1,
+          "admissible_evidence": [
+            {
+              "record_type": "ObservationRecord",
+              "execution_id": "c0bcbeaf-274a-4d99-9176-1898355c2712",
+              "manifest_digest": "sha256:4f07ba10c1176d878b4cb0055c6e11ff554b81449ec862ff6b3c864ba7e12184",
+              "request_digest": "sha256:b122269dc15ea9a692bce2f744a74297ec4a8a50e572747615a0cbfeae437d45",
+              "test_id": "postcondition-3",
+              "assertion_digest": "sha256:d34438343390e5db0c926f8c62d678d702c7016c776a423226ab3a5e2d2bfc18",
+              "postcondition_digest": "sha256:2de91f0f8342a1753e8216ef774d47d8b6050af4f7aaeeda5022e3329dcc9d04",
+              "effect_target_digest": "sha256:75edeccb9821305ffd2e6182d28370f309a900d6131f605c11afeeadff7c55da",
+              "method": "read_system_of_record",
+              "source": "email",
+              "observed": true,
+              "observed_at": "2026-09-05T14:15:00Z",
+              "source_version": "demo-revision-1",
+              "evidence_ref": "demo:read:1"
+            }
+          ],
+          "evidence_conflict": false,
+          "observed_at": "2026-09-05T14:15:00Z",
+          "source_version": "demo-revision-1",
+          "evidence_ref": "demo:read:1"
+        }
+      ],
+      "verified": false,
+      "postconditions_verified": true,
+      "observation_clock_skew_seconds": 0,
+      "completion": "escalate",
+      "reconciliation_required": true,
+      "reasons": [
+        "dispatch outcome is unknown; observations do not authorize retry or settle downstream reconciliation"
+      ],
+      "seal": "b511f9e212f7a3240a572722fc0f38596ea022974d451a6df8c473a31e07f2e5"
+    },
+    {
+      "record_type": "ReconciliationRecord",
+      "reconciliation_id": "4e0792f3-a021-4707-a8be-9907308cef56",
+      "execution_id": "c0bcbeaf-274a-4d99-9176-1898355c2712",
+      "manifest_id": "aam:demo:v036:reconciliation",
+      "manifest_digest": "sha256:4f07ba10c1176d878b4cb0055c6e11ff554b81449ec862ff6b3c864ba7e12184",
+      "idempotency_key": "sha256:8db943e12eb726e64e44fb33f696f3d5fd5a173dd46182234bd19726e032c0ac",
+      "requested_at": "2026-09-05T14:15:00Z",
+      "reconciled_at": "2026-09-05T14:15:00Z",
+      "expected_record_sequence": 1,
+      "examined_execution_seal": "24a8f12eb70d0d4655ae87e2413651256f0565c05f98a96f14b193ba2b863af9",
+      "state_before": "EXECUTION_UNKNOWN",
+      "state_after": "COMMITTED",
+      "applied": true,
+      "disposition": "COMMITTED",
+      "evidence": {
+        "record_type": "ReconciliationEvidence",
+        "execution_id": "c0bcbeaf-274a-4d99-9176-1898355c2712",
+        "manifest_id": "aam:demo:v036:reconciliation",
+        "manifest_digest": "sha256:4f07ba10c1176d878b4cb0055c6e11ff554b81449ec862ff6b3c864ba7e12184",
+        "request_digest": "sha256:b122269dc15ea9a692bce2f744a74297ec4a8a50e572747615a0cbfeae437d45",
+        "idempotency_key": "sha256:8db943e12eb726e64e44fb33f696f3d5fd5a173dd46182234bd19726e032c0ac",
+        "action_id": "inv-48211-email",
+        "profile_digest": "sha256:ca79e7d75384874b3e2bb3f58c5f0868f74c0cd88159ea404db916572ec9c69d",
+        "effect_target_digest": "sha256:75edeccb9821305ffd2e6182d28370f309a900d6131f605c11afeeadff7c55da",
+        "disposition": "COMMITTED",
+        "final": true,
+        "observed_at": "2026-09-05T14:15:00Z",
+        "source": "demo:transaction-store",
+        "source_version": "demo-txn-revision-2",
+        "evidence_ref": "demo:terminal-receipt",
+        "transaction_ref": "demo:txn:one"
+      },
+      "reasons": [],
+      "observation_clock_skew_seconds": 0,
+      "max_evidence_age_seconds": 300,
+      "seal": "e4bdda778ca4e8bce069c3cef4f7157af5f98cffa1c7c48720f13f8a5fb15032"
+    },
+    {
+      "record_type": "OutcomeVerificationRecord",
+      "verification_id": "c854d210-a76a-4259-b39f-4908ff5982c6",
+      "execution_id": "c0bcbeaf-274a-4d99-9176-1898355c2712",
+      "verified_at": "2026-09-05T14:15:00Z",
+      "manifest_id": "aam:demo:v036:reconciliation",
+      "manifest_digest": "sha256:4f07ba10c1176d878b4cb0055c6e11ff554b81449ec862ff6b3c864ba7e12184",
+      "results": [
+        {
+          "test_id": "postcondition-1",
+          "assertion": "draft for invoice 48211 exists, unsent, single recipient ap@northwind-supply.example",
+          "method": "read_system_of_record",
+          "source": "email",
+          "observed": true,
+          "observed_via": "system_of_record_read",
+          "required_for_completion": true,
+          "evidence_errors": [],
+          "postcondition_index": 0,
+          "admissible_evidence": [
+            {
+              "record_type": "ObservationRecord",
+              "execution_id": "c0bcbeaf-274a-4d99-9176-1898355c2712",
+              "manifest_digest": "sha256:4f07ba10c1176d878b4cb0055c6e11ff554b81449ec862ff6b3c864ba7e12184",
+              "request_digest": "sha256:b122269dc15ea9a692bce2f744a74297ec4a8a50e572747615a0cbfeae437d45",
+              "test_id": "postcondition-1",
+              "assertion_digest": "sha256:dda326458ecddb4a778c82b88edf64b93597255eaf86ffc0d169c4afed4298c3",
+              "postcondition_digest": "sha256:42f84f6e82608a1e2c817977eaf5aa9f0d51dd2e344af3aa944ef66555b028ab",
+              "effect_target_digest": "sha256:75edeccb9821305ffd2e6182d28370f309a900d6131f605c11afeeadff7c55da",
+              "method": "read_system_of_record",
+              "source": "email",
+              "observed": true,
+              "observed_at": "2026-09-05T14:15:00Z",
+              "source_version": "demo-revision-1",
+              "evidence_ref": "demo:read:1"
+            }
+          ],
+          "evidence_conflict": false,
+          "observed_at": "2026-09-05T14:15:00Z",
+          "source_version": "demo-revision-1",
+          "evidence_ref": "demo:read:1"
+        },
+        {
+          "test_id": "postcondition-2",
+          "assertion": "invoice 48211 status == 'review' and payment_scheduled == false",
+          "method": "read_system_of_record",
+          "source": "erp.ap",
+          "observed": true,
+          "observed_via": "system_of_record_read",
+          "required_for_completion": true,
+          "evidence_errors": [],
+          "postcondition_index": 2,
+          "admissible_evidence": [
+            {
+              "record_type": "ObservationRecord",
+              "execution_id": "c0bcbeaf-274a-4d99-9176-1898355c2712",
+              "manifest_digest": "sha256:4f07ba10c1176d878b4cb0055c6e11ff554b81449ec862ff6b3c864ba7e12184",
+              "request_digest": "sha256:b122269dc15ea9a692bce2f744a74297ec4a8a50e572747615a0cbfeae437d45",
+              "test_id": "postcondition-2",
+              "assertion_digest": "sha256:1bfd4e0df17c3f1033157fbac86818256ab00d2302fe9687f3fedc010cfb0b8d",
+              "postcondition_digest": "sha256:eab0db30ec84b5bd2a0e90801b8b555ea0cbf76982dd8f96d0e2b703bc6590c4",
+              "effect_target_digest": "sha256:75edeccb9821305ffd2e6182d28370f309a900d6131f605c11afeeadff7c55da",
+              "method": "read_system_of_record",
+              "source": "erp.ap",
+              "observed": true,
+              "observed_at": "2026-09-05T14:15:00Z",
+              "source_version": "demo-revision-1",
+              "evidence_ref": "demo:read:1"
+            }
+          ],
+          "evidence_conflict": false,
+          "observed_at": "2026-09-05T14:15:00Z",
+          "source_version": "demo-revision-1",
+          "evidence_ref": "demo:read:1"
+        },
+        {
+          "test_id": "postcondition-3",
+          "assertion": "draft for invoice 48211 references invoice 48211 and PO 77102",
+          "method": "read_system_of_record",
+          "source": "email",
+          "observed": true,
+          "observed_via": "system_of_record_read",
+          "required_for_completion": true,
+          "evidence_errors": [],
+          "postcondition_index": 1,
+          "admissible_evidence": [
+            {
+              "record_type": "ObservationRecord",
+              "execution_id": "c0bcbeaf-274a-4d99-9176-1898355c2712",
+              "manifest_digest": "sha256:4f07ba10c1176d878b4cb0055c6e11ff554b81449ec862ff6b3c864ba7e12184",
+              "request_digest": "sha256:b122269dc15ea9a692bce2f744a74297ec4a8a50e572747615a0cbfeae437d45",
+              "test_id": "postcondition-3",
+              "assertion_digest": "sha256:d34438343390e5db0c926f8c62d678d702c7016c776a423226ab3a5e2d2bfc18",
+              "postcondition_digest": "sha256:2de91f0f8342a1753e8216ef774d47d8b6050af4f7aaeeda5022e3329dcc9d04",
+              "effect_target_digest": "sha256:75edeccb9821305ffd2e6182d28370f309a900d6131f605c11afeeadff7c55da",
+              "method": "read_system_of_record",
+              "source": "email",
+              "observed": true,
+              "observed_at": "2026-09-05T14:15:00Z",
+              "source_version": "demo-revision-1",
+              "evidence_ref": "demo:read:1"
+            }
+          ],
+          "evidence_conflict": false,
+          "observed_at": "2026-09-05T14:15:00Z",
+          "source_version": "demo-revision-1",
+          "evidence_ref": "demo:read:1"
+        }
+      ],
+      "verified": true,
+      "postconditions_verified": true,
+      "observation_clock_skew_seconds": 0,
+      "completion": "complete",
+      "reconciliation_required": false,
+      "reasons": [],
+      "seal": "446a6229d3620e8b6c06adb8e96ec9617f4e2899839c2d12e528de288eefe886"
+    },
+    {
+      "record_type": "ApprovalRecord",
+      "approval_id": "a7e36b66-a132-4910-89a6-37ffc4adb629",
+      "manifest_id": "aam:demo:v036:preflight",
+      "manifest_digest": "sha256:a52e301c0803af6854ad8e7129477f749d246ff062fe456ca0861840821a6b4e",
+      "action_id": "demo-new-action-preflight",
+      "profile_digest": "sha256:ca79e7d75384874b3e2bb3f58c5f0868f74c0cd88159ea404db916572ec9c69d",
+      "approved_by": [
+        {
+          "role": "ap_manager",
+          "principal": "user:jane",
+          "auth_ref": "demo:sso:jane"
+        }
+      ],
+      "approved_at": "2026-09-05T14:13:00Z",
+      "decision": "approved",
+      "reasons": [],
+      "seal": "cd357561b4d02371171f4f3d260dcfb0e0cc4d1b593eb1cf1074f96a32b426d4"
+    },
+    {
+      "record_type": "ExecutionRecord",
+      "execution_id": "f370c301-8d27-4453-b09e-f35aef93107c",
+      "manifest_id": "aam:demo:v036:preflight",
+      "manifest_digest": "sha256:a52e301c0803af6854ad8e7129477f749d246ff062fe456ca0861840821a6b4e",
+      "gate_decision_id": "fcb0ae2b-4e6c-4932-a8a9-0cc8326249d0",
+      "approval_id": "a7e36b66-a132-4910-89a6-37ffc4adb629",
+      "request_digest": "sha256:b122269dc15ea9a692bce2f744a74297ec4a8a50e572747615a0cbfeae437d45",
+      "requested_at": "2026-09-05T14:14:00Z",
+      "authorized_at": "2026-09-05T14:14:00Z",
+      "execution_state": "DISPATCHED",
+      "reconciliation_required": true,
+      "idempotency_key": "sha256:b3d25ce8a8e5f5402e0054a5281674ee1519365abb048a4945ddaf81e7506204",
+      "dispatched_at": "2026-09-05T14:14:00Z",
+      "executed_request_digest": "sha256:b122269dc15ea9a692bce2f744a74297ec4a8a50e572747615a0cbfeae437d45",
+      "decision": "ALLOW",
+      "authorization_decision": "ALLOW",
+      "reasons": [],
+      "receipt": null,
+      "record_sequence": 0,
+      "previous_record_seal": null,
+      "seal": "53a427397c6a6f0aa64a0139766d610385f022b659c948272eb62b3827a95628"
+    },
+    {
+      "record_type": "ExecutionRecord",
+      "execution_id": "f370c301-8d27-4453-b09e-f35aef93107c",
+      "manifest_id": "aam:demo:v036:preflight",
+      "manifest_digest": "sha256:a52e301c0803af6854ad8e7129477f749d246ff062fe456ca0861840821a6b4e",
+      "gate_decision_id": "fcb0ae2b-4e6c-4932-a8a9-0cc8326249d0",
+      "approval_id": "a7e36b66-a132-4910-89a6-37ffc4adb629",
+      "request_digest": "sha256:b122269dc15ea9a692bce2f744a74297ec4a8a50e572747615a0cbfeae437d45",
+      "requested_at": "2026-09-05T14:14:00Z",
+      "authorized_at": "2026-09-05T14:14:00Z",
+      "execution_state": "NOT_ATTEMPTED",
+      "reconciliation_required": false,
+      "idempotency_key": "sha256:b3d25ce8a8e5f5402e0054a5281674ee1519365abb048a4945ddaf81e7506204",
+      "dispatched_at": "2026-09-05T14:14:00Z",
+      "executed_request_digest": "sha256:b122269dc15ea9a692bce2f744a74297ec4a8a50e572747615a0cbfeae437d45",
+      "decision": "ALLOW",
+      "authorization_decision": "ALLOW",
+      "reasons": [
+        "trusted adapter asserts no downstream attempt; approval and dispatch reservations remain consumed"
+      ],
+      "receipt": {
+        "error_type": "ExecutorNotAttempted"
+      },
+      "record_sequence": 1,
+      "previous_record_seal": "53a427397c6a6f0aa64a0139766d610385f022b659c948272eb62b3827a95628",
+      "seal": "82a806ce6659bf21ba3a24c7c27312133f798ff9e823ce3fa5e36f51efd219bd",
+      "not_attempted_at": "2026-09-05T14:14:00Z"
+    }
+  ]
+}

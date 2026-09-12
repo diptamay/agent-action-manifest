@@ -1,0 +1,20 @@
+{
+  "schema_version": "0.3.7",
+  "policy_id": "feedback:ap-demo",
+  "policy_version": "1",
+  "description": "Synthetic AP policy: predefined restrictions only; authenticated manual restoration. Not customer calibration.",
+  "rules": [
+    {"rule_id":"unknown-action","signal":"EXECUTION_UNKNOWN","mode":"SUSPENDED","scope":"action","threshold":1,"window_seconds":3600},
+    {"rule_id":"conflicting-evidence","signal":"EVIDENCE_CONFLICT","mode":"SUSPENDED","scope":"operation","threshold":1,"window_seconds":3600},
+    {"rule_id":"failed-verification","signal":"VERIFICATION_FAILED","mode":"REQUIRE_APPROVAL","scope":"operation","threshold":2,"window_seconds":3600},
+    {"rule_id":"evaluation-regression","signal":"EVALUATION_REGRESSION","mode":"REQUIRE_APPROVAL","scope":"operation","threshold":1,"window_seconds":3600},
+    {"rule_id":"wrong-adapter-effect","signal":"ADAPTER_MISMATCH","mode":"SUSPENDED","scope":"operation","threshold":1,"window_seconds":3600},
+    {"rule_id":"overdue-dispatch","signal":"OVERDUE_EXECUTION","mode":"SUSPENDED","scope":"operation","threshold":1,"window_seconds":3600},
+    {"rule_id":"missing-verification","signal":"OVERDUE_VERIFICATION","mode":"REQUIRE_APPROVAL","scope":"operation","threshold":1,"window_seconds":3600}
+  ],
+  "signal_max_age_seconds":300,
+  "overdue_execution_seconds":300,
+  "overdue_verification_seconds":600,
+  "max_export_backlog":10000,
+  "audit_consumer":"primary-audit"
+}

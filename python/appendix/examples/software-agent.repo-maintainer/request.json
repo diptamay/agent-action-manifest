@@ -1,0 +1,38 @@
+{
+  "action_id": "pr-4127",
+  "tool": "github",
+  "operation": "open_pull_request",
+  "subject": {
+    "type": "repository",
+    "identifier": "acme-api",
+    "system": "github",
+    "display": "acme-api"
+  },
+  "effect_target": {
+    "type": "branch",
+    "identifier": "agent/libfoo-2.3.4",
+    "system": "github",
+    "display": "branch agent/libfoo-2.3.4 in acme-api (non-default)"
+  },
+  "parameters": {
+    "branch": "agent/libfoo-2.3.4",
+    "dependency": "libfoo",
+    "from": "2.3.1",
+    "to": "2.3.4",
+    "title": "Bump libfoo 2.3.1 -> 2.3.4"
+  },
+  "evidence_refs": [
+    "advisory:libfoo:2026-0912",
+    "ci:run:88213:passed",
+    "diff:agent/libfoo-2.3.4"
+  ],
+  "provenance": [
+    "live",
+    "live",
+    "derived"
+  ],
+  "untrusted_sources_present": [
+    "dependency_changelogs",
+    "ci_output"
+  ]
+}

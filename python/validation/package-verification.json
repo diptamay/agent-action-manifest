@@ -1,0 +1,52 @@
+{
+  "package": "Agent Action Manifest public reference package",
+  "runtime_version": "0.4.0",
+  "repository_name": "agent-action-manifest",
+  "implementation_directory": "python/",
+  "scope": "Parallel v0.4.0 public reference package, including the v0.3.8 documentation clarifications and opt-in aggregate, context, delegation, and campaign controls. The existing v0.3.7 release directory is not updated.",
+  "reader_documents": [
+    {
+      "path": "01_AAM_Workflow_and_Definition.docx",
+      "rendered_pages": 3,
+      "all_pages_visually_inspected": true,
+      "decorative_calendar_date_removed": true,
+      "version": "0.4.0"
+    },
+    {
+      "path": "02_AAM_Authority_and_Readiness_Worksheet.docx",
+      "rendered_pages": 5,
+      "all_pages_visually_inspected": true,
+      "decorative_calendar_date_removed": true,
+      "version": "0.4.0"
+    }
+  ],
+  "diagram": {
+    "editable_source": "Diagram_Source/Agent_Action_Manifest_Workflow_and_Feedback_v0_4_0.drawio",
+    "rendered_pdf": "Diagram_Source/Agent_Action_Manifest_Workflow_and_Feedback_v0_4_0.drawio.pdf",
+    "tabs": 3,
+    "all_pdf_pages_visually_inspected": true,
+    "visible_decorative_calendar_dates_found": false,
+    "render_note": "The draw.io CLI was unavailable. The editable source and PDF were updated and visually cross-checked, but the PDF was not exported by draw.io during this run."
+  },
+  "tests": {
+    "report": "final-package-test-report.json",
+    "clean_environment": "Fresh Python 3.12.14 virtual environment under /tmp with dependencies installed from python/requirements.txt.",
+    "suite_groups_passed": 7,
+    "suite_groups_total": 7,
+    "integration_checks_passed": 60,
+    "integration_checks_total": 60,
+    "containment_vectors": 59,
+    "documented_managed_demo_passed": true,
+    "documented_v4_quickstart_passed": true,
+    "live_integrations_tested": false
+  },
+  "publication_hygiene": {
+    "known_event_branding_removed": true,
+    "stale_validation_links_removed": true,
+    "demo_keys_retained_and_label_checked": true,
+    "real_credentials_or_customer_data_found": false,
+    "private_service_or_infrastructure_details_added": false,
+    "vendor_specific_taxonomies_or_domain_prohibitions_added": false
+  },
+  "limitations": "All execution checks use synthetic fixtures and adapters. Word documents were rendered with the bundled LibreOffice-based renderer. The diagram PDF was visually verified but not exported by draw.io in this run. No GitHub Actions run, live service integration, security audit, distributed budget-coordinator test, or production deployment was performed."
+}

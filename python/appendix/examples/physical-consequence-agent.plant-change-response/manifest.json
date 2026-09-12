@@ -1,0 +1,234 @@
+{
+  "schema_version": "0.3.7",
+  "manifest_id": "aam:plant-a:change-response:asset12-wo",
+  "manifest_version": "1.0.0",
+  "issued_at": "2026-09-05T16:20:00Z",
+  "review_expires_at": "2026-09-05T16:35:00Z",
+  "built_by": "reference-gate/0.3.7",
+  "profile_ref": {
+    "profile_id": "aap:plant-a:change-response",
+    "profile_version": "0.9.0",
+    "profile_digest": "sha256:d623a6eb7acfe4bc94c4e9a409beb68bbd1100031aee0689bfbeaa8391036708",
+    "conformance_level": "L3"
+  },
+  "identity": {
+    "agent_name": "change-response",
+    "agent_version": "0.9",
+    "model": {
+      "provider": "<provider>",
+      "identifier": "<model@2026-06>"
+    },
+    "prompt": {
+      "version": "6",
+      "hash": "sha256:0b7a...44"
+    },
+    "policy": {
+      "version": "2",
+      "hash": "sha256:77d2...0e"
+    }
+  },
+  "action_target": {
+    "action_id": "asset12-inspection-wo",
+    "requested_at": "2026-09-05T16:20:00Z",
+    "summary": "Draft an inspection work order for Asset-12 following an approved configuration change with anomalous post-change vibration. No equipment command will be issued.",
+    "tool": "maintenance",
+    "operation": "draft_work_order",
+    "subject": {
+      "type": "industrial_asset",
+      "identifier": "Asset-12",
+      "system": "maintenance",
+      "display": "Asset-12 (CNC, Line 3)"
+    },
+    "effect_target": {
+      "type": "work_order",
+      "identifier": "WO-NEW",
+      "system": "maintenance",
+      "display": "new inspection work order for Asset-12 in the maintenance system"
+    },
+    "parameters": {
+      "work_order_type": "inspection",
+      "asset": "Asset-12",
+      "related_session": "VS-8831",
+      "related_work_order": "WO-9931",
+      "priority": "high"
+    },
+    "material_parameters": [
+      {
+        "name": "work_order_type",
+        "value": "inspection",
+        "label": "Work order type"
+      },
+      {
+        "name": "asset",
+        "value": "Asset-12",
+        "label": "Asset"
+      },
+      {
+        "name": "related_session",
+        "value": "VS-8831",
+        "label": "Related session"
+      }
+    ],
+    "parameters_summary": "work_order_type=inspection; asset=Asset-12; related_session=VS-8831; related_work_order=WO-9931; priority=high"
+  },
+  "scope_claim": {
+    "tenant": "Plant-A",
+    "environment": "prod",
+    "systems": [
+      "evidence",
+      "maintenance"
+    ],
+    "assets": [
+      "Asset-12"
+    ],
+    "operating_window": "approved maintenance/response window only"
+  },
+  "impact": {
+    "domains": [
+      "operational",
+      "physical",
+      "safety"
+    ],
+    "severity": "high",
+    "blast_radius": "Potential production and safety consequence if the recommendation is wrong; execution is bounded to one maintenance work order for Asset-12. No direct control path.",
+    "bounded_by": [
+      "asset=Asset-12",
+      "business_systems_only"
+    ],
+    "reversible": true,
+    "max_affected_objects": 1
+  },
+  "autonomy_approval": {
+    "mode": "request_approval",
+    "approval_required": true,
+    "one_approval_one_action": true,
+    "approver_roles": [
+      "plant_owner",
+      "controls_owner"
+    ],
+    "required_evidence": [
+      "approved_work_order",
+      "pam_session_record",
+      "trusted_configuration_baseline",
+      "condition_trend",
+      "production_consequence",
+      "recovery_plan"
+    ],
+    "dual_approval_required": false,
+    "approval_timeout_minutes": 15
+  },
+  "evidence": {
+    "evidence_refs": [
+      "work_order:WO-9931",
+      "pam_session:VS-8831",
+      "baseline:Asset-12:v7",
+      "historian:Asset-12:vibration-window",
+      "consequence:Asset-12:2026-09-05"
+    ],
+    "provenance": [
+      "customer_supplied",
+      "customer_supplied",
+      "customer_supplied",
+      "live",
+      "derived"
+    ],
+    "unresolved_conflicts": [
+      "Approved work order exists and session matched scope, but post-change vibration is outside the expected band."
+    ],
+    "untrusted_sources_present": [
+      "operator_notes",
+      "session_metadata_free_text"
+    ],
+    "content_is_data_not_instructions": true
+  },
+  "credentials": {
+    "identity": "svc:change-response@plant-a",
+    "privileges": [
+      "evidence:read",
+      "maintenance:draft"
+    ],
+    "ttl_minutes": 120,
+    "fail_closed_on_expiry": true
+  },
+  "data_boundary_claim": {
+    "model_hosting": "customer_boundary",
+    "egress_fields": [
+      "event_type",
+      "asset_id",
+      "timestamps",
+      "change_summary"
+    ]
+  },
+  "audit": {
+    "records": [
+      "evidence_refs",
+      "manifest_versions",
+      "gate_decision",
+      "approvers",
+      "tool_arguments",
+      "connector_receipts",
+      "outcome",
+      "denials"
+    ]
+  },
+  "outcome_verification": {
+    "expected_postconditions": [
+      "Inspection work order exists for Asset-12 with evidence links and approver ids",
+      "No control-system command was issued",
+      "Post-action evidence collection is scheduled"
+    ],
+    "completion_rule": "all_postconditions_verified",
+    "max_observation_age_seconds": 300,
+    "verification_tests": [
+      {
+        "method": "read_system_of_record",
+        "source": "maintenance",
+        "assertion": "work order exists for Asset-12, type inspection, with evidence links and approver ids",
+        "timeout_minutes": 5,
+        "test_id": "postcondition-1",
+        "postcondition_index": 0
+      },
+      {
+        "method": "read_system_of_record",
+        "source": "audit_store",
+        "assertion": "no control_system tool invocation recorded for this manifest",
+        "timeout_minutes": 5,
+        "test_id": "postcondition-2",
+        "postcondition_index": 1
+      },
+      {
+        "test_id": "postcondition-3",
+        "postcondition_index": 2,
+        "method": "read_system_of_record",
+        "source": "maintenance",
+        "assertion": "post-action evidence collection is scheduled for Asset-12 and linked to the work order",
+        "timeout_minutes": 5
+      }
+    ],
+    "on_failure": "escalate"
+  },
+  "recovery": {
+    "method": "cancel work order; reopen investigation case",
+    "tested": true,
+    "last_tested": "2026-09-01",
+    "time_to_recover_minutes": 2,
+    "irreversible": false,
+    "owner": "controls_lead",
+    "tested_evidence_ref": "testrun:recovery:change-response:2026-09-01#3"
+  },
+  "not_permitted_summary": [
+    "Any command to a controller, HMI, or production equipment",
+    "Network isolation or segmentation change",
+    "Firmware or software deployment",
+    "Machine stop, start, or mode change",
+    "Any change to safety instrumented systems",
+    "Any action outside the approved operating window"
+  ],
+  "documented_not_enforced": [],
+  "request_digest": "sha256:35ad91fe984745aa440c9bcacf456bb4db4d38d61bc3b0806673be67de7c4643",
+  "integrity": {
+    "method": "gate-hmac-sha256",
+    "key_id": "reference-gate/0.3.7",
+    "value": "252c0a916fd5ab2e4e3876c40b5d994efb444d7923cc0843e2390827f2be0ea8"
+  }
+}

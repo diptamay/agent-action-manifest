@@ -1,0 +1,45 @@
+{
+  "action_id": "asset12-inspection-wo",
+  "tool": "maintenance",
+  "operation": "draft_work_order",
+  "subject": {
+    "type": "industrial_asset",
+    "identifier": "Asset-12",
+    "system": "maintenance",
+    "display": "Asset-12 (CNC, Line 3)"
+  },
+  "effect_target": {
+    "type": "work_order",
+    "identifier": "WO-NEW",
+    "system": "maintenance",
+    "display": "new inspection work order for Asset-12 in the maintenance system"
+  },
+  "parameters": {
+    "work_order_type": "inspection",
+    "asset": "Asset-12",
+    "related_session": "VS-8831",
+    "related_work_order": "WO-9931",
+    "priority": "high"
+  },
+  "evidence_refs": [
+    "work_order:WO-9931",
+    "pam_session:VS-8831",
+    "baseline:Asset-12:v7",
+    "historian:Asset-12:vibration-window",
+    "consequence:Asset-12:2026-09-05"
+  ],
+  "provenance": [
+    "customer_supplied",
+    "customer_supplied",
+    "customer_supplied",
+    "live",
+    "derived"
+  ],
+  "unresolved_conflicts": [
+    "Approved work order exists and session matched scope, but post-change vibration is outside the expected band."
+  ],
+  "untrusted_sources_present": [
+    "operator_notes",
+    "session_metadata_free_text"
+  ]
+}

@@ -1,0 +1,241 @@
+{
+  "schema_version": "0.3.7",
+  "manifest_id": "aam:acme:invoice-triage:10918ae91c63",
+  "manifest_version": "1.0.0",
+  "issued_at": "2026-09-07T14:13:10Z",
+  "review_expires_at": "2026-09-08T14:13:10Z",
+  "built_by": "managed-gate/0.3.7",
+  "profile_ref": {
+    "profile_id": "aap:acme:invoice-triage",
+    "profile_version": "1.0.7",
+    "profile_digest": "sha256:79cdd3622f6348fd38ed01c7e9a2558f3652d7d4d55aebb6f3e3137703532c63",
+    "conformance_level": "L2"
+  },
+  "identity": {
+    "agent_name": "invoice-triage",
+    "agent_version": "1.4",
+    "model": {
+      "provider": "<provider>",
+      "identifier": "<model@2026-05>"
+    },
+    "prompt": {
+      "version": "9",
+      "hash": "sha256:5d0c...e7"
+    },
+    "policy": {
+      "version": "3",
+      "hash": "sha256:3f0a...b1"
+    }
+  },
+  "action_target": {
+    "action_id": "demo-after-regression",
+    "requested_at": "2026-09-07T14:13:10Z",
+    "summary": "Draft (not send) an email to ap@northwind-supply.example (Northwind Supply, vendor on file) asking them to confirm the $312 unit-price variance on invoice 48211 against PO 77102. Will not release payment, change vendor details, or send without approval.",
+    "tool": "email",
+    "operation": "draft_email",
+    "subject": {
+      "type": "invoice",
+      "identifier": "48211",
+      "system": "erp.ap",
+      "display": "Invoice 48211 from Northwind Supply ($4,812.00)"
+    },
+    "effect_target": {
+      "type": "email_address",
+      "identifier": "ap@northwind-supply.example",
+      "system": "email",
+      "class": "vendor_on_file",
+      "display": "ap@northwind-supply.example (Northwind Supply, vendor on file)"
+    },
+    "parameters": {
+      "recipient_class": "vendor_on_file",
+      "max_recipients": 1,
+      "recipient": "ap@northwind-supply.example",
+      "invoice": "48211",
+      "po": "77102",
+      "variance_usd": 312,
+      "subject_line": "Invoice 48211 – price variance vs PO 77102"
+    },
+    "material_parameters": [
+      {
+        "name": "recipient",
+        "value": "ap@northwind-supply.example",
+        "label": "Recipient"
+      },
+      {
+        "name": "invoice",
+        "value": "48211",
+        "label": "Invoice"
+      },
+      {
+        "name": "po",
+        "value": "77102",
+        "label": "Po"
+      },
+      {
+        "name": "variance_usd",
+        "value": 312,
+        "label": "Variance usd"
+      }
+    ],
+    "parameters_summary": "recipient_class=vendor_on_file; max_recipients=1; recipient=ap@northwind-supply.example; invoice=48211; po=77102; variance_usd=312; subject_line=Invoice 48211 – price variance vs PO 77102"
+  },
+  "scope_claim": {
+    "tenant": "ACME",
+    "environment": "prod",
+    "systems": [
+      "email",
+      "erp.ap"
+    ]
+  },
+  "impact": {
+    "domains": [
+      "external_communication",
+      "financial"
+    ],
+    "severity": "low",
+    "blast_radius": "One outbound draft to one vendor about one invoice. No money movement.",
+    "bounded_by": [
+      "invoice=48211",
+      "vendor=on file"
+    ],
+    "reversible": true,
+    "max_affected_objects": 1
+  },
+  "autonomy_approval": {
+    "mode": "request_approval",
+    "approval_required": true,
+    "one_approval_one_action": true,
+    "approver_roles": [
+      "ap_manager"
+    ],
+    "required_evidence": [
+      "invoice_image",
+      "po_match_evidence",
+      "variance",
+      "draft_text"
+    ],
+    "dual_approval_required": false,
+    "approval_timeout_minutes": 1440
+  },
+  "evidence": {
+    "evidence_refs": [
+      "invoice:48211:image",
+      "po:77102",
+      "match:48211:77102:variance=312",
+      "draft:48211:v1"
+    ],
+    "provenance": [
+      "customer_supplied",
+      "customer_supplied",
+      "derived",
+      "derived"
+    ],
+    "unresolved_conflicts": [
+      "Invoice quantity matches PO; unit price differs by $312."
+    ],
+    "untrusted_sources_present": [
+      "invoice_pdfs",
+      "ocr_output"
+    ],
+    "content_is_data_not_instructions": true
+  },
+  "credentials": {
+    "identity": "svc:ap-agent",
+    "privileges": [
+      "erp.ap:read",
+      "email:draft"
+    ],
+    "ttl_minutes": 240,
+    "fail_closed_on_expiry": true
+  },
+  "data_boundary_claim": {
+    "model_hosting": "customer_boundary",
+    "egress_fields": []
+  },
+  "audit": {
+    "records": [
+      "tool_calls",
+      "evidence_refs",
+      "gate_decision",
+      "approvals",
+      "denials",
+      "outcome"
+    ]
+  },
+  "outcome_verification": {
+    "expected_postconditions": [
+      "Draft exists in email system addressed to the vendor on file",
+      "Draft references invoice 48211 and PO 77102",
+      "Invoice status unchanged"
+    ],
+    "completion_rule": "all_postconditions_verified",
+    "max_observation_age_seconds": 300,
+    "verification_tests": [
+      {
+        "method": "read_system_of_record",
+        "source": "email",
+        "assertion": "draft for invoice 48211 exists, unsent, single recipient ap@northwind-supply.example",
+        "timeout_minutes": 5,
+        "test_id": "postcondition-1",
+        "postcondition_index": 0
+      },
+      {
+        "method": "read_system_of_record",
+        "source": "erp.ap",
+        "assertion": "invoice 48211 status == 'review' and payment_scheduled == false",
+        "timeout_minutes": 5,
+        "test_id": "postcondition-2",
+        "postcondition_index": 2
+      },
+      {
+        "test_id": "postcondition-3",
+        "postcondition_index": 1,
+        "method": "read_system_of_record",
+        "source": "email",
+        "assertion": "draft for invoice 48211 references invoice 48211 and PO 77102",
+        "timeout_minutes": 5
+      }
+    ],
+    "on_failure": "reopen"
+  },
+  "recovery": {
+    "method": "delete draft; if sent, send correction email",
+    "tested": true,
+    "last_tested": "2026-08-30",
+    "time_to_recover_minutes": 5,
+    "irreversible": false,
+    "owner": "ap_platform_lead",
+    "tested_evidence_ref": "testrun:recovery:ap-agent:2026-08-30#7"
+  },
+  "not_permitted_summary": [
+    "Release or schedule any payment",
+    "Edit vendor bank or remittance details",
+    "Create or delete vendor master records",
+    "Approve the agent's own drafts",
+    "Email any address not on the vendor domain allowlist"
+  ],
+  "documented_not_enforced": [],
+  "request_digest": "sha256:b122269dc15ea9a692bce2f744a74297ec4a8a50e572747615a0cbfeae437d45",
+  "operational_context": {
+    "policy_id": "feedback:ap-demo",
+    "policy_version": "1",
+    "policy_digest": "sha256:36e7f620ba14994e2e63ad96b4c8125001f2291216fd71213284efdb5a69ff8b",
+    "mode": "REQUIRE_APPROVAL",
+    "control_revision": "sha256:0b95de4aded493878ad69859012dca0d57449296d2e223aa0a6c90e3d9d6742d",
+    "restrictions": [
+      {
+        "restriction_id": "hold:dfc2e08b085044878348dd64e28b38df",
+        "revision": 1,
+        "rule_id": "evaluation-regression",
+        "signal_code": "EVALUATION_REGRESSION",
+        "mode": "REQUIRE_APPROVAL"
+      }
+    ],
+    "adapter_revision": 1
+  },
+  "integrity": {
+    "method": "gate-hmac-sha256",
+    "key_id": "managed-gate/0.3.7",
+    "value": "deafbc60f721989b292d595aa723d18adb4e95efd8378c07ba7724240c347fbc"
+  }
+}

@@ -1,0 +1,219 @@
+{
+  "agent_name": "invoice-triage",
+  "agent_version": "1.4",
+  "owner": "AP Platform Lead",
+  "tenant": "ACME",
+  "environment": "prod",
+  "model_provider": "<provider>",
+  "model_identifier": "<model@2026-05>",
+  "prompt_version": "9",
+  "policy_version": "3",
+  "systems": [
+    "erp.ap",
+    "ticketing",
+    "email"
+  ],
+  "targets": [
+    {
+      "type": "invoice",
+      "selector": "invoice.status == 'review'",
+      "enforcement": "typed",
+      "selector_id": "invoice_in_review"
+    },
+    {
+      "type": "email_address",
+      "selector": "address on vendor file",
+      "enforcement": "typed",
+      "selector_id": "address_on_vendor_file"
+    },
+    {
+      "type": "ticket",
+      "selector": "AP queue",
+      "enforcement": "typed",
+      "selector_id": "ap_ticket_queue"
+    }
+  ],
+  "untrusted_sources": [
+    "invoice_pdfs",
+    "vendor_emails",
+    "ocr_output"
+  ],
+  "operations": [
+    {
+      "tool": "erp.ap",
+      "operation": "read_invoice",
+      "effect_type": "invoice",
+      "max_mode": "execute_allowlisted",
+      "reversible": true
+    },
+    {
+      "tool": "erp.ap",
+      "operation": "match_po",
+      "effect_type": "invoice",
+      "max_mode": "execute_allowlisted",
+      "reversible": true
+    },
+    {
+      "tool": "email",
+      "operation": "draft_email",
+      "effect_type": "email_address",
+      "effect_classes": [
+        "vendor_on_file"
+      ],
+      "allowed_parameters": [
+        "recipient",
+        "invoice",
+        "po",
+        "variance_usd",
+        "subject_line"
+      ],
+      "material_parameters": [
+        "recipient",
+        "invoice",
+        "po",
+        "variance_usd"
+      ],
+      "constraints": {
+        "recipient_class": "vendor_on_file",
+        "max_recipients": 1
+      },
+      "max_mode": "execute_allowlisted",
+      "reversible": true
+    },
+    {
+      "tool": "ticketing",
+      "operation": "create_ticket",
+      "effect_type": "ticket",
+      "allowed_parameters": [
+        "invoice",
+        "reason"
+      ],
+      "material_parameters": [
+        "invoice",
+        "reason"
+      ],
+      "max_mode": "execute_allowlisted",
+      "reversible": true
+    },
+    {
+      "tool": "erp.ap",
+      "operation": "set_status",
+      "effect_type": "invoice",
+      "allowed_parameters": [
+        "invoice"
+      ],
+      "material_parameters": [
+        "invoice",
+        "transition"
+      ],
+      "constraints": {
+        "transition": [
+          "review->matched",
+          "review->exception"
+        ]
+      },
+      "max_mode": "execute_allowlisted",
+      "reversible": true
+    }
+  ],
+  "nevers": [
+    {
+      "description": "Release or schedule any payment",
+      "tool": "erp.ap",
+      "operation": "release_payment"
+    },
+    {
+      "description": "Edit vendor bank or remittance details",
+      "tool": "erp.ap",
+      "operation": "update_vendor_bank_details"
+    },
+    {
+      "description": "Create or delete vendor master records",
+      "tool": "erp.ap",
+      "operation": "modify_vendor_master"
+    },
+    {
+      "description": "Approve the agent's own drafts",
+      "rule": "approver.principal != agent.identity",
+      "enforcement": "typed",
+      "rule_id": "no_self_approval"
+    },
+    {
+      "description": "Email any address not on the vendor domain allowlist",
+      "rule": "recipient.domain in vendor_domains_on_file",
+      "enforcement": "typed",
+      "rule_id": "recipient_domain_on_file"
+    }
+  ],
+  "allowed_domains": [
+    "financial",
+    "external_communication",
+    "operational"
+  ],
+  "max_severity": "moderate",
+  "max_affected_objects": 2,
+  "irreversible_allowed": false,
+  "worst_case": "One draft to one vendor about one invoice; no money movement.",
+  "approver_roles": [
+    "ap_manager",
+    "finance_controller"
+  ],
+  "required_evidence": [
+    "invoice_image",
+    "po_match_evidence",
+    "variance",
+    "draft_text"
+  ],
+  "dual_approval_for": [],
+  "approval_timeout_minutes": 1440,
+  "max_review_window_minutes": 1440,
+  "default_mode": "request_approval",
+  "max_mode": "execute_allowlisted",
+  "thresholds": [
+    "variance <= 2000 USD and PO exists -> execute_allowlisted",
+    "vendor is new -> recommend"
+  ],
+  "model_hosting": "customer_boundary",
+  "egress_policy": "none",
+  "egress_allowlist": [],
+  "never_egress": [
+    "bank_details",
+    "personal_data"
+  ],
+  "log_retention_days": 30,
+  "credential_identity": "svc:ap-agent",
+  "privileges": [
+    "erp.ap:read",
+    "erp.ap:status_write",
+    "ticketing:write",
+    "email:draft"
+  ],
+  "max_ttl_minutes": 240,
+  "records": [
+    "tool_calls",
+    "evidence_refs",
+    "gate_decision",
+    "approvals",
+    "denials",
+    "outcome"
+  ],
+  "readers": [
+    "ap_platform_lead",
+    "finance_controller",
+    "security"
+  ],
+  "alert_on": [
+    "release_payment_attempt",
+    "bank_detail_edit_attempt",
+    "email_to_unlisted_domain"
+  ],
+  "kill_mechanism": "feature flag ap-agent.enabled",
+  "kill_state_source": "flags://acme/ap-agent.enabled",
+  "kill_operators": [
+    "ap_platform_lead",
+    "finance_controller"
+  ],
+  "recovery_owner": "ap_platform_lead",
+  "max_execution_authority_seconds": 300,
+  "conformance_level": "L1"
+}

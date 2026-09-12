@@ -1,0 +1,24 @@
+{
+  "demo-review-A": {
+    "method": "ed25519",
+    "public_key_hex": "88d2424bfc2413823cb2708658c3d06274492c30100eaf944c9e24d30c29096f",
+    "principal": "user:demo-product_owner",
+    "roles": [
+      "product_owner"
+    ],
+    "parts": [
+      "A"
+    ]
+  },
+  "demo-review-B": {
+    "method": "ed25519",
+    "public_key_hex": "a42ea74269734344de66f2c08cfa074113c3d3cca23ec35a8937a841cf75a5e7",
+    "principal": "user:demo-engineering",
+    "roles": [
+      "engineering"
+    ],
+    "parts": [
+      "B"
+    ]
+  }
+}
