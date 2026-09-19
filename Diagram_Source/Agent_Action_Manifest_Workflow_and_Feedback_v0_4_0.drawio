@@ -1,86 +1,85 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<mxfile host="app.diagrams.net" agent="AAM diagram authoring" type="device" compressed="false" pages="3">
+<mxfile host="app.diagrams.net" agent="AAM diagram authoring" compressed="false" pages="3">
   <diagram id="aam-workflow" name="1. High-level workflow">
-    <mxGraphModel dx="1240" dy="790" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1240" pageHeight="790" math="0" shadow="0" background="#FFFFFF">
+    <mxGraphModel dx="1320" dy="839" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1240" pageHeight="790" background="#FFFFFF" math="0" shadow="0">
       <root>
-        <mxCell id="0"/>
-        <mxCell id="1" parent="0"/>
-        <mxCell id="title" value="Agent Action Manifest" style="text;html=0;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontFamily=Arial;fontSize=32;fontColor=#17384B;fontStyle=1;spacing=0;" vertex="1" parent="1">
-          <mxGeometry x="45" y="25" width="1150" height="45" as="geometry"/>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="title" parent="1" style="text;html=0;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontFamily=Arial;fontSize=32;fontColor=#17384B;fontStyle=1;spacing=0;" value="Agent Action Manifest" vertex="1">
+          <mxGeometry height="45" width="1150" x="45" y="25" as="geometry" />
         </mxCell>
-        <mxCell id="subtitle" value="People set authority. Agents request. The trusted gate governs each action." style="text;html=0;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontFamily=Arial;fontSize=18;fontColor=#4A6075;fontStyle=0;spacing=0;" vertex="1" parent="1">
-          <mxGeometry x="45" y="78" width="1150" height="30" as="geometry"/>
+        <mxCell id="subtitle" parent="1" style="text;html=0;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontFamily=Arial;fontSize=18;fontColor=#4A6075;fontStyle=0;spacing=0;" value="People set authority. Agents request. The trusted gate governs each action." vertex="1">
+          <mxGeometry height="30" width="1150" x="45" y="78" as="geometry" />
         </mxCell>
-        <mxCell id="owners" value="&lt;b&gt;Product + engineering owners&lt;/b&gt;&lt;br&gt;Review the Authority Profile,&lt;br&gt;aggregate and feedback policies." style="rounded=1;arcSize=10;whiteSpace=wrap;html=1;align=left;verticalAlign=top;spacing=16;strokeWidth=1.5;fillColor=#F2F0FA;strokeColor=#B4A7D6;fontFamily=Arial;fontSize=17;fontColor=#17384B;" vertex="1" parent="1">
-          <mxGeometry x="45" y="140" width="360" height="95" as="geometry"/>
+        <mxCell id="owners" parent="1" style="rounded=1;arcSize=10;whiteSpace=wrap;html=1;align=left;verticalAlign=top;spacing=16;strokeWidth=1.5;fillColor=#F2F0FA;strokeColor=#B4A7D6;fontFamily=Arial;fontSize=17;fontColor=#17384B;" value="&lt;b&gt;Product + engineering owners&lt;/b&gt;&lt;br&gt;Review the Authority Profile,&lt;br&gt;aggregate and feedback policies." vertex="1">
+          <mxGeometry height="95" width="360" x="45" y="140" as="geometry" />
         </mxCell>
-        <mxCell id="approver" value="&lt;b&gt;Human approver&lt;/b&gt;&lt;br&gt;Reviews the Assurance Card;&lt;br&gt;approves or rejects, when required." style="rounded=1;arcSize=10;whiteSpace=wrap;html=1;align=left;verticalAlign=top;spacing=16;strokeWidth=1.5;fillColor=#F0F5FC;strokeColor=#A6C3E7;fontFamily=Arial;fontSize=17;fontColor=#17384B;" vertex="1" parent="1">
-          <mxGeometry x="620" y="140" width="350" height="95" as="geometry"/>
+        <mxCell id="approver" parent="1" style="rounded=1;arcSize=10;whiteSpace=wrap;html=1;align=left;verticalAlign=top;spacing=16;strokeWidth=1.5;fillColor=#F0F5FC;strokeColor=#A6C3E7;fontFamily=Arial;fontSize=17;fontColor=#17384B;" value="&lt;b&gt;Human approver&lt;/b&gt;&lt;br&gt;Reviews the Assurance Card;&lt;br&gt;approves or rejects, when required." vertex="1">
+          <mxGeometry height="95" width="350" x="620" y="140" as="geometry" />
         </mxCell>
-        <mxCell id="agent" value="&lt;b&gt;Agent&lt;/b&gt;&lt;br&gt;Submits an&lt;br&gt;Action Request." style="rounded=1;arcSize=10;whiteSpace=wrap;html=1;align=left;verticalAlign=top;spacing=16;strokeWidth=1.5;fillColor=#F0F5FC;strokeColor=#A6C3E7;fontFamily=Arial;fontSize=17;fontColor=#17384B;" vertex="1" parent="1">
-          <mxGeometry x="45" y="355" width="230" height="105" as="geometry"/>
+        <mxCell id="agent" parent="1" style="rounded=1;arcSize=10;whiteSpace=wrap;html=1;align=left;verticalAlign=top;spacing=16;strokeWidth=1.5;fillColor=#F0F5FC;strokeColor=#A6C3E7;fontFamily=Arial;fontSize=17;fontColor=#17384B;" value="&lt;b&gt;Agent&lt;/b&gt;&lt;br&gt;Submits an&lt;br&gt;Action Request." vertex="1">
+          <mxGeometry height="105" width="230" x="45" y="355" as="geometry" />
         </mxCell>
-        <mxCell id="gate" value="&lt;b&gt;Trusted gate&lt;/b&gt;&lt;br&gt;Builds the Action Manifest.&lt;br&gt;Checks authority, context and budgets.&lt;br&gt;Records admission before dispatch.&lt;br&gt;Failed checks: no dispatch." style="rounded=1;arcSize=10;whiteSpace=wrap;html=1;align=left;verticalAlign=top;spacing=16;strokeWidth=1.5;fillColor=#E8F4F4;strokeColor=#279B9B;fontFamily=Arial;fontSize=17;fontColor=#17384B;" vertex="1" parent="1">
-          <mxGeometry x="390" y="320" width="410" height="185" as="geometry"/>
+        <mxCell id="gate" parent="1" style="rounded=1;arcSize=10;whiteSpace=wrap;html=1;align=left;verticalAlign=top;spacing=16;strokeWidth=1.5;fillColor=#E8F4F4;strokeColor=#279B9B;fontFamily=Arial;fontSize=17;fontColor=#17384B;" value="&lt;b&gt;Trusted gate&lt;/b&gt;&lt;br&gt;Builds the Action Manifest.&lt;br&gt;Checks authority, context and budgets.&lt;br&gt;Records admission before dispatch.&lt;br&gt;Failed checks: no dispatch." vertex="1">
+          <mxGeometry height="185" width="410" x="390" y="320" as="geometry" />
         </mxCell>
-        <mxCell id="executor" value="&lt;b&gt;Executor + verifier&lt;/b&gt;&lt;br&gt;Acts on the target.&lt;br&gt;Returns receipt and&lt;br&gt;independent evidence." style="rounded=1;arcSize=10;whiteSpace=wrap;html=1;align=left;verticalAlign=top;spacing=16;strokeWidth=1.5;fillColor=#F1F6F2;strokeColor=#9FC9A5;fontFamily=Arial;fontSize=17;fontColor=#17384B;" vertex="1" parent="1">
-          <mxGeometry x="920" y="350" width="270" height="135" as="geometry"/>
+        <mxCell id="executor" parent="1" style="rounded=1;arcSize=10;whiteSpace=wrap;html=1;align=left;verticalAlign=top;spacing=16;strokeWidth=1.5;fillColor=#F1F6F2;strokeColor=#9FC9A5;fontFamily=Arial;fontSize=17;fontColor=#17384B;" value="&lt;b&gt;Executor + verifier&lt;/b&gt;&lt;br&gt;Acts on the target.&lt;br&gt;Returns receipt and&lt;br&gt;independent evidence." vertex="1">
+          <mxGeometry height="135" width="270" x="920" y="350" as="geometry" />
         </mxCell>
-        <mxCell id="feedback" value="&lt;b&gt;Aggregate + campaign controller&lt;/b&gt;&lt;br&gt;Applies reviewed, restrictive rules." style="rounded=1;arcSize=10;whiteSpace=wrap;html=1;align=left;verticalAlign=top;spacing=16;strokeWidth=1.5;fillColor=#FFF5E8;strokeColor=#E1B160;fontFamily=Arial;fontSize=17;fontColor=#17384B;" vertex="1" parent="1">
-          <mxGeometry x="390" y="595" width="410" height="95" as="geometry"/>
+        <mxCell id="feedback" parent="1" style="rounded=1;arcSize=10;whiteSpace=wrap;html=1;align=left;verticalAlign=top;spacing=16;strokeWidth=1.5;fillColor=#FFF5E8;strokeColor=#E1B160;fontFamily=Arial;fontSize=17;fontColor=#17384B;" value="&lt;b&gt;Aggregate + campaign controller&lt;/b&gt;&lt;br&gt;Applies reviewed, restrictive rules." vertex="1">
+          <mxGeometry height="95" width="410" x="390" y="595" as="geometry" />
         </mxCell>
-        <mxCell id="published" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=0;strokeColor=#486979;strokeWidth=1.7;endArrow=block;endFill=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.2073170731707317;entryY=0;entryDx=0;entryDy=0;dashed=1;dashPattern=4 3;" edge="1" parent="1" source="owners" target="gate">
+        <mxCell id="published" edge="1" parent="1" source="owners" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=0;strokeColor=#486979;strokeWidth=1.7;endArrow=block;endFill=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.2073170731707317;entryY=0;entryDx=0;entryDy=0;dashed=1;dashPattern=4 3;" target="gate">
           <mxGeometry relative="1" as="geometry">
             <Array as="points">
-              <mxPoint x="225" y="275"/>
-              <mxPoint x="475" y="275"/>
+              <mxPoint x="225" y="275" />
+              <mxPoint x="475" y="275" />
             </Array>
           </mxGeometry>
         </mxCell>
-        <mxCell id="card" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=0;strokeColor=#486979;strokeWidth=1.7;endArrow=block;endFill=1;exitX=0.75;exitY=0;exitDx=0;exitDy=0;entryX=0.22142857142857142;entryY=1;entryDx=0;entryDy=0;startArrow=block;startFill=1;" edge="1" parent="1" source="gate" target="approver">
-          <mxGeometry relative="1" as="geometry"/>
+        <mxCell id="card" edge="1" parent="1" source="gate" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=0;strokeColor=#486979;strokeWidth=1.7;endArrow=block;endFill=1;exitX=0.75;exitY=0;exitDx=0;exitDy=0;entryX=0.22142857142857142;entryY=1;entryDx=0;entryDy=0;startArrow=block;startFill=1;" target="approver">
+          <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="request" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=0;strokeColor=#486979;strokeWidth=1.7;endArrow=block;endFill=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.47297297297297297;entryDx=0;entryDy=0;" edge="1" parent="1" source="agent" target="gate">
-          <mxGeometry relative="1" as="geometry"/>
+        <mxCell id="request" edge="1" parent="1" source="agent" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=0;strokeColor=#486979;strokeWidth=1.7;endArrow=block;endFill=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.47297297297297297;entryDx=0;entryDy=0;" target="gate">
+          <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="dispatch" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=0;strokeColor=#486979;strokeWidth=1.7;endArrow=block;endFill=1;exitX=1;exitY=0.32432432432432434;exitDx=0;exitDy=0;entryX=0;entryY=0.2222222222222222;entryDx=0;entryDy=0;" edge="1" parent="1" source="gate" target="executor">
-          <mxGeometry relative="1" as="geometry"/>
+        <mxCell id="dispatch" edge="1" parent="1" source="gate" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=0;strokeColor=#486979;strokeWidth=1.7;endArrow=block;endFill=1;exitX=1;exitY=0.32432432432432434;exitDx=0;exitDy=0;entryX=0;entryY=0.2222222222222222;entryDx=0;entryDy=0;" target="executor">
+          <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="results" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=0;strokeColor=#486979;strokeWidth=1.7;endArrow=block;endFill=1;exitX=0;exitY=0.7777777777777778;exitDx=0;exitDy=0;entryX=1;entryY=0.7297297297297297;entryDx=0;entryDy=0;" edge="1" parent="1" source="executor" target="gate">
-          <mxGeometry relative="1" as="geometry"/>
+        <mxCell id="results" edge="1" parent="1" source="executor" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=0;strokeColor=#486979;strokeWidth=1.7;endArrow=block;endFill=1;exitX=0;exitY=0.7777777777777778;exitDx=0;exitDy=0;entryX=1;entryY=0.7297297297297297;entryDx=0;entryDy=0;" target="gate">
+          <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="signals" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=0;strokeColor=#486979;strokeWidth=1.7;endArrow=block;endFill=1;exitX=0.23;exitY=1;exitDx=0;exitDy=0;entryX=0.23;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="gate" target="feedback">
-          <mxGeometry relative="1" as="geometry"/>
+        <mxCell id="signals" edge="1" parent="1" source="gate" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=0;strokeColor=#486979;strokeWidth=1.7;endArrow=block;endFill=1;exitX=0.23;exitY=1;exitDx=0;exitDy=0;entryX=0.23;entryY=0;entryDx=0;entryDy=0;" target="feedback">
+          <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="restrictions" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=0;strokeColor=#486979;strokeWidth=1.7;endArrow=block;endFill=1;exitX=0.76;exitY=0;exitDx=0;exitDy=0;entryX=0.76;entryY=1;entryDx=0;entryDy=0;" edge="1" parent="1" source="feedback" target="gate">
-          <mxGeometry relative="1" as="geometry"/>
+        <mxCell id="restrictions" edge="1" parent="1" source="feedback" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=0;strokeColor=#486979;strokeWidth=1.7;endArrow=block;endFill=1;exitX=0.76;exitY=0;exitDx=0;exitDy=0;entryX=0.76;entryY=1;entryDx=0;entryDy=0;" target="gate">
+          <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="pub-label" value="Published rules" style="text;html=0;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontFamily=Arial;fontSize=15;fontColor=#486979;fontStyle=0;spacing=0;" vertex="1" parent="1">
-          <mxGeometry x="235" y="249" width="200" height="24" as="geometry"/>
+        <mxCell id="pub-label" parent="1" style="text;html=0;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontFamily=Arial;fontSize=15;fontColor=#486979;fontStyle=0;spacing=0;" value="Published rules" vertex="1">
+          <mxGeometry height="24" width="200" x="235" y="249" as="geometry" />
         </mxCell>
-        <mxCell id="card-label" value="Card / decision" style="text;html=0;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontFamily=Arial;fontSize=15;fontColor=#486979;fontStyle=0;spacing=0;" vertex="1" parent="1">
-          <mxGeometry x="711" y="263" width="200" height="26" as="geometry"/>
+        <mxCell id="card-label" parent="1" style="text;html=0;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontFamily=Arial;fontSize=15;fontColor=#486979;fontStyle=0;spacing=0;" value="Card / decision" vertex="1">
+          <mxGeometry height="26" width="200" x="711" y="263" as="geometry" />
         </mxCell>
-        <mxCell id="req-label" value="Request" style="text;html=0;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontFamily=Arial;fontSize=15;fontColor=#486979;fontStyle=0;spacing=0;" vertex="1" parent="1">
-          <mxGeometry x="295" y="372" width="85" height="24" as="geometry"/>
+        <mxCell id="req-label" parent="1" style="text;html=0;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontFamily=Arial;fontSize=15;fontColor=#486979;fontStyle=0;spacing=0;" value="Request" vertex="1">
+          <mxGeometry height="24" width="85" x="295" y="372" as="geometry" />
         </mxCell>
-        <mxCell id="dispatch-label" value="Dispatch" style="text;html=0;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontFamily=Arial;fontSize=15;fontColor=#486979;fontStyle=0;spacing=0;" vertex="1" parent="1">
-          <mxGeometry x="815" y="350" width="95" height="24" as="geometry"/>
+        <mxCell id="dispatch-label" parent="1" style="text;html=0;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontFamily=Arial;fontSize=15;fontColor=#486979;fontStyle=0;spacing=0;" value="Dispatch" vertex="1">
+          <mxGeometry height="24" width="95" x="815" y="350" as="geometry" />
         </mxCell>
-        <mxCell id="results-label" value="Results" style="text;html=0;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontFamily=Arial;fontSize=15;fontColor=#486979;fontStyle=0;spacing=0;" vertex="1" parent="1">
-          <mxGeometry x="820" y="424" width="90" height="24" as="geometry"/>
+        <mxCell id="results-label" parent="1" style="text;html=0;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontFamily=Arial;fontSize=15;fontColor=#486979;fontStyle=0;spacing=0;" value="Results" vertex="1">
+          <mxGeometry height="24" width="90" x="820" y="424" as="geometry" />
         </mxCell>
-        <mxCell id="signals-label" value="Usage + signals" style="text;html=0;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontFamily=Arial;fontSize=15;fontColor=#486979;fontStyle=0;spacing=0;" vertex="1" parent="1">
-          <mxGeometry x="408" y="544" width="130" height="24" as="geometry"/>
+        <mxCell id="signals-label" parent="1" style="text;html=0;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontFamily=Arial;fontSize=15;fontColor=#486979;fontStyle=0;spacing=0;" value="Usage + signals" vertex="1">
+          <mxGeometry height="24" width="130" x="408" y="544" as="geometry" />
         </mxCell>
-        <mxCell id="restriction-label" value="Restrictions" style="text;html=0;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontFamily=Arial;fontSize=15;fontColor=#486979;fontStyle=0;spacing=0;" vertex="1" parent="1">
-          <mxGeometry x="719" y="544" width="155" height="24" as="geometry"/>
+        <mxCell id="restriction-label" parent="1" style="text;html=0;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontFamily=Arial;fontSize=15;fontColor=#486979;fontStyle=0;spacing=0;" value="Restrictions" vertex="1">
+          <mxGeometry height="24" width="155" x="719" y="544" as="geometry" />
         </mxCell>
-        <mxCell id="detail-note" value="Detailed result handling and feedback:&#10;see tabs 2 and 3." style="text;html=0;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontFamily=Arial;fontSize=15;fontColor=#4A6075;fontStyle=0;spacing=0;" vertex="1" parent="1">
-          <mxGeometry x="915" y="613" width="265" height="58" as="geometry"/>
+        <mxCell id="detail-note" parent="1" style="text;html=0;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontFamily=Arial;fontSize=15;fontColor=#4A6075;fontStyle=0;spacing=0;" value="Detailed result handling and feedback:&#xa;see tabs 2 and 3." vertex="1">
+          <mxGeometry height="58" width="265" x="915" y="613" as="geometry" />
         </mxCell>
-        <mxCell id="principle" value="Budgets and feedback can restrict actions, never expand authority. Restoration requires an authorized owner." style="text;html=0;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontFamily=Arial;fontSize=16;fontColor=#17384B;fontStyle=1;spacing=0;" vertex="1" parent="1">
-          <mxGeometry x="45" y="727" width="1150" height="34" as="geometry"/>
+        <mxCell id="principle" parent="1" style="text;html=0;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontFamily=Arial;fontSize=16;fontColor=#17384B;fontStyle=1;spacing=0;" value="Budgets and feedback can restrict actions, never expand authority. Restoration requires an authorized owner." vertex="1">
+          <mxGeometry height="34" width="1150" x="45" y="727" as="geometry" />
         </mxCell>
       </root>
     </mxGraphModel>
@@ -88,178 +87,178 @@
   <diagram id="aam-results" name="2. Results back to proxy">
     <mxGraphModel dx="0" dy="0" grid="0" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="2240" pageHeight="1635" math="0" shadow="0" background="#FFFFFF">
       <root>
-        <mxCell id="0"/>
-        <mxCell id="1" parent="0"/>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
         <mxCell id="title" value="&lt;div style=&quot;font-size:34px;line-height:1.25;color:#15324C;font-weight:700;&quot;&gt;Results back to the proxy | What changes, and what does not&lt;/div&gt;" style="text;html=1;whiteSpace=wrap;fillColor=none;strokeColor=none;align=left;verticalAlign=top;spacing=0;fontFamily=Helvetica;fontSize=34;fontColor=#15324C;" vertex="1" parent="1">
-          <mxGeometry as="geometry" x="40" y="25" width="2160" height="52"/>
+          <mxGeometry as="geometry" x="40" y="25" width="2160" height="52" />
         </mxCell>
         <mxCell id="subtitle" value="&lt;div style=&quot;font-size:19px;line-height:1.25;color:#4A6075;font-weight:400;&quot;&gt;A receipt, an observation and a reconciliation result answer different questions. No returned value is permission to repeat an action.&lt;/div&gt;" style="text;html=1;whiteSpace=wrap;fillColor=none;strokeColor=none;align=left;verticalAlign=top;spacing=0;fontFamily=Helvetica;fontSize=19;fontColor=#4A6075;" vertex="1" parent="1">
-          <mxGeometry as="geometry" x="40" y="87" width="2160" height="50"/>
+          <mxGeometry as="geometry" x="40" y="87" width="2160" height="50" />
         </mxCell>
         <mxCell id="axisa" value="&lt;div style=&quot;font-size:19px;font-weight:700;line-height:1.2;margin-bottom:8px;&quot;&gt;AUTHORIZATION&lt;/div&gt;&lt;div style=&quot;font-size:17px;line-height:1.28;&quot;&gt;May this exact action be attempted?&lt;/div&gt;" style="rounded=1;arcSize=8;html=1;whiteSpace=wrap;align=left;verticalAlign=top;spacing=15;fillColor=#F4F6F8;strokeColor=#A9B5C3;fontColor=#283B50;fontFamily=Helvetica;fontSize=18;strokeWidth=1.6;" vertex="1" parent="1">
-          <mxGeometry as="geometry" x="40" y="150" width="690" height="89"/>
+          <mxGeometry as="geometry" x="40" y="150" width="690" height="89" />
         </mxCell>
         <mxCell id="axisb" value="&lt;div style=&quot;font-size:19px;font-weight:700;line-height:1.2;margin-bottom:8px;&quot;&gt;EXECUTION + OUTCOME&lt;/div&gt;&lt;div style=&quot;font-size:17px;line-height:1.28;&quot;&gt;What was attempted, and was its result verified?&lt;/div&gt;" style="rounded=1;arcSize=8;html=1;whiteSpace=wrap;align=left;verticalAlign=top;spacing=15;fillColor=#F4F6F8;strokeColor=#A9B5C3;fontColor=#283B50;fontFamily=Helvetica;fontSize=18;strokeWidth=1.6;" vertex="1" parent="1">
-          <mxGeometry as="geometry" x="780" y="150" width="690" height="89"/>
+          <mxGeometry as="geometry" x="780" y="150" width="690" height="89" />
         </mxCell>
         <mxCell id="axisc" value="&lt;div style=&quot;font-size:19px;font-weight:700;line-height:1.2;margin-bottom:8px;&quot;&gt;OPERATING MODE&lt;/div&gt;&lt;div style=&quot;font-size:17px;line-height:1.28;&quot;&gt;What restrictions apply to future admissions?&lt;/div&gt;" style="rounded=1;arcSize=8;html=1;whiteSpace=wrap;align=left;verticalAlign=top;spacing=15;fillColor=#F4F6F8;strokeColor=#A9B5C3;fontColor=#283B50;fontFamily=Helvetica;fontSize=18;strokeWidth=1.6;" vertex="1" parent="1">
-          <mxGeometry as="geometry" x="1520" y="150" width="690" height="89"/>
+          <mxGeometry as="geometry" x="1520" y="150" width="690" height="89" />
         </mxCell>
         <mxCell id="h0" value="&lt;div style=&quot;font-size:17px;line-height:1.25;color:#42576B;font-weight:700;&quot;&gt;RESULT / EVIDENCE&lt;/div&gt;" style="text;html=1;whiteSpace=wrap;fillColor=none;strokeColor=none;align=left;verticalAlign=top;spacing=0;fontFamily=Helvetica;fontSize=17;fontColor=#42576B;" vertex="1" parent="1">
-          <mxGeometry as="geometry" x="55" y="269" width="390" height="27"/>
+          <mxGeometry as="geometry" x="55" y="269" width="390" height="27" />
         </mxCell>
         <mxCell id="h1" value="&lt;div style=&quot;font-size:17px;line-height:1.25;color:#42576B;font-weight:700;&quot;&gt;WHAT THE PROXY DOES&lt;/div&gt;" style="text;html=1;whiteSpace=wrap;fillColor=none;strokeColor=none;align=left;verticalAlign=top;spacing=0;fontFamily=Helvetica;fontSize=17;fontColor=#42576B;" vertex="1" parent="1">
-          <mxGeometry as="geometry" x="500" y="269" width="660" height="27"/>
+          <mxGeometry as="geometry" x="500" y="269" width="660" height="27" />
         </mxCell>
         <mxCell id="h2" value="&lt;div style=&quot;font-size:17px;line-height:1.25;color:#42576B;font-weight:700;&quot;&gt;RECORDED MEANING&lt;/div&gt;" style="text;html=1;whiteSpace=wrap;fillColor=none;strokeColor=none;align=left;verticalAlign=top;spacing=0;fontFamily=Helvetica;fontSize=17;fontColor=#42576B;" vertex="1" parent="1">
-          <mxGeometry as="geometry" x="1215" y="269" width="430" height="27"/>
+          <mxGeometry as="geometry" x="1215" y="269" width="430" height="27" />
         </mxCell>
         <mxCell id="h3" value="&lt;div style=&quot;font-size:17px;line-height:1.25;color:#42576B;font-weight:700;&quot;&gt;FEEDBACK CONSEQUENCE&lt;/div&gt;" style="text;html=1;whiteSpace=wrap;fillColor=none;strokeColor=none;align=left;verticalAlign=top;spacing=0;fontFamily=Helvetica;fontSize=17;fontColor=#42576B;" vertex="1" parent="1">
-          <mxGeometry as="geometry" x="1700" y="269" width="485" height="27"/>
+          <mxGeometry as="geometry" x="1700" y="269" width="485" height="27" />
         </mxCell>
         <mxCell id="in0" value="&lt;div style=&quot;font-size:19px;font-weight:700;line-height:1.2;margin-bottom:8px;&quot;&gt;Normal adapter return&lt;/div&gt;&lt;div style=&quot;font-size:17px;line-height:1.28;&quot;&gt;A valid, serializable receipt&lt;/div&gt;" style="rounded=1;arcSize=8;html=1;whiteSpace=wrap;align=left;verticalAlign=top;spacing=15;fillColor=#EDF7EF;strokeColor=#63A173;fontColor=#254D30;fontFamily=Helvetica;fontSize=18;strokeWidth=1.6;" vertex="1" parent="1">
-          <mxGeometry as="geometry" x="55" y="310" width="390" height="137"/>
+          <mxGeometry as="geometry" x="55" y="310" width="390" height="137" />
         </mxCell>
         <mxCell id="handle0" value="&lt;div style=&quot;font-size:19px;font-weight:700;line-height:1.2;margin-bottom:8px;&quot;&gt;Proxy handling&lt;/div&gt;&lt;div style=&quot;font-size:17px;line-height:1.28;&quot;&gt;Record acknowledgment; await a separate verification call.&lt;br&gt;A successful tool return is not evidence that business postconditions hold.&lt;/div&gt;" style="rounded=1;arcSize=8;html=1;whiteSpace=wrap;align=left;verticalAlign=top;spacing=15;fillColor=#E7F7F6;strokeColor=#28918B;fontColor=#154A47;fontFamily=Helvetica;fontSize=18;strokeWidth=1.6;" vertex="1" parent="1">
-          <mxGeometry as="geometry" x="500" y="310" width="660" height="137"/>
+          <mxGeometry as="geometry" x="500" y="310" width="660" height="137" />
         </mxCell>
         <mxCell id="state0" value="&lt;div style=&quot;font-size:19px;font-weight:700;line-height:1.2;margin-bottom:8px;&quot;&gt;Record / status&lt;/div&gt;&lt;div style=&quot;font-size:17px;line-height:1.28;&quot;&gt;execution_state = ACKNOWLEDGED&lt;br&gt;Outcome not yet established.&lt;/div&gt;" style="rounded=1;arcSize=8;html=1;whiteSpace=wrap;align=left;verticalAlign=top;spacing=15;fillColor=#F1EEFF;strokeColor=#8A77B3;fontColor=#3C2E64;fontFamily=Helvetica;fontSize=18;strokeWidth=1.6;" vertex="1" parent="1">
-          <mxGeometry as="geometry" x="1215" y="310" width="430" height="137"/>
+          <mxGeometry as="geometry" x="1215" y="310" width="430" height="137" />
         </mxCell>
         <mxCell id="feedback0" value="&lt;div style=&quot;font-size:19px;font-weight:700;line-height:1.2;margin-bottom:8px;&quot;&gt;Signal / restriction&lt;/div&gt;&lt;div style=&quot;font-size:17px;line-height:1.28;&quot;&gt;No general success-to-permission rule.&lt;br&gt;Existing restrictions are not cleared.&lt;/div&gt;" style="rounded=1;arcSize=8;html=1;whiteSpace=wrap;align=left;verticalAlign=top;spacing=15;fillColor=#EDF7EF;strokeColor=#63A173;fontColor=#254D30;fontFamily=Helvetica;fontSize=18;strokeWidth=1.6;" vertex="1" parent="1">
-          <mxGeometry as="geometry" x="1700" y="310" width="485" height="137"/>
+          <mxGeometry as="geometry" x="1700" y="310" width="485" height="137" />
         </mxCell>
         <mxCell id="e1" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=1;strokeWidth=2;strokeColor=#58718B;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;exitPerimeter=0;entryPerimeter=0;jumpStyle=arc;jumpSize=8;" edge="1" parent="1" source="in0" target="handle0">
-          <mxGeometry as="geometry" relative="1"/>
+          <mxGeometry as="geometry" relative="1" />
         </mxCell>
         <mxCell id="e2" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=1;strokeWidth=2;strokeColor=#8A77B3;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;exitPerimeter=0;entryPerimeter=0;jumpStyle=arc;jumpSize=8;" edge="1" parent="1" source="handle0" target="state0">
-          <mxGeometry as="geometry" relative="1"/>
+          <mxGeometry as="geometry" relative="1" />
         </mxCell>
         <mxCell id="e3" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=1;strokeWidth=2;strokeColor=#C29738;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;exitPerimeter=0;entryPerimeter=0;jumpStyle=arc;jumpSize=8;" edge="1" parent="1" source="state0" target="feedback0">
-          <mxGeometry as="geometry" relative="1"/>
+          <mxGeometry as="geometry" relative="1" />
         </mxCell>
         <mxCell id="in1" value="&lt;div style=&quot;font-size:19px;font-weight:700;line-height:1.2;margin-bottom:8px;&quot;&gt;Explicit no-attempt signal&lt;/div&gt;&lt;div style=&quot;font-size:17px;line-height:1.28;&quot;&gt;ExecutorNotAttempted&lt;/div&gt;" style="rounded=1;arcSize=8;html=1;whiteSpace=wrap;align=left;verticalAlign=top;spacing=15;fillColor=#F4F6F8;strokeColor=#A9B5C3;fontColor=#283B50;fontFamily=Helvetica;fontSize=18;strokeWidth=1.6;" vertex="1" parent="1">
-          <mxGeometry as="geometry" x="55" y="474" width="390" height="137"/>
+          <mxGeometry as="geometry" x="55" y="474" width="390" height="137" />
         </mxCell>
         <mxCell id="handle1" value="&lt;div style=&quot;font-size:19px;font-weight:700;line-height:1.2;margin-bottom:8px;&quot;&gt;Proxy handling&lt;/div&gt;&lt;div style=&quot;font-size:17px;line-height:1.28;&quot;&gt;Record the trusted adapter’s assertion that no downstream attempt occurred.&lt;br&gt;Keep the action reservation and any consumed approval.&lt;/div&gt;" style="rounded=1;arcSize=8;html=1;whiteSpace=wrap;align=left;verticalAlign=top;spacing=15;fillColor=#E7F7F6;strokeColor=#28918B;fontColor=#154A47;fontFamily=Helvetica;fontSize=18;strokeWidth=1.6;" vertex="1" parent="1">
-          <mxGeometry as="geometry" x="500" y="474" width="660" height="137"/>
+          <mxGeometry as="geometry" x="500" y="474" width="660" height="137" />
         </mxCell>
         <mxCell id="state1" value="&lt;div style=&quot;font-size:19px;font-weight:700;line-height:1.2;margin-bottom:8px;&quot;&gt;Record / status&lt;/div&gt;&lt;div style=&quot;font-size:17px;line-height:1.28;&quot;&gt;execution_state = NOT_ATTEMPTED&lt;br&gt;No automatic retry or approval restoration.&lt;/div&gt;" style="rounded=1;arcSize=8;html=1;whiteSpace=wrap;align=left;verticalAlign=top;spacing=15;fillColor=#F1EEFF;strokeColor=#8A77B3;fontColor=#3C2E64;fontFamily=Helvetica;fontSize=18;strokeWidth=1.6;" vertex="1" parent="1">
-          <mxGeometry as="geometry" x="1215" y="474" width="430" height="137"/>
+          <mxGeometry as="geometry" x="1215" y="474" width="430" height="137" />
         </mxCell>
         <mxCell id="feedback1" value="&lt;div style=&quot;font-size:19px;font-weight:700;line-height:1.2;margin-bottom:8px;&quot;&gt;Signal / restriction&lt;/div&gt;&lt;div style=&quot;font-size:17px;line-height:1.28;&quot;&gt;Not an EXECUTION_UNKNOWN signal.&lt;br&gt;Any new operational handling is owner-led.&lt;/div&gt;" style="rounded=1;arcSize=8;html=1;whiteSpace=wrap;align=left;verticalAlign=top;spacing=15;fillColor=#F4F6F8;strokeColor=#A9B5C3;fontColor=#283B50;fontFamily=Helvetica;fontSize=18;strokeWidth=1.6;" vertex="1" parent="1">
-          <mxGeometry as="geometry" x="1700" y="474" width="485" height="137"/>
+          <mxGeometry as="geometry" x="1700" y="474" width="485" height="137" />
         </mxCell>
         <mxCell id="e4" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=1;strokeWidth=2;strokeColor=#58718B;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;exitPerimeter=0;entryPerimeter=0;jumpStyle=arc;jumpSize=8;" edge="1" parent="1" source="in1" target="handle1">
-          <mxGeometry as="geometry" relative="1"/>
+          <mxGeometry as="geometry" relative="1" />
         </mxCell>
         <mxCell id="e5" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=1;strokeWidth=2;strokeColor=#8A77B3;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;exitPerimeter=0;entryPerimeter=0;jumpStyle=arc;jumpSize=8;" edge="1" parent="1" source="handle1" target="state1">
-          <mxGeometry as="geometry" relative="1"/>
+          <mxGeometry as="geometry" relative="1" />
         </mxCell>
         <mxCell id="e6" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=1;strokeWidth=2;strokeColor=#C29738;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;exitPerimeter=0;entryPerimeter=0;jumpStyle=arc;jumpSize=8;" edge="1" parent="1" source="state1" target="feedback1">
-          <mxGeometry as="geometry" relative="1"/>
+          <mxGeometry as="geometry" relative="1" />
         </mxCell>
         <mxCell id="in2" value="&lt;div style=&quot;font-size:19px;font-weight:700;line-height:1.2;margin-bottom:8px;&quot;&gt;Timeout / exception / invalid receipt&lt;/div&gt;&lt;div style=&quot;font-size:17px;line-height:1.28;&quot;&gt;The effect might already have happened&lt;/div&gt;" style="rounded=1;arcSize=8;html=1;whiteSpace=wrap;align=left;verticalAlign=top;spacing=15;fillColor=#FFF4DE;strokeColor=#CB9A3B;fontColor=#674813;fontFamily=Helvetica;fontSize=18;strokeWidth=1.6;" vertex="1" parent="1">
-          <mxGeometry as="geometry" x="55" y="638" width="390" height="137"/>
+          <mxGeometry as="geometry" x="55" y="638" width="390" height="137" />
         </mxCell>
         <mxCell id="handle2" value="&lt;div style=&quot;font-size:19px;font-weight:700;line-height:1.2;margin-bottom:8px;&quot;&gt;Proxy handling&lt;/div&gt;&lt;div style=&quot;font-size:17px;line-height:1.28;&quot;&gt;Record uncertainty and retain duplicate protection.&lt;br&gt;The host must call read-only reconciliation for this exact execution and key.&lt;/div&gt;" style="rounded=1;arcSize=8;html=1;whiteSpace=wrap;align=left;verticalAlign=top;spacing=15;fillColor=#E7F7F6;strokeColor=#28918B;fontColor=#154A47;fontFamily=Helvetica;fontSize=18;strokeWidth=1.6;" vertex="1" parent="1">
-          <mxGeometry as="geometry" x="500" y="638" width="660" height="137"/>
+          <mxGeometry as="geometry" x="500" y="638" width="660" height="137" />
         </mxCell>
         <mxCell id="state2" value="&lt;div style=&quot;font-size:19px;font-weight:700;line-height:1.2;margin-bottom:8px;&quot;&gt;Record / status&lt;/div&gt;&lt;div style=&quot;font-size:17px;line-height:1.28;&quot;&gt;execution_state = EXECUTION_UNKNOWN&lt;br&gt;reconciliation_required = true&lt;/div&gt;" style="rounded=1;arcSize=8;html=1;whiteSpace=wrap;align=left;verticalAlign=top;spacing=15;fillColor=#F1EEFF;strokeColor=#8A77B3;fontColor=#3C2E64;fontFamily=Helvetica;fontSize=18;strokeWidth=1.6;" vertex="1" parent="1">
-          <mxGeometry as="geometry" x="1215" y="638" width="430" height="137"/>
+          <mxGeometry as="geometry" x="1215" y="638" width="430" height="137" />
         </mxCell>
         <mxCell id="feedback2" value="&lt;div style=&quot;font-size:19px;font-weight:700;line-height:1.2;margin-bottom:8px;&quot;&gt;Signal / restriction&lt;/div&gt;&lt;div style=&quot;font-size:17px;line-height:1.28;&quot;&gt;EXECUTION_UNKNOWN&lt;br&gt;A matching rule can suspend this action&lt;br&gt;or a wider approved scope.&lt;/div&gt;" style="rounded=1;arcSize=8;html=1;whiteSpace=wrap;align=left;verticalAlign=top;spacing=15;fillColor=#FFF4DE;strokeColor=#CB9A3B;fontColor=#674813;fontFamily=Helvetica;fontSize=18;strokeWidth=1.6;" vertex="1" parent="1">
-          <mxGeometry as="geometry" x="1700" y="638" width="485" height="137"/>
+          <mxGeometry as="geometry" x="1700" y="638" width="485" height="137" />
         </mxCell>
         <mxCell id="e7" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=1;strokeWidth=2;strokeColor=#58718B;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;exitPerimeter=0;entryPerimeter=0;jumpStyle=arc;jumpSize=8;" edge="1" parent="1" source="in2" target="handle2">
-          <mxGeometry as="geometry" relative="1"/>
+          <mxGeometry as="geometry" relative="1" />
         </mxCell>
         <mxCell id="e8" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=1;strokeWidth=2;strokeColor=#8A77B3;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;exitPerimeter=0;entryPerimeter=0;jumpStyle=arc;jumpSize=8;" edge="1" parent="1" source="handle2" target="state2">
-          <mxGeometry as="geometry" relative="1"/>
+          <mxGeometry as="geometry" relative="1" />
         </mxCell>
         <mxCell id="e9" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=1;strokeWidth=2;strokeColor=#C29738;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;exitPerimeter=0;entryPerimeter=0;jumpStyle=arc;jumpSize=8;" edge="1" parent="1" source="state2" target="feedback2">
-          <mxGeometry as="geometry" relative="1"/>
+          <mxGeometry as="geometry" relative="1" />
         </mxCell>
         <mxCell id="in3" value="&lt;div style=&quot;font-size:19px;font-weight:700;line-height:1.2;margin-bottom:8px;&quot;&gt;Required postconditions pass&lt;/div&gt;&lt;div style=&quot;font-size:17px;line-height:1.28;&quot;&gt;Fresh, bound, admissible evidence&lt;/div&gt;" style="rounded=1;arcSize=8;html=1;whiteSpace=wrap;align=left;verticalAlign=top;spacing=15;fillColor=#EDF7EF;strokeColor=#63A173;fontColor=#254D30;fontFamily=Helvetica;fontSize=18;strokeWidth=1.6;" vertex="1" parent="1">
-          <mxGeometry as="geometry" x="55" y="802" width="390" height="137"/>
+          <mxGeometry as="geometry" x="55" y="802" width="390" height="137" />
         </mxCell>
         <mxCell id="handle3" value="&lt;div style=&quot;font-size:19px;font-weight:700;line-height:1.2;margin-bottom:8px;&quot;&gt;Proxy handling&lt;/div&gt;&lt;div style=&quot;font-size:17px;line-height:1.28;&quot;&gt;Apply the declared all-postconditions or designated-test plan.&lt;br&gt;Complete only if execution is ACKNOWLEDGED or COMMITTED.&lt;br&gt;With UNKNOWN, positive observations do not settle the dispatch.&lt;/div&gt;" style="rounded=1;arcSize=8;html=1;whiteSpace=wrap;align=left;verticalAlign=top;spacing=15;fillColor=#E7F7F6;strokeColor=#28918B;fontColor=#154A47;fontFamily=Helvetica;fontSize=18;strokeWidth=1.6;" vertex="1" parent="1">
-          <mxGeometry as="geometry" x="500" y="802" width="660" height="137"/>
+          <mxGeometry as="geometry" x="500" y="802" width="660" height="137" />
         </mxCell>
         <mxCell id="state3" value="&lt;div style=&quot;font-size:19px;font-weight:700;line-height:1.2;margin-bottom:8px;&quot;&gt;Record / status&lt;/div&gt;&lt;div style=&quot;font-size:17px;line-height:1.28;&quot;&gt;verified = true; completion = complete&lt;br&gt;ONLY with eligible execution state.&lt;/div&gt;" style="rounded=1;arcSize=8;html=1;whiteSpace=wrap;align=left;verticalAlign=top;spacing=15;fillColor=#F1EEFF;strokeColor=#8A77B3;fontColor=#3C2E64;fontFamily=Helvetica;fontSize=18;strokeWidth=1.6;" vertex="1" parent="1">
-          <mxGeometry as="geometry" x="1215" y="802" width="430" height="137"/>
+          <mxGeometry as="geometry" x="1215" y="802" width="430" height="137" />
         </mxCell>
         <mxCell id="feedback3" value="&lt;div style=&quot;font-size:19px;font-weight:700;line-height:1.2;margin-bottom:8px;&quot;&gt;Signal / restriction&lt;/div&gt;&lt;div style=&quot;font-size:17px;line-height:1.28;&quot;&gt;Record the outcome.&lt;br&gt;Do not automatically remove holds,&lt;br&gt;grant permissions or approve another action.&lt;/div&gt;" style="rounded=1;arcSize=8;html=1;whiteSpace=wrap;align=left;verticalAlign=top;spacing=15;fillColor=#EDF7EF;strokeColor=#63A173;fontColor=#254D30;fontFamily=Helvetica;fontSize=18;strokeWidth=1.6;" vertex="1" parent="1">
-          <mxGeometry as="geometry" x="1700" y="802" width="485" height="137"/>
+          <mxGeometry as="geometry" x="1700" y="802" width="485" height="137" />
         </mxCell>
         <mxCell id="e10" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=1;strokeWidth=2;strokeColor=#58718B;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;exitPerimeter=0;entryPerimeter=0;jumpStyle=arc;jumpSize=8;" edge="1" parent="1" source="in3" target="handle3">
-          <mxGeometry as="geometry" relative="1"/>
+          <mxGeometry as="geometry" relative="1" />
         </mxCell>
         <mxCell id="e11" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=1;strokeWidth=2;strokeColor=#8A77B3;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;exitPerimeter=0;entryPerimeter=0;jumpStyle=arc;jumpSize=8;" edge="1" parent="1" source="handle3" target="state3">
-          <mxGeometry as="geometry" relative="1"/>
+          <mxGeometry as="geometry" relative="1" />
         </mxCell>
         <mxCell id="e12" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=1;strokeWidth=2;strokeColor=#C29738;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;exitPerimeter=0;entryPerimeter=0;jumpStyle=arc;jumpSize=8;" edge="1" parent="1" source="state3" target="feedback3">
-          <mxGeometry as="geometry" relative="1"/>
+          <mxGeometry as="geometry" relative="1" />
         </mxCell>
         <mxCell id="in4" value="&lt;div style=&quot;font-size:19px;font-weight:700;line-height:1.2;margin-bottom:8px;&quot;&gt;Required evidence fails / is unavailable&lt;/div&gt;&lt;div style=&quot;font-size:17px;line-height:1.28;&quot;&gt;False, missing, invalid or stale observation&lt;/div&gt;" style="rounded=1;arcSize=8;html=1;whiteSpace=wrap;align=left;verticalAlign=top;spacing=15;fillColor=#FFF4DE;strokeColor=#CB9A3B;fontColor=#674813;fontFamily=Helvetica;fontSize=18;strokeWidth=1.6;" vertex="1" parent="1">
-          <mxGeometry as="geometry" x="55" y="966" width="390" height="137"/>
+          <mxGeometry as="geometry" x="55" y="966" width="390" height="137" />
         </mxCell>
         <mxCell id="handle4" value="&lt;div style=&quot;font-size:19px;font-weight:700;line-height:1.2;margin-bottom:8px;&quot;&gt;Proxy handling&lt;/div&gt;&lt;div style=&quot;font-size:17px;line-height:1.28;&quot;&gt;Do not claim completion. Retain test results and route the recorded failure&lt;br&gt;as specified by the Manifest. Rechecking is host-driven.&lt;br&gt;Recovery actions are not executed automatically.&lt;/div&gt;" style="rounded=1;arcSize=8;html=1;whiteSpace=wrap;align=left;verticalAlign=top;spacing=15;fillColor=#E7F7F6;strokeColor=#28918B;fontColor=#154A47;fontFamily=Helvetica;fontSize=18;strokeWidth=1.6;" vertex="1" parent="1">
-          <mxGeometry as="geometry" x="500" y="966" width="660" height="137"/>
+          <mxGeometry as="geometry" x="500" y="966" width="660" height="137" />
         </mxCell>
         <mxCell id="state4" value="&lt;div style=&quot;font-size:19px;font-weight:700;line-height:1.2;margin-bottom:8px;&quot;&gt;Record / status&lt;/div&gt;&lt;div style=&quot;font-size:17px;line-height:1.28;&quot;&gt;verified = false&lt;br&gt;completion = configured on_failure&lt;br&gt;(e.g. escalate)&lt;/div&gt;" style="rounded=1;arcSize=8;html=1;whiteSpace=wrap;align=left;verticalAlign=top;spacing=15;fillColor=#F1EEFF;strokeColor=#8A77B3;fontColor=#3C2E64;fontFamily=Helvetica;fontSize=18;strokeWidth=1.6;" vertex="1" parent="1">
-          <mxGeometry as="geometry" x="1215" y="966" width="430" height="137"/>
+          <mxGeometry as="geometry" x="1215" y="966" width="430" height="137" />
         </mxCell>
         <mxCell id="feedback4" value="&lt;div style=&quot;font-size:19px;font-weight:700;line-height:1.2;margin-bottom:8px;&quot;&gt;Signal / restriction&lt;/div&gt;&lt;div style=&quot;font-size:17px;line-height:1.28;&quot;&gt;VERIFICATION_FAILED&lt;br&gt;Rules count distinct incidents in a window;&lt;br&gt;a missing observation also falls in this category.&lt;/div&gt;" style="rounded=1;arcSize=8;html=1;whiteSpace=wrap;align=left;verticalAlign=top;spacing=15;fillColor=#FFF4DE;strokeColor=#CB9A3B;fontColor=#674813;fontFamily=Helvetica;fontSize=18;strokeWidth=1.6;" vertex="1" parent="1">
-          <mxGeometry as="geometry" x="1700" y="966" width="485" height="137"/>
+          <mxGeometry as="geometry" x="1700" y="966" width="485" height="137" />
         </mxCell>
         <mxCell id="e13" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=1;strokeWidth=2;strokeColor=#58718B;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;exitPerimeter=0;entryPerimeter=0;jumpStyle=arc;jumpSize=8;" edge="1" parent="1" source="in4" target="handle4">
-          <mxGeometry as="geometry" relative="1"/>
+          <mxGeometry as="geometry" relative="1" />
         </mxCell>
         <mxCell id="e14" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=1;strokeWidth=2;strokeColor=#8A77B3;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;exitPerimeter=0;entryPerimeter=0;jumpStyle=arc;jumpSize=8;" edge="1" parent="1" source="handle4" target="state4">
-          <mxGeometry as="geometry" relative="1"/>
+          <mxGeometry as="geometry" relative="1" />
         </mxCell>
         <mxCell id="e15" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=1;strokeWidth=2;strokeColor=#C29738;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;exitPerimeter=0;entryPerimeter=0;jumpStyle=arc;jumpSize=8;" edge="1" parent="1" source="state4" target="feedback4">
-          <mxGeometry as="geometry" relative="1"/>
+          <mxGeometry as="geometry" relative="1" />
         </mxCell>
         <mxCell id="in5" value="&lt;div style=&quot;font-size:19px;font-weight:700;line-height:1.2;margin-bottom:8px;&quot;&gt;Required test has conflicting evidence&lt;/div&gt;&lt;div style=&quot;font-size:17px;line-height:1.28;&quot;&gt;Admissible TRUE and FALSE for the same test&lt;/div&gt;" style="rounded=1;arcSize=8;html=1;whiteSpace=wrap;align=left;verticalAlign=top;spacing=15;fillColor=#FFF0EE;strokeColor=#C9786E;fontColor=#71322B;fontFamily=Helvetica;fontSize=18;strokeWidth=1.6;" vertex="1" parent="1">
-          <mxGeometry as="geometry" x="55" y="1130" width="390" height="137"/>
+          <mxGeometry as="geometry" x="55" y="1130" width="390" height="137" />
         </mxCell>
         <mxCell id="handle5" value="&lt;div style=&quot;font-size:19px;font-weight:700;line-height:1.2;margin-bottom:8px;&quot;&gt;Proxy handling&lt;/div&gt;&lt;div style=&quot;font-size:17px;line-height:1.28;&quot;&gt;Retain both evidence paths; no source silently wins.&lt;br&gt;Withhold completion for the required test.&lt;br&gt;Keep outcome uncertainty separate from dispatch uncertainty.&lt;/div&gt;" style="rounded=1;arcSize=8;html=1;whiteSpace=wrap;align=left;verticalAlign=top;spacing=15;fillColor=#E7F7F6;strokeColor=#28918B;fontColor=#154A47;fontFamily=Helvetica;fontSize=18;strokeWidth=1.6;" vertex="1" parent="1">
-          <mxGeometry as="geometry" x="500" y="1130" width="660" height="137"/>
+          <mxGeometry as="geometry" x="500" y="1130" width="660" height="137" />
         </mxCell>
         <mxCell id="state5" value="&lt;div style=&quot;font-size:19px;font-weight:700;line-height:1.2;margin-bottom:8px;&quot;&gt;Record / status&lt;/div&gt;&lt;div style=&quot;font-size:17px;line-height:1.28;&quot;&gt;test evidence_conflict = true&lt;br&gt;verified = false for a required test&lt;/div&gt;" style="rounded=1;arcSize=8;html=1;whiteSpace=wrap;align=left;verticalAlign=top;spacing=15;fillColor=#F1EEFF;strokeColor=#8A77B3;fontColor=#3C2E64;fontFamily=Helvetica;fontSize=18;strokeWidth=1.6;" vertex="1" parent="1">
-          <mxGeometry as="geometry" x="1215" y="1130" width="430" height="137"/>
+          <mxGeometry as="geometry" x="1215" y="1130" width="430" height="137" />
         </mxCell>
         <mxCell id="feedback5" value="&lt;div style=&quot;font-size:19px;font-weight:700;line-height:1.2;margin-bottom:8px;&quot;&gt;Signal / restriction&lt;/div&gt;&lt;div style=&quot;font-size:17px;line-height:1.28;&quot;&gt;EVIDENCE_CONFLICT&lt;br&gt;Takes precedence over VERIFICATION_FAILED&lt;br&gt;in the emitted outcome signal.&lt;/div&gt;" style="rounded=1;arcSize=8;html=1;whiteSpace=wrap;align=left;verticalAlign=top;spacing=15;fillColor=#FFF0EE;strokeColor=#C9786E;fontColor=#71322B;fontFamily=Helvetica;fontSize=18;strokeWidth=1.6;" vertex="1" parent="1">
-          <mxGeometry as="geometry" x="1700" y="1130" width="485" height="137"/>
+          <mxGeometry as="geometry" x="1700" y="1130" width="485" height="137" />
         </mxCell>
         <mxCell id="e16" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=1;strokeWidth=2;strokeColor=#58718B;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;exitPerimeter=0;entryPerimeter=0;jumpStyle=arc;jumpSize=8;" edge="1" parent="1" source="in5" target="handle5">
-          <mxGeometry as="geometry" relative="1"/>
+          <mxGeometry as="geometry" relative="1" />
         </mxCell>
         <mxCell id="e17" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=1;strokeWidth=2;strokeColor=#8A77B3;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;exitPerimeter=0;entryPerimeter=0;jumpStyle=arc;jumpSize=8;" edge="1" parent="1" source="handle5" target="state5">
-          <mxGeometry as="geometry" relative="1"/>
+          <mxGeometry as="geometry" relative="1" />
         </mxCell>
         <mxCell id="e18" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=1;strokeWidth=2;strokeColor=#C29738;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;exitPerimeter=0;entryPerimeter=0;jumpStyle=arc;jumpSize=8;" edge="1" parent="1" source="state5" target="feedback5">
-          <mxGeometry as="geometry" relative="1"/>
+          <mxGeometry as="geometry" relative="1" />
         </mxCell>
         <mxCell id="recon-panel" value="&lt;div style=&quot;font-size:20px;font-weight:700;line-height:1.25;&quot;&gt;RECONCILIATION IS A SEPARATE, READ-ONLY PATH OUT OF EXECUTION_UNKNOWN&lt;/div&gt;" style="rounded=1;arcSize=3;html=1;whiteSpace=wrap;align=left;verticalAlign=top;spacing=18;fillColor=#F7FAF8;strokeColor=#A8C6AD;fontFamily=Helvetica;fontSize=20;fontColor=#334D65;strokeWidth=1.2;" vertex="1" parent="1">
-          <mxGeometry as="geometry" x="40" y="1320" width="2160" height="245"/>
+          <mxGeometry as="geometry" x="40" y="1320" width="2160" height="245" />
         </mxCell>
         <mxCell id="rc" value="&lt;div style=&quot;font-size:19px;font-weight:700;line-height:1.2;margin-bottom:8px;&quot;&gt;Terminal COMMITTED&lt;/div&gt;&lt;div style=&quot;font-size:17px;line-height:1.28;&quot;&gt;Bind evidence to execution + idempotency key.&lt;br&gt;Record settlement, then verify business outcomes.&lt;/div&gt;" style="rounded=1;arcSize=8;html=1;whiteSpace=wrap;align=left;verticalAlign=top;spacing=15;fillColor=#EDF7EF;strokeColor=#63A173;fontColor=#254D30;fontFamily=Helvetica;fontSize=18;strokeWidth=1.6;" vertex="1" parent="1">
-          <mxGeometry as="geometry" x="60" y="1390" width="665" height="113"/>
+          <mxGeometry as="geometry" x="60" y="1390" width="665" height="113" />
         </mxCell>
         <mxCell id="rn" value="&lt;div style=&quot;font-size:19px;font-weight:700;line-height:1.2;margin-bottom:8px;&quot;&gt;Terminal NOT_COMMITTED&lt;/div&gt;&lt;div style=&quot;font-size:17px;line-height:1.28;&quot;&gt;Record no commit; do not call it NOT_ATTEMPTED.&lt;br&gt;Reservation remains; no retry is authorized.&lt;/div&gt;" style="rounded=1;arcSize=8;html=1;whiteSpace=wrap;align=left;verticalAlign=top;spacing=15;fillColor=#FFF4DE;strokeColor=#CB9A3B;fontColor=#674813;fontFamily=Helvetica;fontSize=18;strokeWidth=1.6;" vertex="1" parent="1">
-          <mxGeometry as="geometry" x="785" y="1390" width="665" height="113"/>
+          <mxGeometry as="geometry" x="785" y="1390" width="665" height="113" />
         </mxCell>
         <mxCell id="ru" value="&lt;div style=&quot;font-size:19px;font-weight:700;line-height:1.2;margin-bottom:8px;&quot;&gt;UNKNOWN / invalid / stale result&lt;/div&gt;&lt;div style=&quot;font-size:17px;line-height:1.28;&quot;&gt;Remain unresolved. Reject delayed settlement&lt;br&gt;if the execution snapshot has already changed.&lt;/div&gt;" style="rounded=1;arcSize=8;html=1;whiteSpace=wrap;align=left;verticalAlign=top;spacing=15;fillColor=#F4F6F8;strokeColor=#A9B5C3;fontColor=#283B50;fontFamily=Helvetica;fontSize=18;strokeWidth=1.6;" vertex="1" parent="1">
-          <mxGeometry as="geometry" x="1510" y="1390" width="665" height="113"/>
+          <mxGeometry as="geometry" x="1510" y="1390" width="665" height="113" />
         </mxCell>
         <mxCell id="recon-note" value="&lt;div style=&quot;font-size:17px;line-height:1.25;color:#425F49;font-weight:700;&quot;&gt;Neither reconciliation nor verified success restores a consumed approval, clears a separate runtime restriction, or redispatches an action.&lt;/div&gt;" style="text;html=1;whiteSpace=wrap;fillColor=none;strokeColor=none;align=left;verticalAlign=top;spacing=0;fontFamily=Helvetica;fontSize=17;fontColor=#425F49;" vertex="1" parent="1">
-          <mxGeometry as="geometry" x="65" y="1518" width="2090" height="29"/>
+          <mxGeometry as="geometry" x="65" y="1518" width="2090" height="29" />
         </mxCell>
         <mxCell id="footer" value="&lt;div style=&quot;font-size:14px;line-height:1.25;color:#58718B;font-weight:400;&quot;&gt;Source: v0.4.0 gate.py execute(), verify_outcome(), reconcile(); audit.py changes().  |  RuntimeFailure is a separate persistence fault, not proof of no downstream effect.&lt;/div&gt;" style="text;html=1;whiteSpace=wrap;fillColor=none;strokeColor=none;align=left;verticalAlign=top;spacing=0;fontFamily=Helvetica;fontSize=14;fontColor=#58718B;" vertex="1" parent="1">
-          <mxGeometry as="geometry" x="40" y="1592" width="2160" height="28"/>
+          <mxGeometry as="geometry" x="40" y="1592" width="2160" height="28" />
         </mxCell>
       </root>
     </mxGraphModel>
@@ -267,163 +266,163 @@
   <diagram id="aam-feedback" name="3. Aggregate + governed restriction">
     <mxGraphModel dx="0" dy="0" grid="0" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="2240" pageHeight="1570" math="0" shadow="0" background="#FFFFFF">
       <root>
-        <mxCell id="0"/>
-        <mxCell id="1" parent="0"/>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
         <mxCell id="title" value="&lt;div style=&quot;font-size:34px;line-height:1.25;color:#15324C;font-weight:700;&quot;&gt;Aggregate + campaign control | From trusted context to restriction&lt;/div&gt;" style="text;html=1;whiteSpace=wrap;fillColor=none;strokeColor=none;align=left;verticalAlign=top;spacing=0;fontFamily=Helvetica;fontSize=34;fontColor=#15324C;" vertex="1" parent="1">
-          <mxGeometry as="geometry" x="40" y="25" width="2160" height="52"/>
+          <mxGeometry as="geometry" x="40" y="25" width="2160" height="52" />
         </mxCell>
         <mxCell id="subtitle" value="&lt;div style=&quot;font-size:19px;line-height:1.25;color:#4A6075;font-weight:400;&quot;&gt;The fast loop applies existing rules. The slower improvement loop changes software or policy only through reviewed, versioned release.&lt;/div&gt;" style="text;html=1;whiteSpace=wrap;fillColor=none;strokeColor=none;align=left;verticalAlign=top;spacing=0;fontFamily=Helvetica;fontSize=19;fontColor=#4A6075;" vertex="1" parent="1">
-          <mxGeometry as="geometry" x="40" y="87" width="2160" height="50"/>
+          <mxGeometry as="geometry" x="40" y="87" width="2160" height="50" />
         </mxCell>
         <mxCell id="fast-h" value="&lt;div style=&quot;font-size:21px;line-height:1.25;color:#42576B;font-weight:700;&quot;&gt;A  FAST PROTECTION — TYPED SIGNALS, PREAPPROVED RULES&lt;/div&gt;" style="text;html=1;whiteSpace=wrap;fillColor=none;strokeColor=none;align=left;verticalAlign=top;spacing=0;fontFamily=Helvetica;fontSize=21;fontColor=#42576B;" vertex="1" parent="1">
-          <mxGeometry as="geometry" x="40" y="158" width="2100" height="28"/>
+          <mxGeometry as="geometry" x="40" y="158" width="2100" height="28" />
         </mxCell>
         <mxCell id="life" value="&lt;div style=&quot;font-size:19px;font-weight:700;line-height:1.2;margin-bottom:8px;&quot;&gt;Gate-owned lifecycle signals&lt;/div&gt;&lt;div style=&quot;font-size:17px;line-height:1.28;&quot;&gt;Execution uncertainty, evidence conflict&lt;br&gt;and failed / unavailable verification&lt;/div&gt;" style="rounded=1;arcSize=8;html=1;whiteSpace=wrap;align=left;verticalAlign=top;spacing=15;fillColor=#EDF7EF;strokeColor=#63A173;fontColor=#254D30;fontFamily=Helvetica;fontSize=18;strokeWidth=1.6;" vertex="1" parent="1">
-          <mxGeometry as="geometry" x="50" y="215" width="440" height="122"/>
+          <mxGeometry as="geometry" x="50" y="215" width="440" height="122" />
         </mxCell>
         <mxCell id="external" value="&lt;div style=&quot;font-size:19px;font-weight:700;line-height:1.2;margin-bottom:8px;&quot;&gt;Authenticated observations&lt;/div&gt;&lt;div style=&quot;font-size:17px;line-height:1.28;&quot;&gt;Typed campaign or runtime signals&lt;br&gt;Allowed source, exact Profile, fresh evidence&lt;/div&gt;" style="rounded=1;arcSize=8;html=1;whiteSpace=wrap;align=left;verticalAlign=top;spacing=15;fillColor=#EAF2FF;strokeColor=#527BA7;fontColor=#123555;fontFamily=Helvetica;fontSize=18;strokeWidth=1.6;" vertex="1" parent="1">
-          <mxGeometry as="geometry" x="540" y="215" width="535" height="122"/>
+          <mxGeometry as="geometry" x="540" y="215" width="535" height="122" />
         </mxCell>
         <mxCell id="watch" value="&lt;div style=&quot;font-size:19px;font-weight:700;line-height:1.2;margin-bottom:8px;&quot;&gt;Host-scheduled watchdog&lt;/div&gt;&lt;div style=&quot;font-size:17px;line-height:1.28;&quot;&gt;Overdue execution or verification&lt;br&gt;Host calls watchdog(); no background service&lt;/div&gt;" style="rounded=1;arcSize=8;html=1;whiteSpace=wrap;align=left;verticalAlign=top;spacing=15;fillColor=#EAF2FF;strokeColor=#527BA7;fontColor=#123555;fontFamily=Helvetica;fontSize=18;strokeWidth=1.6;" vertex="1" parent="1">
-          <mxGeometry as="geometry" x="1125" y="215" width="500" height="122"/>
+          <mxGeometry as="geometry" x="1125" y="215" width="500" height="122" />
         </mxCell>
         <mxCell id="pol" value="&lt;div style=&quot;font-size:19px;font-weight:700;line-height:1.2;margin-bottom:8px;&quot;&gt;Reviewed aggregate + feedback policies&lt;/div&gt;&lt;div style=&quot;font-size:17px;line-height:1.28;&quot;&gt;Budget/rule + threshold + time window&lt;br&gt;Trusted actor / program / operation scope&lt;br&gt;Exact digests referenced by the Profile&lt;/div&gt;" style="rounded=1;arcSize=8;html=1;whiteSpace=wrap;align=left;verticalAlign=top;spacing=15;fillColor=#F1EEFF;strokeColor=#8A77B3;fontColor=#3C2E64;fontFamily=Helvetica;fontSize=18;strokeWidth=1.6;" vertex="1" parent="1">
-          <mxGeometry as="geometry" x="1680" y="202" width="510" height="150"/>
+          <mxGeometry as="geometry" x="1680" y="202" width="510" height="150" />
         </mxCell>
         <mxCell id="bind" value="&lt;div style=&quot;font-size:19px;font-weight:700;line-height:1.2;margin-bottom:8px;&quot;&gt;1. Create attributable signal events&lt;/div&gt;&lt;div style=&quot;font-size:17px;line-height:1.28;&quot;&gt;Preserve record identity and scope.&lt;br&gt;Do not treat log text or model output as instructions.&lt;/div&gt;" style="rounded=1;arcSize=8;html=1;whiteSpace=wrap;align=left;verticalAlign=top;spacing=15;fillColor=#E7F7F6;strokeColor=#28918B;fontColor=#154A47;fontFamily=Helvetica;fontSize=18;strokeWidth=1.6;" vertex="1" parent="1">
-          <mxGeometry as="geometry" x="50" y="463" width="440" height="145"/>
+          <mxGeometry as="geometry" x="50" y="463" width="440" height="145" />
         </mxCell>
         <mxCell id="rules" value="&lt;div style=&quot;font-size:19px;font-weight:700;line-height:1.2;margin-bottom:8px;&quot;&gt;2. Evaluate deterministic rules&lt;/div&gt;&lt;div style=&quot;font-size:17px;line-height:1.28;&quot;&gt;Deduplicate events / execution incidents.&lt;br&gt;Match signal, threshold, window and scope.&lt;br&gt;No matching rule: no new restriction.&lt;/div&gt;" style="rounded=1;arcSize=8;html=1;whiteSpace=wrap;align=left;verticalAlign=top;spacing=15;fillColor=#E7F7F6;strokeColor=#28918B;fontColor=#154A47;fontFamily=Helvetica;fontSize=18;strokeWidth=1.6;" vertex="1" parent="1">
-          <mxGeometry as="geometry" x="540" y="453" width="535" height="165"/>
+          <mxGeometry as="geometry" x="540" y="453" width="535" height="165" />
         </mxCell>
         <mxCell id="holds" value="&lt;div style=&quot;font-size:19px;font-weight:700;line-height:1.2;margin-bottom:8px;&quot;&gt;3. Record independent restrictions&lt;/div&gt;&lt;div style=&quot;font-size:17px;line-height:1.28;&quot;&gt;Activate a hold + revision + cause.&lt;br&gt;Applicable holds compose; strongest mode wins.&lt;br&gt;Separate causes are not one resettable switch.&lt;/div&gt;" style="rounded=1;arcSize=8;html=1;whiteSpace=wrap;align=left;verticalAlign=top;spacing=15;fillColor=#FFF4DE;strokeColor=#CB9A3B;fontColor=#674813;fontFamily=Helvetica;fontSize=18;strokeWidth=1.6;" vertex="1" parent="1">
-          <mxGeometry as="geometry" x="1125" y="453" width="500" height="165"/>
+          <mxGeometry as="geometry" x="1125" y="453" width="500" height="165" />
         </mxCell>
         <mxCell id="next" value="&lt;div style=&quot;font-size:19px;font-weight:700;line-height:1.2;margin-bottom:8px;&quot;&gt;4. Enforce at the next admission&lt;/div&gt;&lt;div style=&quot;font-size:17px;line-height:1.28;&quot;&gt;NORMAL: baseline checks still apply.&lt;br&gt;REQUIRE_APPROVAL: add required human review.&lt;br&gt;SUSPENDED: block matching new dispatches.&lt;br&gt;Changed context requires a fresh unexecuted proposal.&lt;/div&gt;" style="rounded=1;arcSize=8;html=1;whiteSpace=wrap;align=left;verticalAlign=top;spacing=15;fillColor=#E7F7F6;strokeColor=#28918B;fontColor=#154A47;fontFamily=Helvetica;fontSize=18;strokeWidth=1.6;" vertex="1" parent="1">
-          <mxGeometry as="geometry" x="1680" y="435" width="510" height="203"/>
+          <mxGeometry as="geometry" x="1680" y="435" width="510" height="203" />
         </mxCell>
         <mxCell id="e1" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=1;strokeWidth=2;strokeColor=#4D9361;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;exitPerimeter=0;entryPerimeter=0;jumpStyle=arc;jumpSize=8;" edge="1" parent="1" source="life" target="bind">
-          <mxGeometry as="geometry" relative="1"/>
+          <mxGeometry as="geometry" relative="1" />
         </mxCell>
         <mxCell id="e2" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=1;strokeWidth=2;strokeColor=#4D9361;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.67;entryY=0;entryDx=0;entryDy=0;exitPerimeter=0;entryPerimeter=0;jumpStyle=arc;jumpSize=8;" edge="1" parent="1" source="external" target="bind">
           <mxGeometry as="geometry" relative="1">
             <Array as="points">
-              <mxPoint x="807.5" y="394"/>
-              <mxPoint x="345" y="394"/>
+              <mxPoint x="807.5" y="394" />
+              <mxPoint x="345" y="394" />
             </Array>
           </mxGeometry>
         </mxCell>
         <mxCell id="e3" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=1;strokeWidth=2;strokeColor=#4D9361;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.89;entryY=0;entryDx=0;entryDy=0;exitPerimeter=0;entryPerimeter=0;jumpStyle=arc;jumpSize=8;" edge="1" parent="1" source="watch" target="bind">
           <mxGeometry as="geometry" relative="1">
             <Array as="points">
-              <mxPoint x="1375" y="373"/>
-              <mxPoint x="440" y="373"/>
+              <mxPoint x="1375" y="373" />
+              <mxPoint x="440" y="373" />
             </Array>
           </mxGeometry>
         </mxCell>
         <mxCell id="e4" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=1;strokeWidth=2;strokeColor=#58718B;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;exitPerimeter=0;entryPerimeter=0;jumpStyle=arc;jumpSize=8;" edge="1" parent="1" source="bind" target="rules">
-          <mxGeometry as="geometry" relative="1"/>
+          <mxGeometry as="geometry" relative="1" />
         </mxCell>
         <mxCell id="e5" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=1;strokeWidth=2;strokeColor=#C29738;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;exitPerimeter=0;entryPerimeter=0;jumpStyle=arc;jumpSize=8;" edge="1" parent="1" source="rules" target="holds">
-          <mxGeometry as="geometry" relative="1"/>
+          <mxGeometry as="geometry" relative="1" />
         </mxCell>
         <mxCell id="e6" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=1;strokeWidth=2;strokeColor=#C29738;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;exitPerimeter=0;entryPerimeter=0;jumpStyle=arc;jumpSize=8;" edge="1" parent="1" source="holds" target="next">
           <mxGeometry as="geometry" relative="1">
             <Array as="points">
-              <mxPoint x="1652.5" y="535.5"/>
-              <mxPoint x="1652.5" y="536.5"/>
+              <mxPoint x="1652.5" y="535.5" />
+              <mxPoint x="1652.5" y="536.5" />
             </Array>
           </mxGeometry>
         </mxCell>
         <mxCell id="e7" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=1;strokeWidth=2;strokeColor=#8A77B3;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.83;entryY=0;entryDx=0;entryDy=0;exitPerimeter=0;entryPerimeter=0;jumpStyle=arc;jumpSize=8;dashed=1;dashPattern=7 5;" edge="1" parent="1" source="pol" target="rules">
           <mxGeometry as="geometry" relative="1">
             <Array as="points">
-              <mxPoint x="1935" y="416"/>
-              <mxPoint x="984.05" y="416"/>
+              <mxPoint x="1935" y="416" />
+              <mxPoint x="984.05" y="416" />
             </Array>
           </mxGeometry>
         </mxCell>
         <mxCell id="commit" value="&lt;div style=&quot;font-size:20px;font-weight:700;line-height:1.2;margin-bottom:8px;&quot;&gt;ONE LOCAL TRANSACTION&lt;/div&gt;&lt;div style=&quot;font-size:18px;line-height:1.28;&quot;&gt;Admission + aggregate reservation + audit events + restriction transitions commit together.&lt;br&gt;The fast loop does not wait for a SIEM export or metrics dashboard. A required write failure blocks further admission.&lt;/div&gt;" style="rounded=1;arcSize=8;html=1;whiteSpace=wrap;align=left;verticalAlign=top;spacing=15;fillColor=#EDF7EF;strokeColor=#63A173;fontColor=#254D30;fontFamily=Helvetica;fontSize=19;strokeWidth=1.6;" vertex="1" parent="1">
-          <mxGeometry as="geometry" x="50" y="690" width="1575" height="113"/>
+          <mxGeometry as="geometry" x="50" y="690" width="1575" height="113" />
         </mxCell>
         <mxCell id="metrics" value="&lt;div style=&quot;font-size:19px;font-weight:700;line-height:1.2;margin-bottom:8px;&quot;&gt;Metrics + audit export&lt;/div&gt;&lt;div style=&quot;font-size:17px;line-height:1.28;&quot;&gt;Asynchronous downstream observability&lt;br&gt;Export retries never retry actions&lt;/div&gt;" style="rounded=1;arcSize=8;html=1;whiteSpace=wrap;align=left;verticalAlign=top;spacing=15;fillColor=#F4F6F8;strokeColor=#A9B5C3;fontColor=#283B50;fontFamily=Helvetica;fontSize=18;strokeWidth=1.6;" vertex="1" parent="1">
-          <mxGeometry as="geometry" x="1680" y="690" width="510" height="113"/>
+          <mxGeometry as="geometry" x="1680" y="690" width="510" height="113" />
         </mxCell>
         <mxCell id="e8" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=1;strokeWidth=2;strokeColor=#4D9361;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.832;entryY=0;entryDx=0;entryDy=0;exitPerimeter=0;entryPerimeter=0;jumpStyle=arc;jumpSize=8;" edge="1" parent="1" source="holds" target="commit">
           <mxGeometry as="geometry" relative="1">
             <Array as="points">
-              <mxPoint x="1375" y="662"/>
-              <mxPoint x="1360" y="662"/>
+              <mxPoint x="1375" y="662" />
+              <mxPoint x="1360" y="662" />
             </Array>
           </mxGeometry>
         </mxCell>
         <mxCell id="e9" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=1;strokeWidth=2;strokeColor=#7C8C9A;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;exitPerimeter=0;entryPerimeter=0;jumpStyle=arc;jumpSize=8;dashed=1;dashPattern=7 5;" edge="1" parent="1" source="commit" target="metrics">
-          <mxGeometry as="geometry" relative="1"/>
+          <mxGeometry as="geometry" relative="1" />
         </mxCell>
         <mxCell id="restore-h" value="&lt;div style=&quot;font-size:21px;line-height:1.25;color:#42576B;font-weight:700;&quot;&gt;B  RESTORATION — AN AUTHENTICATED OWNER DECISION, NOT A SUCCESS COUNTER&lt;/div&gt;" style="text;html=1;whiteSpace=wrap;fillColor=none;strokeColor=none;align=left;verticalAlign=top;spacing=0;fontFamily=Helvetica;fontSize=21;fontColor=#42576B;" vertex="1" parent="1">
-          <mxGeometry as="geometry" x="40" y="853" width="2160" height="29"/>
+          <mxGeometry as="geometry" x="40" y="853" width="2160" height="29" />
         </mxCell>
         <mxCell id="owner" value="&lt;div style=&quot;font-size:19px;font-weight:700;line-height:1.2;margin-bottom:8px;&quot;&gt;Authorized Owner&lt;/div&gt;&lt;div style=&quot;font-size:17px;line-height:1.28;&quot;&gt;Investigates the cause and reviews&lt;br&gt;restoration evidence&lt;/div&gt;" style="rounded=1;arcSize=8;html=1;whiteSpace=wrap;align=left;verticalAlign=top;spacing=15;fillColor=#EAF2FF;strokeColor=#527BA7;fontColor=#123555;fontFamily=Helvetica;fontSize=18;strokeWidth=1.6;" vertex="1" parent="1">
-          <mxGeometry as="geometry" x="50" y="918" width="350" height="132"/>
+          <mxGeometry as="geometry" x="50" y="918" width="350" height="132" />
         </mxCell>
         <mxCell id="requestrestore" value="&lt;div style=&quot;font-size:19px;font-weight:700;line-height:1.2;margin-bottom:8px;&quot;&gt;Restoration request&lt;/div&gt;&lt;div style=&quot;font-size:17px;line-height:1.28;&quot;&gt;Restriction ID + expected revision&lt;br&gt;Principal / auth reference&lt;br&gt;Reason + reviewed evidence reference&lt;/div&gt;" style="rounded=1;arcSize=8;html=1;whiteSpace=wrap;align=left;verticalAlign=top;spacing=15;fillColor=#F1EEFF;strokeColor=#8A77B3;fontColor=#3C2E64;fontFamily=Helvetica;fontSize=18;strokeWidth=1.6;" vertex="1" parent="1">
-          <mxGeometry as="geometry" x="450" y="908" width="430" height="152"/>
+          <mxGeometry as="geometry" x="450" y="908" width="430" height="152" />
         </mxCell>
         <mxCell id="restore" value="&lt;div style=&quot;font-size:19px;font-weight:700;line-height:1.2;margin-bottom:8px;&quot;&gt;Gate validates restoration&lt;/div&gt;&lt;div style=&quot;font-size:17px;line-height:1.28;&quot;&gt;Check authentication and authority;&lt;br&gt;reject stale revision or a matching&lt;br&gt;DISPATCHED / EXECUTION_UNKNOWN action.&lt;/div&gt;" style="rounded=1;arcSize=8;html=1;whiteSpace=wrap;align=left;verticalAlign=top;spacing=15;fillColor=#E7F7F6;strokeColor=#28918B;fontColor=#154A47;fontFamily=Helvetica;fontSize=18;strokeWidth=1.6;" vertex="1" parent="1">
-          <mxGeometry as="geometry" x="930" y="908" width="535" height="152"/>
+          <mxGeometry as="geometry" x="930" y="908" width="535" height="152" />
         </mxCell>
         <mxCell id="newcontext" value="&lt;div style=&quot;font-size:19px;font-weight:700;line-height:1.2;margin-bottom:8px;&quot;&gt;Clear only the specified hold&lt;/div&gt;&lt;div style=&quot;font-size:17px;line-height:1.28;&quot;&gt;Record restoration; advance context revision.&lt;br&gt;Other holds remain. No approval or retry is restored.&lt;br&gt;NORMAL does not make old proposals current.&lt;/div&gt;" style="rounded=1;arcSize=8;html=1;whiteSpace=wrap;align=left;verticalAlign=top;spacing=15;fillColor=#FFF4DE;strokeColor=#CB9A3B;fontColor=#674813;fontFamily=Helvetica;fontSize=18;strokeWidth=1.6;" vertex="1" parent="1">
-          <mxGeometry as="geometry" x="1525" y="908" width="665" height="152"/>
+          <mxGeometry as="geometry" x="1525" y="908" width="665" height="152" />
         </mxCell>
         <mxCell id="e10" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=1;strokeWidth=2;strokeColor=#58718B;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;exitPerimeter=0;entryPerimeter=0;jumpStyle=arc;jumpSize=8;" edge="1" parent="1" source="owner" target="requestrestore">
-          <mxGeometry as="geometry" relative="1"/>
+          <mxGeometry as="geometry" relative="1" />
         </mxCell>
         <mxCell id="e11" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=1;strokeWidth=2;strokeColor=#58718B;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;exitPerimeter=0;entryPerimeter=0;jumpStyle=arc;jumpSize=8;" edge="1" parent="1" source="requestrestore" target="restore">
-          <mxGeometry as="geometry" relative="1"/>
+          <mxGeometry as="geometry" relative="1" />
         </mxCell>
         <mxCell id="e12" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=1;strokeWidth=2;strokeColor=#C29738;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;exitPerimeter=0;entryPerimeter=0;jumpStyle=arc;jumpSize=8;" edge="1" parent="1" source="restore" target="newcontext">
-          <mxGeometry as="geometry" relative="1"/>
+          <mxGeometry as="geometry" relative="1" />
         </mxCell>
         <mxCell id="e13" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=1;strokeWidth=2;strokeColor=#C29738;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=1;entryY=0.5;entryDx=0;entryDy=0;exitPerimeter=0;entryPerimeter=0;jumpStyle=arc;jumpSize=8;dashed=1;dashPattern=7 5;" edge="1" parent="1" source="newcontext" target="next">
           <mxGeometry as="geometry" relative="1">
             <Array as="points">
-              <mxPoint x="2212" y="984"/>
-              <mxPoint x="2212" y="536.5"/>
+              <mxPoint x="2212" y="984" />
+              <mxPoint x="2212" y="536.5" />
             </Array>
           </mxGeometry>
         </mxCell>
         <mxCell id="slow-h" value="&lt;div style=&quot;font-size:21px;line-height:1.25;color:#42576B;font-weight:700;&quot;&gt;C  CONTROLLED IMPROVEMENT — REVIEW, TEST, APPROVE AND RELEASE&lt;/div&gt;" style="text;html=1;whiteSpace=wrap;fillColor=none;strokeColor=none;align=left;verticalAlign=top;spacing=0;fontFamily=Helvetica;fontSize=21;fontColor=#42576B;" vertex="1" parent="1">
-          <mxGeometry as="geometry" x="40" y="1120" width="2130" height="29"/>
+          <mxGeometry as="geometry" x="40" y="1120" width="2130" height="29" />
         </mxCell>
         <mxCell id="cases" value="&lt;div style=&quot;font-size:19px;font-weight:700;line-height:1.2;margin-bottom:8px;&quot;&gt;Audit review cases&lt;/div&gt;&lt;div style=&quot;font-size:17px;line-height:1.28;&quot;&gt;Offline extraction is implemented.&lt;br&gt;Cases remain UNREVIEWED evidence,&lt;br&gt;not new runtime permissions.&lt;/div&gt;" style="rounded=1;arcSize=8;html=1;whiteSpace=wrap;align=left;verticalAlign=top;spacing=15;fillColor=#EDF7EF;strokeColor=#63A173;fontColor=#254D30;fontFamily=Helvetica;fontSize=18;strokeWidth=1.6;" vertex="1" parent="1">
-          <mxGeometry as="geometry" x="50" y="1200" width="440" height="153"/>
+          <mxGeometry as="geometry" x="50" y="1200" width="440" height="153" />
         </mxCell>
         <mxCell id="review" value="&lt;div style=&quot;font-size:19px;font-weight:700;line-height:1.2;margin-bottom:8px;&quot;&gt;Product + Engineering Owners&lt;/div&gt;&lt;div style=&quot;font-size:17px;line-height:1.28;&quot;&gt;Investigate repeated causes.&lt;br&gt;Propose an adapter, agent, policy&lt;br&gt;or verification correction.&lt;/div&gt;" style="rounded=1;arcSize=8;html=1;whiteSpace=wrap;align=left;verticalAlign=top;spacing=15;fillColor=#EAF2FF;strokeColor=#527BA7;fontColor=#123555;fontFamily=Helvetica;fontSize=18;strokeWidth=1.6;" vertex="1" parent="1">
-          <mxGeometry as="geometry" x="540" y="1200" width="535" height="153"/>
+          <mxGeometry as="geometry" x="540" y="1200" width="535" height="153" />
         </mxCell>
         <mxCell id="test" value="&lt;div style=&quot;font-size:19px;font-weight:700;line-height:1.2;margin-bottom:8px;&quot;&gt;Regression tests + approvals&lt;/div&gt;&lt;div style=&quot;font-size:17px;line-height:1.28;&quot;&gt;Non-executing replay / test environment.&lt;br&gt;Validate the correction and obtain&lt;br&gt;responsible owner approval.&lt;/div&gt;" style="rounded=1;arcSize=8;html=1;whiteSpace=wrap;align=left;verticalAlign=top;spacing=15;fillColor=#F4F6F8;strokeColor=#A9B5C3;fontColor=#283B50;fontFamily=Helvetica;fontSize=18;strokeWidth=1.6;" vertex="1" parent="1">
-          <mxGeometry as="geometry" x="1125" y="1200" width="500" height="153"/>
+          <mxGeometry as="geometry" x="1125" y="1200" width="500" height="153" />
         </mxCell>
         <mxCell id="release" value="&lt;div style=&quot;font-size:19px;font-weight:700;line-height:1.2;margin-bottom:8px;&quot;&gt;Versioned, reviewed release&lt;/div&gt;&lt;div style=&quot;font-size:17px;line-height:1.28;&quot;&gt;Deploy changed Profile / policy / adapter.&lt;br&gt;Repeat publication and binding checks.&lt;br&gt;No automatic policy rewriting or model training.&lt;/div&gt;" style="rounded=1;arcSize=8;html=1;whiteSpace=wrap;align=left;verticalAlign=top;spacing=15;fillColor=#F1EEFF;strokeColor=#8A77B3;fontColor=#3C2E64;fontFamily=Helvetica;fontSize=18;strokeWidth=1.6;" vertex="1" parent="1">
-          <mxGeometry as="geometry" x="1680" y="1200" width="510" height="153"/>
+          <mxGeometry as="geometry" x="1680" y="1200" width="510" height="153" />
         </mxCell>
         <mxCell id="e14" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=1;strokeWidth=2;strokeColor=#58718B;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;exitPerimeter=0;entryPerimeter=0;jumpStyle=arc;jumpSize=8;dashed=1;dashPattern=7 5;" edge="1" parent="1" source="cases" target="review">
-          <mxGeometry as="geometry" relative="1"/>
+          <mxGeometry as="geometry" relative="1" />
         </mxCell>
         <mxCell id="e15" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=1;strokeWidth=2;strokeColor=#58718B;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;exitPerimeter=0;entryPerimeter=0;jumpStyle=arc;jumpSize=8;dashed=1;dashPattern=7 5;" edge="1" parent="1" source="review" target="test">
-          <mxGeometry as="geometry" relative="1"/>
+          <mxGeometry as="geometry" relative="1" />
         </mxCell>
         <mxCell id="e16" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=1;strokeWidth=2;strokeColor=#58718B;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;exitPerimeter=0;entryPerimeter=0;jumpStyle=arc;jumpSize=8;dashed=1;dashPattern=7 5;" edge="1" parent="1" source="test" target="release">
-          <mxGeometry as="geometry" relative="1"/>
+          <mxGeometry as="geometry" relative="1" />
         </mxCell>
         <mxCell id="workflow-note" value="&lt;div style=&quot;font-size:18px;line-height:1.25;color:#4A6075;font-weight:400;&quot;&gt;This bottom row is the human/deployer-owned improvement workflow. The reference supplies case extraction, not an automated deployment pipeline.&lt;/div&gt;" style="text;html=1;whiteSpace=wrap;fillColor=none;strokeColor=none;align=left;verticalAlign=top;spacing=0;fontFamily=Helvetica;fontSize=18;fontColor=#4A6075;" vertex="1" parent="1">
-          <mxGeometry as="geometry" x="50" y="1382" width="2130" height="40"/>
+          <mxGeometry as="geometry" x="50" y="1382" width="2130" height="40" />
         </mxCell>
         <mxCell id="boundary" value="&lt;div style=&quot;font-size:18px;font-weight:700;line-height:1.2;margin-bottom:8px;&quot;&gt;Standing authority never expands through feedback.&lt;/div&gt;&lt;div style=&quot;font-size:16px;line-height:1.28;&quot;&gt;A successful reconciliation or verified outcome changes the action’s evidence/state. It does not clear an operational hold. Restoration and reviewed release are separate paths.&lt;/div&gt;" style="rounded=1;arcSize=8;html=1;whiteSpace=wrap;align=left;verticalAlign=top;spacing=15;fillColor=#F4F6F8;strokeColor=#A9B5C3;fontColor=#283B50;fontFamily=Helvetica;fontSize=17;strokeWidth=1.6;" vertex="1" parent="1">
-          <mxGeometry as="geometry" x="50" y="1430" width="2140" height="85"/>
+          <mxGeometry as="geometry" x="50" y="1430" width="2140" height="85" />
         </mxCell>
         <mxCell id="footer" value="&lt;div style=&quot;font-size:14px;line-height:1.25;color:#58718B;font-weight:400;&quot;&gt;Source: v0.4.0 audit.py, aggregate.py, feedback.py and v4.py.  |  Evidence truth, real authentication, external detectors, scheduling and deployment remain host responsibilities.&lt;/div&gt;" style="text;html=1;whiteSpace=wrap;fillColor=none;strokeColor=none;align=left;verticalAlign=top;spacing=0;fontFamily=Helvetica;fontSize=14;fontColor=#58718B;" vertex="1" parent="1">
-          <mxGeometry as="geometry" x="40" y="1527" width="2160" height="28"/>
+          <mxGeometry as="geometry" x="40" y="1527" width="2160" height="28" />
         </mxCell>
       </root>
     </mxGraphModel>
