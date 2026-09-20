@@ -9,7 +9,7 @@ Product-owned **Agent Authority Profile → agent Action Request → gate-built 
 The reader-facing set is exactly two documents at the package root:
 `../01_AAM_Workflow_and_Definition.docx` and
 `../02_AAM_Authority_and_Readiness_Worksheet.docx`.
-The first contains the simplified workflow, illustrative Card, proxy result handling and governed feedback. The second includes readiness checks and sign-off.
+The first contains the simplified workflow, illustrative Card, trusted-gate result handling and governed feedback. The second includes readiness checks and sign-off.
 
 The optional editable source is in `../Diagram_Source/` (three tabs: overview, results, aggregate/campaign controls).
 Developer-only detail from the former engineering appendix is preserved in `docs/implementation.md`; it is not a separate required publication document.
@@ -69,7 +69,7 @@ The managed gate APIs are **trusted Python service APIs, not HTTP/MCP servers**.
 
 **Feedback:** gate-owned unknown/conflict/verification events and authenticated, version-bound regression/mismatch signals feed typed count/window rules in the same state transaction. Modes are NORMAL, REQUIRE_APPROVAL and SUSPENDED. Multiple holds compose. Stale contexts, including restored-then-restricted ABA changes and adapter registration changes, invalidate old proposals.
 
-**Restoration:** an allowed authenticated principal supplies the exact hold revision, reason and reviewed evidence reference. Matching unresolved executions prevent restoration. One hold's restoration does not clear another hold, release a reservation, restore approval or schedule a retry. No automatic restoration is implemented. The reviewer must actually assess the evidence; the code does not establish repair truth from a reference string.
+**Restoration:** an allowed authenticated principal supplies the exact hold revision, reason and reviewed evidence reference. Feedback restoration blocks matching DISPATCHED or EXECUTION_UNKNOWN executions and advances an epoch. Campaign restoration currently lacks that unresolved-execution guard, and its active-hold digest can return to the pre-hold value after a hold is cleared. Hosts must check unresolved work and invalidate pre-hold campaign proposals; these safeguards are not supplied by the campaign API. See [the consistency review](../Diagram_Source/CONSISTENCY_REVIEW.md). One hold's restoration does not clear another hold, release a reservation, restore approval or schedule a retry. No automatic restoration is implemented. The reviewer must actually assess the evidence; the code does not establish repair truth from a reference string.
 
 **Export/metrics:** export delivers committed events at least once with stable event IDs and a persistent cursor. Retrying delivery never retries an action. A backlog limit gates new admission. Metrics use bounded event/result labels and are diagnostic, not authority. Their observer failures do not undo committed control state. The host must schedule `watchdog()` and export work outside admission; no daemon or hosted monitoring endpoint is included.
 

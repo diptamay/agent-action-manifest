@@ -7,17 +7,19 @@
   "reader_documents": [
     {
       "path": "01_AAM_Workflow_and_Definition.docx",
-      "rendered_pages": 3,
+      "rendered_pages": 4,
       "all_pages_visually_inspected": true,
       "decorative_calendar_date_removed": true,
-      "version": "0.4.0"
+      "version": "0.4.0",
+      "visually_inspected_on": "2026-09-20"
     },
     {
       "path": "02_AAM_Authority_and_Readiness_Worksheet.docx",
       "rendered_pages": 5,
       "all_pages_visually_inspected": true,
       "decorative_calendar_date_removed": true,
-      "version": "0.4.0"
+      "version": "0.4.0",
+      "visually_inspected_on": "2026-09-20"
     }
   ],
   "diagram": {
@@ -26,7 +28,8 @@
     "tabs": 3,
     "all_pdf_pages_visually_inspected": true,
     "visible_decorative_calendar_dates_found": false,
-    "render_note": "The draw.io CLI was unavailable. The editable source and PDF were updated and visually cross-checked, but the PDF was not exported by draw.io during this run."
+    "render_note": "PDF regenerated directly from the editable source with Diagram_Source/render_diagrams.py (ReportLab and Arial); not exported by draw.io. All source labels were checked against extracted PDF text and all pages were visually inspected. The Word overview was replaced with the first PDF page raster at its original aspect ratio.",
+    "visually_inspected_on": "2026-09-20"
   },
   "tests": {
     "report": "final-package-test-report.json",
@@ -38,7 +41,8 @@
     "containment_vectors": 59,
     "documented_managed_demo_passed": true,
     "documented_v4_quickstart_passed": true,
-    "live_integrations_tested": false
+    "live_integrations_tested": false,
+    "scope_note": "Historical release validation retained. The full release suite was not rerun for the 2026-09-20 documentation consistency update; current focused checks are recorded under consistency_review."
   },
   "publication_hygiene": {
     "known_event_branding_removed": true,
@@ -48,5 +52,37 @@
     "private_service_or_infrastructure_details_added": false,
     "vendor_specific_taxonomies_or_domain_prohibitions_added": false
   },
-  "limitations": "All execution checks use synthetic fixtures and adapters. Word documents were rendered with the bundled LibreOffice-based renderer. The diagram PDF was visually verified but not exported by draw.io in this run. No GitHub Actions run, live service integration, security audit, distributed budget-coordinator test, or production deployment was performed."
+  "limitations": "All execution checks use synthetic fixtures and adapters. Word documents were rendered with the bundled LibreOffice-based renderer. The diagram PDF was regenerated from the editable source with the repository renderer and visually verified; it was not exported by draw.io. The two campaign-restoration gaps documented in consistency_review remain open. No GitHub Actions run, live service integration, independent security audit, distributed budget-coordinator test or production deployment was performed.",
+  "consistency_review": {
+    "date": "2026-09-20",
+    "runtime_commit_reviewed": "65f00dd",
+    "report": "../../Diagram_Source/CONSISTENCY_REVIEW.md",
+    "runtime_changed": false,
+    "source_to_pdf_pages": 3,
+    "source_labels_in_pdf": 83,
+    "embedded_figure_matches_pdf_raster": true,
+    "embedded_figure_sha256": "65b0091d66e58a03cd060c6f0f88a5176a978845d586972ad235f398f1411845",
+    "focused_regressions": {
+      "command": "python python/appendix/tests/v4_regressions.py",
+      "passed": 14,
+      "total": 14
+    },
+    "publication_checks": {
+      "command": "python python/appendix/tests/publication_regressions.py",
+      "passed": true,
+      "scope": "Clean publication export containing exactly the checksum-manifest files.",
+      "checkout_scan_passed": false,
+      "checkout_scan_note": "The broad checkout scan flags residual event branding in pre-existing untracked .idea/workspace.xml. The IDE metadata is not included in the package and was not changed."
+    },
+    "runtime_observations": {
+      "pre_hold_proposal_after_campaign_restore": "ALLOW",
+      "execution_state": "EXECUTION_UNKNOWN",
+      "campaign_restore_with_unknown": true
+    },
+    "open_runtime_followups": [
+      "Block campaign restoration while matching executions are DISPATCHED or EXECUTION_UNKNOWN.",
+      "Bind campaign proposals to a durable monotonic revision so a hold cycle cannot revive pre-hold proposals."
+    ],
+    "pdf_reproduction_byte_identical": true
+  }
 }

@@ -65,4 +65,6 @@ Keep agents outside that trust boundary: agents submit requests, while the gate 
 
 The reference uses synthetic fixtures and a single-owner local persistence design. Its campaign rules count authenticated typed observations; it does not detect campaigns, infer intent, or validate the truth of evidence. It does not provide a network service, identity provider, distributed quota service, remote transaction coordinator, replicated event store, automatic action retry, exactly-once remote effects, independent security assessment, certification, or guaranteed safety. Passing the test suite does not validate live integrations or a particular deployment.
 
+Campaign restoration currently needs host safeguards: the API does not block restoration for unresolved executions, and activating then clearing a hold can make an otherwise-valid pre-hold proposal usable again. These runtime gaps and the corresponding diagram/document corrections are recorded in [the consistency review](Diagram_Source/CONSISTENCY_REVIEW.md).
+
 For implementation details, see `python/README.md` and `python/docs/implementation.md`.
